@@ -3,7 +3,7 @@ import express from "express";
 import cors from "cors";
 
 import connectDB from "./database/connectDB";
-import coursesRouter from "./controllers/course.controller";
+import coursesRouter from "./routers/course.router";
 
 dotenv.config();
 
