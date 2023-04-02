@@ -1,0 +1,26 @@
+{
+	"name": "ufsj-curriculum",
+	"version": "1.0.0",
+	"license": "GPL-3.0",
+	"scripts": {
+		"dev:client": "cd client && npm start",
+		"dev:server": "cd server && npm start",
+		"dev": "npm-run-all --parallel dev:client dev:server",
+		"prepare:client": "cd client && npm install",
+		"prepare:server": "cd server && npm install",
+		"prepare": "husky install && npm run prepare:client && npm run prepare:server"
+	},
+	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^5.57.0",
+		"@typescript-eslint/parser": "^5.57.0",
+		"eslint": "^8.37.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-react": "^7.32.2",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"husky": "^8.0.3",
+		"lint-staged": "^13.2.0",
+		"npm-run-all": "^4.1.5",
+		"prettier": "^2.8.7",
+		"ts-node": "^10.9.1"
+	}
+}
