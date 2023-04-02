@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { rNumber, rString } from "./modelTypes";
 
 const couseSchema = new mongoose.Schema({
-	id: rString,
+	code: rString,
 	name: rString,
 	shift: rString,
 	campus: rString,
