@@ -27,10 +27,10 @@ async function createCourse(req: Request, res: Response) {
 	const newCourse = req.body;
 
 	try {
-		const oldCourse = await Course.findOne({ id: newCourse?.id }).lean().exec();
+		const oldCourse = await Course.findOne({ code: newCourse?.code }).lean().exec();
 
 		if (oldCourse) {
-			res.status(409).send(`A course with the id '${newCourse?.id}' already exists`);
+			res.status(409).send(`A course with the code '${newCourse?.code}' already exists`);
 		} else {
 			await Course.create(newCourse);
 			res.status(201).send(newCourse);
