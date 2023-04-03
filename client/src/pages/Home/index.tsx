@@ -1,32 +1,41 @@
+import { useEffect, useState } from "react";
+
+import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen } from "./styles";
 
-const courses: Course[] = [
-	{
-		code: "CCOMP",
-		name: "Ciência da Computação",
-		shift: "Integral",
-		campus: "CTAN",
-		type: "Bacharelado",
-	},
-	{
-		code: "QUI",
-		name: "Química",
-		shift: "Noturno",
-		campus: "CDB",
-		type: "Licenciatura",
-	},
-];
-
 export default function Home() {
+	const [search, setSearch] = useState("");
+	const [allCourses, setAllCourses] = useState<Course[]>([]);
+	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+
+	useEffect(() => {
+		async function asyncSetAllCourses() {
+			setAllCourses(await requestAllCourses());
+		}
+		asyncSetAllCourses();
+	}, []);
+
+	useEffect(() => {
+		if (allCourses.length !== 0) {
+			const normalizeString = (str: string) =>
+				str
+					.toLowerCase()
+					.normalize("NFD")
+					.replace(/\p{Diacritic}/gu, "");
+
+			setSelectedCourses(allCourses.filter((course) => normalizeString(course.name).includes(normalizeString(search))));
+		}
+	}, [allCourses, search]);
+
 	return (
 		<Screen>
 			<HomeContainer>
-				<SearchBar placeholder="Pesquisar curso..." />
+				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>
-					{courses.map((course) => (
+					{selectedCourses.map((course) => (
 						<CourseElement key={course.code}>
 							<div className="course-name">
 								<p>{course.name}</p>
