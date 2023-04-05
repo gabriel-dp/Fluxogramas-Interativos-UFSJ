@@ -8,9 +8,14 @@ interface CardProps {
 export const CardContainer = styled.div<CardProps>`
 	width: 8rem;
 	aspect-ratio: 1.5;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	user-select: none;
 	background-color: ${(props) =>
 		props.state ? props.theme.primary : props.canChange ? props.theme.white : props.theme.gray};
 	color: ${(props) => (props.state ? props.theme.primaryText : props.theme.black)};
-	border-radius: 0.5rem;
-	padding: 0.5rem;
+	cursor: ${(props) => (props.canChange ? "pointer" : "normal")};
+
+	font-size: 0.8rem;
+	white-space: break-spaces;
 `;
