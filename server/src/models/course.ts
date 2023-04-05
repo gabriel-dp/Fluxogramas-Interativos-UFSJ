@@ -8,10 +8,12 @@ const couseSchema = new mongoose.Schema({
 	shift: rString,
 	campus: rString,
 	type: rString,
+	semesters: rNumber,
 	curriculum: [
 		{
 			name: rString,
 			hours: rNumber,
+			semester: rNumber,
 			preRequisites: [rString],
 			coRequisites: [rString],
 		},

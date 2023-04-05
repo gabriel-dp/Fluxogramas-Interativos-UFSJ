@@ -1,5 +1,6 @@
 export interface Subject {
 	name: string;
+	semester: number;
 	hours: number;
 	preRequisites: string[];
 	coRequisites: string[];
@@ -11,5 +12,6 @@ export interface Course {
 	type: string;
 	campus: string;
 	shift: string;
-	curriculum?: Subject[];
+	semesters: number;
+	curriculum: Subject[];
 }

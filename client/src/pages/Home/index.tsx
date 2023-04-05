@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
@@ -30,13 +31,18 @@ export default function Home() {
 		}
 	}, [allCourses, search]);
 
+	const navigate = useNavigate();
+	function handleCourseClick(code: string) {
+		navigate(code);
+	}
+
 	return (
 		<Screen>
 			<HomeContainer>
 				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>
 					{selectedCourses.map((course) => (
-						<CourseElement key={course.code}>
+						<CourseElement key={course.code} onClick={() => handleCourseClick(course.code)}>
 							<div className="course-name">
 								<p>{course.name}</p>
 							</div>

@@ -34,6 +34,7 @@ export const CourseElement = styled.div`
 	background: ${(props) => props.theme.secondary};
 	overflow: hidden;
 	user-select: none;
+	cursor: pointer;
 
 	display: flex;
 	flex-direction: row;
