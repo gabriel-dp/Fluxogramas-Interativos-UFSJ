@@ -3,9 +3,9 @@ import { useParams } from "react-router-dom";
 
 import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
-import SubjectCard from "@/components/SubjectCard";
+import Curriculum from "@/components/Curriculum";
 
-import { Header, CurriculumContainer, Semester } from "./styles";
+import { Screen, Header, CurriculumContainer } from "./styles";
 
 export default function CourseData() {
 	const { code } = useParams();
@@ -19,7 +19,7 @@ export default function CourseData() {
 	}, [code]);
 
 	return (
-		<>
+		<Screen>
 			<Header>
 				<p>{course?.name ?? code}</p>
 				<div>
@@ -29,16 +29,8 @@ export default function CourseData() {
 				</div>
 			</Header>
 			<CurriculumContainer>
-				{Array.from({ length: course?.semesters ?? 0 }).map((_, i) => (
-					<Semester key={i}>
-						<p>Semestre {i + 1}</p>
-						{course?.curriculum.map((subject) => {
-							console.log(subject.semester, i + 1);
-							if (subject.semester === i + 1) return <SubjectCard subject={subject} />;
-						})}
-					</Semester>
-				))}
+				<Curriculum course={course} />
 			</CurriculumContainer>
-		</>
+		</Screen>
 	);
 }

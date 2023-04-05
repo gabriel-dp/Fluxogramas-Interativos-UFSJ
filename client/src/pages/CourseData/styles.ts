@@ -1,5 +1,12 @@
 import styled from "styled-components";
 
+export const Screen = styled.main`
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+`;
+
 export const Header = styled.div`
 	width: 100%;
 	padding: 2rem 1rem;
@@ -31,19 +38,8 @@ export const Header = styled.div`
 `;
 
 export const CurriculumContainer = styled.div`
-	width: 100%;
+	max-width: 100%;
+	margin: auto;
 	padding: 2rem 1rem;
 	overflow-x: scroll;
-
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	gap: 1%;
-`;
-
-export const Semester = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
 `;

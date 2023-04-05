@@ -5,6 +5,9 @@ export type ThemeType = {
 	background: string;
 	background2: string;
 	text: string;
+	white: string;
+	gray: string;
+	black: string;
 };
 
 export const LightTheme: ThemeType = {
@@ -14,6 +17,9 @@ export const LightTheme: ThemeType = {
 	background: "#CCCCCC",
 	background2: "#373435",
 	text: "#333333",
+	white: "#FFFFFF",
+	gray: "#727376",
+	black: "#373435",
 };
 
 export const DarkTheme: ThemeType = {
@@ -23,4 +29,7 @@ export const DarkTheme: ThemeType = {
 	background: "#373435",
 	background2: "#727376",
 	text: "#FFFFFF",
+	white: "#FFFFFF",
+	gray: "#727376",
+	black: "#373435",
 };
