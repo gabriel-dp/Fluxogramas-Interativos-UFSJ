@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const Screen = styled.main`
 	width: 100%;
+	min-height: 100dvh;
+
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -44,6 +46,7 @@ export const Header = styled.div`
 
 export const CurriculumContainer = styled.div`
 	max-width: 100%;
+	flex-grow: 1;
 	margin: auto;
 	padding: 2rem 1rem;
 	overflow-x: scroll;

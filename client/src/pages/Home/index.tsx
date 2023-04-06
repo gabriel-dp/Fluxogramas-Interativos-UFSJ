@@ -5,6 +5,7 @@ import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
+import Footer from "@/components/Footer";
 
 import logo from "@/assets/ufsj-curriculum-logo.png";
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
@@ -65,6 +66,7 @@ export default function Home() {
 					)}
 				</CoursesContainer>
 			</HomeContainer>
+			<Footer />
 		</Screen>
 	);
 }

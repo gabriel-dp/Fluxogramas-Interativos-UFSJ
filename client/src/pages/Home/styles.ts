@@ -11,6 +11,7 @@ export const Screen = styled.div`
 
 export const HomeContainer = styled.div`
 	width: min(100%, 40rem);
+	flex-grow: 1;
 	padding: 2rem 1rem;
 
 	display: flex;

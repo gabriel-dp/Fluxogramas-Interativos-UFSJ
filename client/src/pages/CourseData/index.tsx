@@ -5,6 +5,7 @@ import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
 import Loading from "@/components/Loading";
+import Footer from "@/components/Footer";
 
 import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 import { Screen, Header, CurriculumContainer } from "./styles";
@@ -41,13 +42,10 @@ export default function CourseData() {
 					</span>
 				</div>
 			</Header>
-			{loading || course === undefined ? (
-				<Loading />
-			) : (
-				<CurriculumContainer>
-					<Curriculum course={course} />
-				</CurriculumContainer>
-			)}
+			<CurriculumContainer>
+				{loading || course === undefined ? <Loading /> : <Curriculum course={course} />}
+			</CurriculumContainer>
+			<Footer />
 		</Screen>
 	);
 }
