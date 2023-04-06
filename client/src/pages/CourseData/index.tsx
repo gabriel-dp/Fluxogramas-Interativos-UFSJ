@@ -4,10 +4,10 @@ import { useParams } from "react-router-dom";
 import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
-import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
-
-import { Screen, Header, CurriculumContainer } from "./styles";
 import Loading from "@/components/Loading";
+
+import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
+import { Screen, Header, CurriculumContainer } from "./styles";
 
 export default function CourseData() {
 	const { code } = useParams();

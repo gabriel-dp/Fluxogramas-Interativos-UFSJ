@@ -4,9 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
-
-import { CourseElement, CoursesContainer, HomeContainer, Screen } from "./styles";
 import Loading from "@/components/Loading";
+
+import logo from "@/assets/ufsj-curriculum-logo.png";
+import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
 
 export default function Home() {
 	const [search, setSearch] = useState("");
@@ -43,6 +44,7 @@ export default function Home() {
 	return (
 		<Screen>
 			<HomeContainer>
+				<LogoImage src={logo} />
 				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>
 					{loading ? (

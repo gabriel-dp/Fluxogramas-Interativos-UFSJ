@@ -16,7 +16,12 @@ export const HomeContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 2rem;
+	gap: 1rem;
+`;
+
+export const LogoImage = styled.img`
+	width: min(12rem, 50%);
+	margin: 1.5rem 0;
 `;
 
 export const CoursesContainer = styled.div`
