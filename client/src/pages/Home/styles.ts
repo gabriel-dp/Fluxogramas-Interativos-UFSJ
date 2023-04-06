@@ -20,7 +20,7 @@ export const HomeContainer = styled.div`
 `;
 
 export const LogoImage = styled.img`
-	width: min(12rem, 50%);
+	width: min(25rem, 80%);
 	margin: 1.5rem 0;
 `;
 
