@@ -38,13 +38,24 @@ export default function Curriculum(props: ICurriculum) {
 						!subject.preRequisites.includes(props.course.curriculum[i].name))
 			);
 
+		const notActiveCoRequisitesPreRequisites = (i: number) =>
+			props.course !== null &&
+			props.course.curriculum[i].coRequisites.every((subjectName) =>
+				notActivePreRequisites(getSubjectIndex(subjectName))
+			);
+
 		const notActiveCoRequisitesPostRequisites = (i: number) =>
 			props.course !== null &&
 			props.course.curriculum[i].coRequisites.every((subjectName) =>
 				notActivePostRequistes(getSubjectIndex(subjectName))
 			);
 
-		return notActivePreRequisites(index) && notActivePostRequistes(index) && notActiveCoRequisitesPostRequisites(index);
+		return (
+			notActivePreRequisites(index) &&
+			notActivePostRequistes(index) &&
+			notActiveCoRequisitesPreRequisites(index) &&
+			notActiveCoRequisitesPostRequisites(index)
+		);
 	}
 
 	function handleChangeSubjectState(index: number) {
