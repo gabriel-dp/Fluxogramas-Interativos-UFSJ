@@ -10,6 +10,11 @@ export default createGlobalStyle<{ theme: ThemeType }>`
         box-sizing: border-box;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         -webkit-tap-highlight-color: transparent;
+        
+        ::selection {
+            background-color: ${(props) => props.theme.primary};
+            color: ${(props) => props.theme.primaryText};
+        }
     }
 
     body {

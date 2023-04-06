@@ -14,7 +14,6 @@ export const Header = styled.div`
 	padding: 2rem 1rem;
 	background-color: ${(props) => props.theme.background2};
 	color: ${(props) => props.theme.primaryText};
-	user-select: none;
 	text-align: center;
 
 	display: flex;

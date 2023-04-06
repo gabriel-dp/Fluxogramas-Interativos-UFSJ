@@ -29,8 +29,13 @@ export const FooterContent = styled.div`
 		align-items: center;
 
 		a {
+			transition: all ease-in-out 0.25s;
 			text-decoration: underline;
 			color: inherit;
+
+			:hover {
+				font-size: 0.8rem;
+			}
 		}
 	}
 `;
