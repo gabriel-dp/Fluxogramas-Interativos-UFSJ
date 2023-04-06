@@ -9,12 +9,12 @@ interface ISubject {
 }
 
 export default function SubjectCard(props: ISubject) {
+	const Icon = props.state ? CheckIcon : props.canChange ? OpenIcon : LockIcon;
+
 	return (
 		<CardContainer onClick={props.onClick} state={props.state} canChange={props.canChange}>
 			<p className="name">{props.subject.name}</p>
-			{props.state && <CheckIcon />}
-			{!props.state && !props.canChange && <LockIcon />}
-			{!props.state && props.canChange && <OpenIcon />}
+			{<Icon />}
 		</CardContainer>
 	);
 }
