@@ -56,7 +56,7 @@ export const CourseElement = styled.div`
 		align-items: flex-end;
 	}
 
-	transition: all 0.2s ease;
+	transition: all 0.3s ease-out;
 
 	:hover {
 		background: ${(props) => props.theme.primary};
