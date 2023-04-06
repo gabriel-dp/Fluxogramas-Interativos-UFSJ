@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FaLock, FaLockOpen } from "react-icons/fa";
+import { FaCheck, FaLock, FaLockOpen } from "react-icons/fa";
 
 export const LockIcon = styled(FaLock)`
 	color: ${(props) => props.theme.white}55;
@@ -13,6 +13,16 @@ export const LockIcon = styled(FaLock)`
 
 export const OpenIcon = styled(FaLockOpen)`
 	color: ${(props) => props.theme.black}55;
+	font-size: 0.85rem;
+
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	transform: translate(-50%, -50%);
+`;
+
+export const CheckIcon = styled(FaCheck)`
+	color: ${(props) => props.theme.white}55;
 	font-size: 0.85rem;
 
 	position: absolute;
