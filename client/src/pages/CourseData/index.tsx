@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
+import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 
 import { Screen, Header, CurriculumContainer } from "./styles";
 
@@ -23,9 +24,17 @@ export default function CourseData() {
 			<Header>
 				<p>{course?.name ?? code}</p>
 				<div>
-					<span>Turno: {course?.shift}</span>
-					<span>Tipo: {course?.type}</span>
-					<span>Campus: {course?.campus}</span>
+					<span>
+						<FaClock className="icon" /> {course?.shift}
+					</span>
+
+					<span>
+						<FaGraduationCap className="icon" /> {course?.type}
+					</span>
+
+					<span>
+						<FaMapMarkerAlt className="icon" /> {course?.campus}
+					</span>
 				</div>
 			</Header>
 			<CurriculumContainer>

@@ -1,4 +1,4 @@
-import { SearchContainer, SearchInput } from "./styles";
+import { SearchContainer, SearchIcon, SearchInput } from "./styles";
 
 interface ISearch {
 	placeholder: string;
@@ -13,6 +13,7 @@ export default function SearchBar(props: ISearch) {
 
 	return (
 		<SearchContainer>
+			<SearchIcon />
 			<SearchInput placeholder={props.placeholder} value={props.search} onChange={(event) => handleTextChange(event)} />
 		</SearchContainer>
 	);

@@ -1,5 +1,5 @@
 import { Subject } from "@/services/course/types";
-import { CardContainer } from "./styles";
+import { CardContainer, LockIcon, OpenIcon } from "./styles";
 
 interface ISubject {
 	subject: Subject;
@@ -11,7 +11,9 @@ interface ISubject {
 export default function SubjectCard(props: ISubject) {
 	return (
 		<CardContainer onClick={props.onClick} state={props.state} canChange={props.canChange}>
-			{props.subject.name}
+			<p className="name">{props.subject.name}</p>
+			{!props.state && !props.canChange && <LockIcon />}
+			{!props.state && props.canChange && <OpenIcon />}
 		</CardContainer>
 	);
 }

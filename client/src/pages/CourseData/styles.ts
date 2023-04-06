@@ -26,13 +26,18 @@ export const Header = styled.div`
 	}
 
 	div {
-		white-space: nowrap;
+		span {
+			white-space: nowrap;
+			.icon {
+				transform: translateY(15%);
+			}
+		}
 
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		flex-wrap: wrap;
-		column-gap: 1rem;
+		column-gap: 1.5rem;
 		row-gap: 0.5rem;
 	}
 `;
