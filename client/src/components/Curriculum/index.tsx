@@ -63,7 +63,7 @@ export default function Curriculum(props: ICurriculum) {
 						if (subject.semester === i + 1)
 							return (
 								<SubjectCard
-									key={subject.name}
+									key={`${subject.name}-${j}`}
 									subject={subject}
 									state={subjectsState[j]}
 									canChange={canChange(j)}
