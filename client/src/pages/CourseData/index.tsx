@@ -7,14 +7,18 @@ import Curriculum from "@/components/Curriculum";
 import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 
 import { Screen, Header, CurriculumContainer } from "./styles";
+import Loading from "@/components/Loading";
 
 export default function CourseData() {
 	const { code } = useParams();
-	const [course, setCourse] = useState<Course | null>(null);
+	const [loading, setLoading] = useState(false);
+	const [course, setCourse] = useState<Course>();
 
 	useEffect(() => {
 		async function asyncSetCourse() {
+			setLoading(true);
 			setCourse(await requestCourse(code ?? ""));
+			setLoading(false);
 		}
 		asyncSetCourse();
 	}, [code]);
@@ -22,7 +26,7 @@ export default function CourseData() {
 	return (
 		<Screen>
 			<Header>
-				<p>{course?.name ?? code}</p>
+				<p>{course ? course.name : "-"}</p>
 				<div>
 					<span>
 						<FaClock className="icon" /> {course?.shift}
@@ -37,9 +41,13 @@ export default function CourseData() {
 					</span>
 				</div>
 			</Header>
-			<CurriculumContainer>
-				<Curriculum course={course} />
-			</CurriculumContainer>
+			{loading || course === undefined ? (
+				<Loading />
+			) : (
+				<CurriculumContainer>
+					<Curriculum course={course} />
+				</CurriculumContainer>
+			)}
 		</Screen>
 	);
 }
