@@ -5,18 +5,20 @@ import cors from "cors";
 import connectDB from "./database/connectDB";
 import coursesRouter from "./routers/course.router";
 
+// Enable enviroment variables
 dotenv.config();
 
+// Config express app
 const app = express();
-
-connectDB();
-
 app.use(express.json());
 app.use(cors());
 
+// Routes
 app.use("/courses", coursesRouter);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-	console.log(`Listening on port ${PORT}`);
+// Starts server after connect to database
+connectDB().then(() => {
+	app.listen(process.env.PORT, () => {
+		console.log(`Listening on port ${process.env.PORT}`);
+	});
 });

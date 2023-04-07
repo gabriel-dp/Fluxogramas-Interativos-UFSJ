@@ -1,7 +1,23 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
 
 import Course from "../models/course";
+
+function requireAdmin(req: Request, res: Response, next: NextFunction) {
+	const adminApiKey = process.env.ADMIN_TOKEN;
+	const authHeader = req.headers.authorization;
+
+	if (!authHeader || !authHeader.startsWith("Bearer ")) {
+		return res.sendStatus(401);
+	}
+
+	const token = authHeader.split(" ")[1];
+	if (token !== adminApiKey) {
+		return res.sendStatus(403);
+	}
+
+	next();
+}
 
 async function getAllCourses(_: Request, res: Response) {
 	try {
@@ -24,51 +40,56 @@ async function getCourse(req: Request, res: Response) {
 }
 
 async function createCourse(req: Request, res: Response) {
-	const newCourse = req.body;
+	requireAdmin(req, res, async () => {
+		const newCourse = req.body;
 
-	try {
-		const oldCourse = await Course.findOne({ code: newCourse?.code }).lean().exec();
+		try {
+			const oldCourse = await Course.findOne({ code: newCourse?.code }).lean().exec();
 
-		if (oldCourse) {
-			res.status(409).send(`A course with the code '${newCourse?.code}' already exists`);
-		} else {
-			await Course.create(newCourse);
-			res.status(201).send(newCourse);
+			if (oldCourse) {
+				res.status(409).send(`A course with the code '${newCourse?.code}' already exists`);
+			} else {
+				await Course.create(newCourse);
+				res.status(201).send(newCourse);
+			}
+		} catch (error) {
+			res.status(500).send(error);
 		}
-	} catch (error) {
-		res.status(500).send(error);
-	}
+	});
 }
 
 async function deleteCourse(req: Request, res: Response) {
-	const { id } = req.params;
-
-	try {
-		const deleted = await Course.findByIdAndRemove({ _id: new Types.ObjectId(id) });
-		if (deleted) {
-			res.sendStatus(204);
-		} else {
-			res.status(404).send("Course not found");
+	requireAdmin(req, res, async () => {
+		const { id } = req.params;
+		try {
+			const deleted = await Course.findByIdAndRemove({ _id: new Types.ObjectId(id) });
+			if (deleted) {
+				res.sendStatus(204);
+			} else {
+				res.status(404).send("Course not found");
+			}
+		} catch (error) {
+			res.status(500).send(error);
 		}
-	} catch (error) {
-		res.status(500).send(error);
-	}
+	});
 }
 
 async function updateCourse(req: Request, res: Response) {
-	const { id } = req.params;
-	const updates = req.body;
+	requireAdmin(req, res, async () => {
+		const { id } = req.params;
+		const updates = req.body;
 
-	try {
-		const updated = await Course.findByIdAndUpdate(new Types.ObjectId(id), { $set: updates });
-		if (updated) {
-			res.sendStatus(204);
-		} else {
-			res.status(404).send("Course not found");
+		try {
+			const updated = await Course.findByIdAndUpdate(new Types.ObjectId(id), { $set: updates });
+			if (updated) {
+				res.sendStatus(204);
+			} else {
+				res.status(404).send("Course not found");
+			}
+		} catch (error) {
+			res.status(500).send(error);
 		}
-	} catch (error) {
-		res.status(500).send(error);
-	}
+	});
 }
 
 export default { getAllCourses, getCourse, createCourse, deleteCourse, updateCourse };

@@ -1,10 +1,13 @@
 import mongoose from "mongoose";
 
+// Mongoose will return an error if a query does not match the schema
 mongoose.set("strictQuery", true);
 
-export default function connectDB() {
-	mongoose
-		.connect(process.env.MONGODB_URI || "")
-		.then(() => console.warn("MongoDB Connected!"))
-		.catch((error) => console.error(error));
+export default async function connectDB() {
+	try {
+		await mongoose.connect(process.env.MONGODB_URI || "");
+		console.log("MongoDB connected!");
+	} catch (error) {
+		console.error("MongoDB connection error:", error);
+	}
 }
