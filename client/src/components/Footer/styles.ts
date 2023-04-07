@@ -23,10 +23,12 @@ export const FooterContent = styled.div`
 
 	div {
 		font-size: 0.75rem;
+		text-align: center;
 
 		display: flex;
 		flex-direction: column;
 		align-items: center;
+		gap: 0.2rem;
 
 		a {
 			transition: all ease-in-out 0.25s;
