@@ -36,7 +36,7 @@ export const FooterContent = styled.div`
 			color: inherit;
 
 			:hover {
-				font-size: 0.8rem;
+				letter-spacing: 0.05rem;
 			}
 		}
 	}

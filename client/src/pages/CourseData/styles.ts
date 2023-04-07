@@ -29,8 +29,13 @@ export const Header = styled.div`
 	div {
 		span {
 			white-space: nowrap;
+			display: inline-block;
 			.icon {
-				transform: translateY(15%);
+				transition: transform 0.5s;
+				transform: rotate(0deg) translateY(15%);
+				:hover {
+					transform: rotate(360deg) translateY(10%);
+				}
 			}
 		}
 
