@@ -20,6 +20,6 @@ export default createGlobalStyle<{ theme: ThemeType }>`
     body {
         background-color: ${(props) => props.theme.background};
         color: ${(props) => props.theme.text};
-        transition: all 0.25s ease;
+        transition: background 0.25s ease, color 0.25s ease;
     }
 `;
