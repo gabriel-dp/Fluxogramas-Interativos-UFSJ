@@ -35,6 +35,7 @@ export const SearchInput = styled.input.attrs({
 	border: none;
 	outline: none;
 	text-overflow: ellipsis;
+	transition: all 0.25s ease;
 
 	::placeholder {
 		color: ${(props) => props.theme.text}99;
