@@ -23,7 +23,6 @@ export default function CourseData(props: HomeProps) {
 	useEffect(() => {
 		async function asyncSetCourse() {
 			setCourse(await requestCourse(code ?? ""));
-			console.log("aaa");
 			setLoading(false);
 		}
 		asyncSetCourse();
@@ -37,11 +36,9 @@ export default function CourseData(props: HomeProps) {
 					<span>
 						<FaClock className="icon" /> {course ? course.shift : "-"}
 					</span>
-
 					<span>
 						<FaGraduationCap className="icon" /> {course ? course.type : "-"}
 					</span>
-
 					<span>
 						<FaMapMarkerAlt className="icon" /> {course ? course.campus : "-"}
 					</span>
