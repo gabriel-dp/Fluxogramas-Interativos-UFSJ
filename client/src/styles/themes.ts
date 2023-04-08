@@ -1,4 +1,5 @@
 export type ThemeType = {
+	name: string;
 	primary: string;
 	primaryText: string;
 	secondary: string;
@@ -11,6 +12,7 @@ export type ThemeType = {
 };
 
 export const LightTheme: ThemeType = {
+	name: "light",
 	primary: "#C2393E",
 	primaryText: "#FFFFFF",
 	secondary: "#FEFEFE",
@@ -23,6 +25,7 @@ export const LightTheme: ThemeType = {
 };
 
 export const DarkTheme: ThemeType = {
+	name: "dark",
 	primary: "#C2393E",
 	primaryText: "#FFFFFF",
 	secondary: "#727376",

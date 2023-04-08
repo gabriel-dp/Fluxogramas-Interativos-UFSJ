@@ -6,11 +6,16 @@ import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
-
+import ThemeSwitch from "@/components/ThemeSwitch";
 import logo from "@/assets/ufsj-curriculum-logo.png";
+
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
 
-export default function Home() {
+interface HomeProps {
+	toggleTheme: () => void;
+}
+
+export default function Home(props: HomeProps) {
 	const [search, setSearch] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [allCourses, setAllCourses] = useState<Course[]>([]);
@@ -45,6 +50,7 @@ export default function Home() {
 	return (
 		<Screen>
 			<HomeContainer>
+				<ThemeSwitch toggleTheme={props.toggleTheme} />
 				<LogoImage src={logo} />
 				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>

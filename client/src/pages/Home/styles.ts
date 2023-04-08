@@ -12,17 +12,16 @@ export const Screen = styled.div`
 export const HomeContainer = styled.div`
 	width: min(100%, 40rem);
 	flex-grow: 1;
-	padding: 2rem 1rem;
+	padding: 4rem 1rem 2rem 1rem;
 
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 1rem;
+	gap: 2rem;
 `;
 
 export const LogoImage = styled.img`
 	width: min(25rem, 80%);
-	margin: 1.5rem 0;
 `;
 
 export const CoursesContainer = styled.div`

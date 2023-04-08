@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 
 import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
+import ThemeSwitch from "@/components/ThemeSwitch";
 
-import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
 import { Screen, Header, CurriculumContainer } from "./styles";
 
-export default function CourseData() {
+interface HomeProps {
+	toggleTheme: () => void;
+}
+
+export default function CourseData(props: HomeProps) {
 	const { code } = useParams();
 	const [loading, setLoading] = useState(false);
 	const [course, setCourse] = useState<Course>();
@@ -41,6 +46,7 @@ export default function CourseData() {
 						<FaMapMarkerAlt className="icon" /> {course?.campus}
 					</span>
 				</div>
+				<ThemeSwitch toggleTheme={props.toggleTheme} />
 			</Header>
 			<CurriculumContainer>
 				{loading || course === undefined ? <Loading /> : <Curriculum course={course} />}
