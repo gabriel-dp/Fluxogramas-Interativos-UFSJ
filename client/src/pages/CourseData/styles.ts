@@ -58,10 +58,6 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	margin: auto;
 	padding: 2rem 1rem 1rem 1rem;
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
-
 	/* Scrollbar control */
 	overflow-x: ${(props) => (props.loading ? "normal" : "scroll")};
 	transform: rotateX(${(props) => (props.loading ? "0deg" : "180deg")});

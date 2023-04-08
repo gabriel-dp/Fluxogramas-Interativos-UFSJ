@@ -48,7 +48,7 @@ export default function CourseData(props: HomeProps) {
 				<ThemeSwitch toggleTheme={props.toggleTheme} />
 			</Header>
 			<CurriculumContainer loading={loading}>
-				{loading && course ? <Loading /> : <Curriculum course={course} />}
+				{loading || !course ? <Loading /> : <Curriculum course={course} />}
 			</CurriculumContainer>
 			<Footer />
 		</Screen>
