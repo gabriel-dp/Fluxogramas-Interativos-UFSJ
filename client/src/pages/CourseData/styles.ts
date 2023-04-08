@@ -48,10 +48,39 @@ export const Header = styled.div`
 	}
 `;
 
-export const CurriculumContainer = styled.div`
+interface CurriculumProps {
+	loading: boolean;
+}
+
+export const CurriculumContainer = styled.div<CurriculumProps>`
 	max-width: 100%;
 	flex-grow: 1;
 	margin: auto;
-	padding: 2rem 1rem;
-	overflow-x: scroll;
+	padding: 2rem 1rem 1rem 1rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	/* Scrollbar control */
+	overflow-x: ${(props) => (props.loading ? "normal" : "scroll")};
+	transform: rotateX(${(props) => (props.loading ? "0deg" : "180deg")});
+	.curriculum {
+		transform: rotateX(180deg);
+	}
+
+	/* For Webkit based browsers */
+	::-webkit-scrollbar {
+		height: 1rem;
+	}
+	::-webkit-scrollbar-track {
+		background-color: ${(props) => props.theme.white};
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: ${(props) => props.theme.primary};
+	}
+
+	/* For Firefox */
+	scrollbar-width: 0.5rem;
+	scrollbar-color: ${(props) => props.theme.primary} ${(props) => props.theme.gray};
 `;

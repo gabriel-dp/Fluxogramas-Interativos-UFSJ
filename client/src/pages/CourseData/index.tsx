@@ -17,12 +17,11 @@ interface HomeProps {
 
 export default function CourseData(props: HomeProps) {
 	const { code } = useParams();
-	const [loading, setLoading] = useState(false);
-	const [course, setCourse] = useState<Course>();
+	const [loading, setLoading] = useState(true);
+	const [course, setCourse] = useState<Course | null>(null);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
-			setLoading(true);
 			setCourse(await requestCourse(code ?? ""));
 			setLoading(false);
 		}
@@ -48,8 +47,8 @@ export default function CourseData(props: HomeProps) {
 				</div>
 				<ThemeSwitch toggleTheme={props.toggleTheme} />
 			</Header>
-			<CurriculumContainer>
-				{loading || course === undefined ? <Loading /> : <Curriculum course={course} />}
+			<CurriculumContainer loading={loading}>
+				{loading && course ? <Loading /> : <Curriculum course={course} />}
 			</CurriculumContainer>
 			<Footer />
 		</Screen>

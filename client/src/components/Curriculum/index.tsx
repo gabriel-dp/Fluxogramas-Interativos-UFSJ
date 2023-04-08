@@ -74,7 +74,7 @@ export default function Curriculum(props: ICurriculum) {
 	}
 
 	return (
-		<CurriculumList>
+		<CurriculumList className="curriculum">
 			{Array.from({ length: props.course?.semesters ?? 0 }).map((_, i) => (
 				<Semester key={i}>
 					<p>Semestre {i + 1}</p>
