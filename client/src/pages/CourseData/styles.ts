@@ -57,6 +57,7 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	flex-grow: 1;
 	margin: auto;
 	padding: 2rem 1rem 1rem 1rem;
+	margin-top: 1rem;
 
 	/* Scrollbar control */
 	overflow-x: ${(props) => (props.hasData ? "scroll" : "normal")};
@@ -67,19 +68,23 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 
 	/* For Webkit based browsers */
 	::-webkit-scrollbar {
-		height: 1rem;
+		height: 0.8rem;
 	}
 	::-webkit-scrollbar-track {
 		background-color: ${(props) => props.theme.white};
-		border-radius: 1rem;
+		border-radius: 0.8rem;
 	}
 	::-webkit-scrollbar-thumb {
 		background-color: ${(props) => props.theme.primary};
-		border-radius: 1rem;
+		border-radius: 0.8rem;
 		border: 1px solid ${(props) => props.theme.white};
+	}
+	::-webkit-scrollbar-button {
+		width: 0.5rem;
+		display: block;
 	}
 
 	/* For Firefox */
 	scrollbar-width: 0.5rem;
-	scrollbar-color: ${(props) => props.theme.primary} ${(props) => props.theme.gray};
+	scrollbar-color: ${(props) => props.theme.primary} ${(props) => props.theme.white};
 `;
