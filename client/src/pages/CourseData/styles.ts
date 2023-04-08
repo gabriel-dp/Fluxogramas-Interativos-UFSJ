@@ -71,9 +71,12 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	}
 	::-webkit-scrollbar-track {
 		background-color: ${(props) => props.theme.white};
+		border-radius: 1rem;
 	}
 	::-webkit-scrollbar-thumb {
 		background-color: ${(props) => props.theme.primary};
+		border-radius: 1rem;
+		border: 1px solid ${(props) => props.theme.white};
 	}
 
 	/* For Firefox */
