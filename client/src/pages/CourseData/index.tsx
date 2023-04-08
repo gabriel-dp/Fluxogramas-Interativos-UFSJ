@@ -23,6 +23,7 @@ export default function CourseData(props: HomeProps) {
 	useEffect(() => {
 		async function asyncSetCourse() {
 			setCourse(await requestCourse(code ?? ""));
+			console.log("aaa");
 			setLoading(false);
 		}
 		asyncSetCourse();
@@ -34,21 +35,21 @@ export default function CourseData(props: HomeProps) {
 				<p>{course ? course.name : "-"}</p>
 				<div>
 					<span>
-						<FaClock className="icon" /> {course?.shift}
+						<FaClock className="icon" /> {course ? course.shift : "-"}
 					</span>
 
 					<span>
-						<FaGraduationCap className="icon" /> {course?.type}
+						<FaGraduationCap className="icon" /> {course ? course.type : "-"}
 					</span>
 
 					<span>
-						<FaMapMarkerAlt className="icon" /> {course?.campus}
+						<FaMapMarkerAlt className="icon" /> {course ? course.campus : "-"}
 					</span>
 				</div>
 				<ThemeSwitch toggleTheme={props.toggleTheme} />
 			</Header>
-			<CurriculumContainer loading={loading}>
-				{loading || !course ? <Loading /> : <Curriculum course={course} />}
+			<CurriculumContainer hasData={course !== null}>
+				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum course={course} />}
 			</CurriculumContainer>
 			<Footer />
 		</Screen>

@@ -49,7 +49,7 @@ export const Header = styled.div`
 `;
 
 interface CurriculumProps {
-	loading: boolean;
+	hasData: boolean;
 }
 
 export const CurriculumContainer = styled.div<CurriculumProps>`
@@ -59,8 +59,8 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	padding: 2rem 1rem 1rem 1rem;
 
 	/* Scrollbar control */
-	overflow-x: ${(props) => (props.loading ? "normal" : "scroll")};
-	transform: rotateX(${(props) => (props.loading ? "0deg" : "180deg")});
+	overflow-x: ${(props) => (props.hasData ? "scroll" : "normal")};
+	transform: rotateX(${(props) => (props.hasData ? "180deg" : "0deg")});
 	.curriculum {
 		transform: rotateX(180deg);
 	}

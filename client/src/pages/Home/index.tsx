@@ -17,13 +17,12 @@ interface HomeProps {
 
 export default function Home(props: HomeProps) {
 	const [search, setSearch] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const [allCourses, setAllCourses] = useState<Course[]>([]);
 	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
 
 	useEffect(() => {
 		async function asyncSetAllCourses() {
-			setLoading(true);
 			setAllCourses(await requestAllCourses());
 			setLoading(false);
 		}
