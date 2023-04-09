@@ -50,7 +50,7 @@ export default function Home(props: HomeProps) {
 		<Screen>
 			<HomeContainer>
 				<ThemeSwitch toggleTheme={props.toggleTheme} />
-				<LogoImage src={logo} />
+				<LogoImage src={logo} alt="CurriculumUFSJ-logo" />
 				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>
 					{loading ? (
