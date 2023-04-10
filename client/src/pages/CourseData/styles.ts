@@ -59,6 +59,9 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	padding: 2rem 1rem 1rem 1rem;
 	margin-top: 1rem;
 
+	display: flex;
+	flex-direction: column-reverse;
+
 	/* Scrollbar control */
 	overflow-x: ${(props) => (props.hasData ? "scroll" : "normal")};
 	transform: rotateX(${(props) => (props.hasData ? "180deg" : "0deg")});
