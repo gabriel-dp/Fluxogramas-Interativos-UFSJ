@@ -60,7 +60,7 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	margin-top: 1rem;
 
 	display: flex;
-	flex-direction: column-reverse;
+	flex-direction: ${(props) => (props.hasData ? "column-reverse" : "column")};
 
 	/* Scrollbar control */
 	overflow-x: ${(props) => (props.hasData ? "scroll" : "normal")};
