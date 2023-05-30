@@ -47,7 +47,7 @@ export const CardContainer = styled.div<CardProps>`
 	background-color: ${(props) =>
 		props.state ? props.theme.primary : props.canChange ? props.theme.white : props.theme.gray};
 	color: ${(props) => (props.state || !props.canChange ? props.theme.primaryText : props.theme.black)};
-	cursor: ${(props) => (props.canChange ? "pointer" : "normal")};
+	cursor: ${(props) => (props.canChange ? "pointer" : "not-allowed")};
 
 	p {
 		font-size: 0.75rem;

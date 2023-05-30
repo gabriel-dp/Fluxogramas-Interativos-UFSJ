@@ -59,18 +59,11 @@ export default function Curriculum(props: ICurriculum) {
 	}
 
 	function handleChangeSubjectState(index: number) {
-		if (!props.course) return;
+		if (!props.course || !canChange(index)) return;
 
-		if (canChange(index)) {
-			const indexesChanged = [index];
-			props.course.curriculum[index].coRequisites.forEach((coRequisite) =>
-				indexesChanged.push(getSubjectIndex(coRequisite))
-			);
-
-			const newState = [...subjectsState];
-			indexesChanged.forEach((indexChanged) => (newState[indexChanged] = !newState[indexChanged]));
-			setSubjectsState(newState);
-		}
+		const newState = [...subjectsState];
+		newState[index] = !newState[index];
+		setSubjectsState(newState);
 	}
 
 	return (
