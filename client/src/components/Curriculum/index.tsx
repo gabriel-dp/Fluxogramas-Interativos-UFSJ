@@ -22,7 +22,7 @@ export default function Curriculum(props: ICurriculum) {
 		return props.course.curriculum.findIndex((subject) => subject.name === subjectName);
 	}
 
-	function canChange(index: number) {
+	const canChange: (index: number) => boolean = (index: number) => {
 		if (!props.course) return false;
 
 		const notActivePreRequisites = (i: number) =>
@@ -38,25 +38,22 @@ export default function Curriculum(props: ICurriculum) {
 						!subject.preRequisites.includes(props.course.curriculum[i].name))
 			);
 
-		const notActiveCoRequisitesPreRequisites = (i: number) =>
+		const validCoRequisites = (i: number) =>
 			props.course !== null &&
-			props.course.curriculum[i].coRequisites.every((subjectName) =>
-				notActivePreRequisites(getSubjectIndex(subjectName))
-			);
+			props.course.curriculum[i].coRequisites.every((coRequisiteName) => {
+				const coRequisiteIndex = getSubjectIndex(coRequisiteName);
+				return subjectsState[coRequisiteIndex] || canChange(coRequisiteIndex);
+			});
 
-		const notActiveCoRequisitesPostRequisites = (i: number) =>
-			props.course !== null &&
-			props.course.curriculum[i].coRequisites.every((subjectName) =>
-				notActivePostRequistes(getSubjectIndex(subjectName))
-			);
-
-		return (
-			notActivePreRequisites(index) &&
-			notActivePostRequistes(index) &&
-			notActiveCoRequisitesPreRequisites(index) &&
-			notActiveCoRequisitesPostRequisites(index)
+		console.log(
+			props.course.curriculum[index].name,
+			notActivePreRequisites(index),
+			notActivePostRequistes(index),
+			validCoRequisites(index)
 		);
-	}
+
+		return notActivePreRequisites(index) && notActivePostRequistes(index) && validCoRequisites(index);
+	};
 
 	function handleChangeSubjectState(index: number) {
 		if (!props.course || !canChange(index)) return;
