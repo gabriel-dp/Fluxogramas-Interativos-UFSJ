@@ -11,6 +11,7 @@ const couseSchema = new mongoose.Schema({
 	semesters: rNumber,
 	curriculum: [
 		{
+			id: rString,
 			name: rString,
 			hours: rNumber,
 			semester: rNumber,

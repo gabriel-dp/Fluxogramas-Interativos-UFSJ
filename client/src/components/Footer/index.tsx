@@ -12,7 +12,7 @@ export default function Footer() {
 				</div>
 				<div>
 					<p>
-						<a href="https://github.com/gabriel-dp/Curriculum-UFSJ">Ver código-fonte do projeto</a>
+						<a href="https://github.com/gabriel-dp/Fluxogramas-Interativos-UFSJ">Ver código-fonte do projeto</a>
 					</p>
 					<p>Made by Gabriel de Paula</p>
 				</div>

@@ -17,9 +17,9 @@ export default function Curriculum(props: ICurriculum) {
 		}
 	}, [props.course]);
 
-	function getSubjectIndex(subjectName: string) {
+	function getSubjectIndex(subjectId: string) {
 		if (!props.course) return -1;
-		return props.course.curriculum.findIndex((subject) => subject.name === subjectName);
+		return props.course.curriculum.findIndex((subject) => subject.id === subjectId);
 	}
 
 	const canChange: (index: number) => boolean = (index: number) => {
@@ -27,30 +27,23 @@ export default function Curriculum(props: ICurriculum) {
 
 		const notActivePreRequisites = (i: number) =>
 			props.course !== null &&
-			props.course.curriculum[i].preRequisites.every((subjectName) => subjectsState[getSubjectIndex(subjectName)]);
+			props.course.curriculum[i].preRequisites.every((subjectId) => subjectsState[getSubjectIndex(subjectId)]);
 
 		const notActivePostRequistes = (i: number) =>
 			props.course !== null &&
 			props.course.curriculum.every(
 				(subject) =>
 					props.course &&
-					(!subjectsState[getSubjectIndex(subject.name)] ||
-						!subject.preRequisites.includes(props.course.curriculum[i].name))
+					(!subjectsState[getSubjectIndex(subject.id)] ||
+						!subject.preRequisites.includes(props.course.curriculum[i].id))
 			);
 
 		const validCoRequisites = (i: number) =>
 			props.course !== null &&
-			props.course.curriculum[i].coRequisites.every((coRequisiteName) => {
-				const coRequisiteIndex = getSubjectIndex(coRequisiteName);
+			props.course.curriculum[i].coRequisites.every((coRequisiteId) => {
+				const coRequisiteIndex = getSubjectIndex(coRequisiteId);
 				return subjectsState[coRequisiteIndex] || canChange(coRequisiteIndex);
 			});
-
-		console.log(
-			props.course.curriculum[index].name,
-			notActivePreRequisites(index),
-			notActivePostRequistes(index),
-			validCoRequisites(index)
-		);
 
 		return notActivePreRequisites(index) && notActivePostRequistes(index) && validCoRequisites(index);
 	};
@@ -72,7 +65,7 @@ export default function Curriculum(props: ICurriculum) {
 						if (subject.semester === i + 1)
 							return (
 								<SubjectCard
-									key={`${subject.name}-${j}`}
+									key={`${subject.id}-${j}`}
 									subject={subject}
 									state={subjectsState[j]}
 									canChange={canChange(j)}
