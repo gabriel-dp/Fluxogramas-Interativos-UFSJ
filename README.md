@@ -2,12 +2,12 @@
 
 <h1>
     <p align=center>
-        <img width=300 src='./docs/logo.png'/>
+        <img height=150 src='./docs/logo.png'/>
     </p>
 </h1>
 
 <p align=center>
-    <a href='https://curriculum-ufsj.vercel.app/'>curriculum-ufsj.vercel.app</a>
+    <a href='https://fluxogramas-interativos-ufsj.vercel.app/'>fluxogramas-interativos-ufsj.vercel.app</a>
     <br/><br/>
     <img height=30 src='https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white'>
     &nbsp;

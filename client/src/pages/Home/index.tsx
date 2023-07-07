@@ -7,7 +7,7 @@ import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
 import ThemeSwitch from "@/components/ThemeSwitch";
-import logo from "@/assets/ufsj-curriculum-logo.png";
+import logo from "@/assets/logo.png";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
 
