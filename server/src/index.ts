@@ -2,8 +2,8 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 
-import connectDB from "./database/connectDB";
-import coursesRouter from "./routers/course.router";
+import connectDB from "@/database/connectDB";
+import coursesRouter from "@/routers/course.router";
 
 // Enable enviroment variables
 dotenv.config();
