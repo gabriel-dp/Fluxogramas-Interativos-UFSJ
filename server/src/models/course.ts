@@ -2,7 +2,26 @@ import mongoose from "mongoose";
 
 import { rNumber, rString } from "./modelTypes";
 
-const couseSchema = new mongoose.Schema({
+interface Subject {
+	id: string;
+	name: string;
+	hours: number;
+	semester: number;
+	preRequisites: string[];
+	coRequisites: string[];
+}
+
+interface Course {
+	code: string;
+	name: string;
+	shift: string;
+	campus: string;
+	type: string;
+	semesters: number;
+	curriculum: Subject[];
+}
+
+const couseSchema = new mongoose.Schema<Course>({
 	code: rString,
 	name: rString,
 	shift: rString,
