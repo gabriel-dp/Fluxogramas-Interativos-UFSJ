@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
 import { timingSafeEqual } from "crypto";
 
-import Course from "@/models/course";
+import Course from "../models/course";
 
 function requireAdmin(req: Request, res: Response, next: NextFunction) {
 	const adminApiKey = process.env.ADMIN_TOKEN;
