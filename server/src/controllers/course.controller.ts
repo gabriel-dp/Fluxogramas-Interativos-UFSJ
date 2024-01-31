@@ -1,18 +1,23 @@
 import { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
+import { timingSafeEqual } from "crypto";
 
 import Course from "../models/course";
 
 function requireAdmin(req: Request, res: Response, next: NextFunction) {
 	const adminApiKey = process.env.ADMIN_TOKEN;
-	const authHeader = req.headers.authorization;
+	const authHeaderArray = req.headers.authorization?.split(" ");
 
-	if (!authHeader || !authHeader.startsWith("Bearer ")) {
+	if (!adminApiKey) {
+		return res.sendStatus(500);
+	}
+
+	if (!authHeaderArray || authHeaderArray.length != 2 || authHeaderArray[0] != "Bearer") {
 		return res.sendStatus(401);
 	}
 
-	const token = authHeader.split(" ")[1];
-	if (token !== adminApiKey) {
+	const token = authHeaderArray[1];
+	if (timingSafeEqual(Buffer.from(token), Buffer.from(adminApiKey))) {
 		return res.sendStatus(403);
 	}
 
