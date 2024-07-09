@@ -56,7 +56,6 @@ export const CurriculumContainer = styled.div<CurriculumProps>`
 	max-width: 100%;
 	flex-grow: 1;
 	padding: 1rem 0;
-	border: 1px solid blue;
 
 	display: flex;
 `;

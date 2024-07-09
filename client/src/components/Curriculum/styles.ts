@@ -5,7 +5,6 @@ export const CurriculumList = styled.div`
 	flex-direction: row;
 	gap: 1rem;
 	overflow: auto;
-	border: 1px solid red;
 	padding: 1rem;
 	overflow-x: auto;
 
