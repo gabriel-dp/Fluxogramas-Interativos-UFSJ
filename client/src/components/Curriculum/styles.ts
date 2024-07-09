@@ -47,5 +47,6 @@ export const Semester = styled.div`
 	.semester-title {
 		font-weight: bold;
 		user-select: none;
+		opacity: 0.66;
 	}
 `;
