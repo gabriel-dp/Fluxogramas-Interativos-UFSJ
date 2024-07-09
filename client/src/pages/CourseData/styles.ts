@@ -55,39 +55,8 @@ interface CurriculumProps {
 export const CurriculumContainer = styled.div<CurriculumProps>`
 	max-width: 100%;
 	flex-grow: 1;
-	margin: auto;
-	padding: 2rem 1rem 1rem 1rem;
-	margin-top: 1rem;
+	padding: 1rem 0;
+	border: 1px solid blue;
 
 	display: flex;
-	flex-direction: ${(props) => (props.hasData ? "column-reverse" : "column")};
-
-	/* Scrollbar control */
-	overflow-x: ${(props) => (props.hasData ? "scroll" : "normal")};
-	transform: rotateX(${(props) => (props.hasData ? "180deg" : "0deg")});
-	.curriculum {
-		transform: rotateX(180deg);
-	}
-
-	/* For Webkit based browsers */
-	::-webkit-scrollbar {
-		height: 0.8rem;
-	}
-	::-webkit-scrollbar-track {
-		background-color: ${(props) => props.theme.white};
-		border-radius: 0.8rem;
-	}
-	::-webkit-scrollbar-thumb {
-		background-color: ${(props) => props.theme.primary};
-		border-radius: 0.8rem;
-		border: 1px solid ${(props) => props.theme.white};
-	}
-	::-webkit-scrollbar-button {
-		width: 0.5rem;
-		display: block;
-	}
-
-	/* For Firefox */
-	scrollbar-width: 0.5rem;
-	scrollbar-color: ${(props) => props.theme.primary} ${(props) => props.theme.white};
 `;

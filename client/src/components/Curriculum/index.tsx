@@ -60,7 +60,7 @@ export default function Curriculum(props: ICurriculum) {
 		<CurriculumList className="curriculum">
 			{Array.from({ length: props.course?.semesters ?? 0 }).map((_, i) => (
 				<Semester key={i}>
-					<p>Semestre {i + 1}</p>
+					<p className="semester-title">Semestre {i + 1}</p>
 					{props.course?.curriculum.map((subject, j) => {
 						if (subject.semester === i + 1)
 							return (
