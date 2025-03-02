@@ -2,8 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 
-import connectDB from "./database/connectDB";
-import coursesRouter from "./routers/course.router";
+import userRouter from "./routers/user.router";
 
 // Enable enviroment variables
 dotenv.config();
@@ -14,11 +13,9 @@ app.use(express.json());
 app.use(cors());
 
 // Routes
-app.use("/courses", coursesRouter);
+app.use("/user", userRouter);
 
 // Starts server after connect to database
-connectDB().then(() => {
-	app.listen(process.env.PORT, () => {
-		console.log(`Listening on port ${process.env.PORT}`);
-	});
+app.listen(process.env.PORT, () => {
+	console.log(`Listening on port ${process.env.PORT}`);
 });
