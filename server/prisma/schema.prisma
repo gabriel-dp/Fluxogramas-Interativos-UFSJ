@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  login    String  @unique
+  password String
+  isAdmin  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  UserCoursePermission UserCoursePermission[]
+}
+
+model UserCoursePermission {
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+}
+
+model Campus {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  Course Course[]
+}
+
+model Shift {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+}
+
+model Type {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+}
+
+model Course {
+  id   Int    @id @default(autoincrement())
+  code String @unique
+  name String
+
+  campusId Int
+  campus   Campus @relation(fields: [campusId], references: [id])
+  shiftId  Int
+  shift    Shift  @relation(fields: [shiftId], references: [id])
+  typeId   Int
+  type     Type   @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Component            Component[]
+  UserCoursePermission UserCoursePermission[]
+}
+
+model Component {
+  id       Int    @id @default(autoincrement())
+  code     String
+  name     String
+  hours    Int
+  semester Int?
+
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  requiredBy ComponentRequisite[] @relation("Component")
+  requisites ComponentRequisite[] @relation("Requisite")
+
+  @@unique([courseId, code])
+}
+
+model ComponentRequisite {
+  componentId Int
+  component   Component @relation("Component", fields: [componentId], references: [id])
+  requisiteId Int
+  requisite   Component @relation("Requisite", fields: [requisiteId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([componentId, requisiteId])
+}
