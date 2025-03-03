@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 
+import { getId } from "@/utils/request.utils";
+
 export function validateData(schema: AnyZodObject) {
 	return (req: Request, res: Response, next: NextFunction) => {
 		try {
@@ -17,8 +19,7 @@ export function validateData(schema: AnyZodObject) {
 }
 
 export function validateId(req: Request, res: Response, next: NextFunction) {
-	const id = req.params.id;
-	if (id == undefined) return res.sendStatus(400);
-	if (isNaN(Number(id))) return res.sendStatus(400);
+	const id = getId(req);
+	if (!id) return res.sendStatus(400);
 	next();
 }

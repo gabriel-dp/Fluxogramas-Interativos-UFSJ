@@ -3,7 +3,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 import prisma from "@/lib/prisma";
-import { UserTokenData } from "@/middlewares/security.middleware";
+import { UserTokenData } from "@/utils/auth.utils";
 import { userSignInSchema } from "@/models/user.model";
 
 import UserController from "./user.controller";
