@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { hash } from "bcryptjs";
 
 import prisma from "@/lib/prisma";
-import { AuthRequest, requireAdmin } from "@/middlewares/security.middleware";
+import { getId } from "@/utils/request.utils";
+import { AuthRequest, isAdministrator } from "@/utils/auth.utils";
 
 async function readMany(_: Request, res: Response) {
 	try {
@@ -15,8 +16,10 @@ async function readMany(_: Request, res: Response) {
 	}
 }
 
-async function readOne(req: Request, res: Response) {
-	const id = parseInt(req.params.id, 10);
+async function readOne(req: AuthRequest, res: Response) {
+	const id = getId(req);
+
+	if (req.user?.id != id && !isAdministrator(req)) return res.sendStatus(403); // Only admins can manage other users
 
 	try {
 		const user = await prisma.user.findUnique({
@@ -35,7 +38,7 @@ async function readOne(req: Request, res: Response) {
 async function createOne(req: AuthRequest, res: Response) {
 	const { login, password, ...data } = req.body;
 
-	if (data.isAdmin) requireAdmin(req, res, () => undefined); // Only admins can create other admins
+	if (data.isAdmin && !isAdministrator(req)) return res.sendStatus(403); // Only admins can create other admins
 
 	try {
 		const existingUser = await prisma.user.findUnique({ where: { login } });
@@ -57,11 +60,11 @@ async function createOne(req: AuthRequest, res: Response) {
 }
 
 async function updateOne(req: AuthRequest, res: Response) {
-	const id = parseInt(req.params.id, 10);
+	const id = getId(req);
 	const { login, password, ...data } = req.body;
 
-	if (req.user?.id != id) requireAdmin(req, res, () => undefined); // Only admins can modify data from other users
-	if (data.isAdmin) requireAdmin(req, res, () => undefined); // Only admins can create other admins
+	if (req.user?.id != id && !isAdministrator(req)) return res.sendStatus(403); // Only admins can manage other users
+	if (data.isAdmin && isAdministrator(req)) return res.sendStatus(403); // Only admins can create other admins
 
 	try {
 		const existingUser = await prisma.user.findFirst({
@@ -89,7 +92,7 @@ async function updateOne(req: AuthRequest, res: Response) {
 }
 
 async function deleteOne(req: Request, res: Response) {
-	const id = parseInt(req.params.id, 10);
+	const id = getId(req);
 
 	try {
 		await prisma.user.delete({ where: { id } });
