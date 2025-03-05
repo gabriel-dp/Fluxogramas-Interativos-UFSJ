@@ -5,8 +5,9 @@ import { AuthRequest, getDataFromToken, getToken, isAdministrator, isAuthenticat
 export const getAuth = async (req: AuthRequest, res: Response, next: NextFunction) => {
 	try {
 		const token = getToken(req);
-		if (!token) return res.sendStatus(401);
-		req.user = getDataFromToken(token);
+		if (token) {
+			req.user = getDataFromToken(token);
+		}
 	} catch (error) {
 		return res.sendStatus(500);
 	}
@@ -16,7 +17,7 @@ export const getAuth = async (req: AuthRequest, res: Response, next: NextFunctio
 
 export const requireAuth = async (req: AuthRequest, res: Response, next: NextFunction) =>
 	await getAuth(req, res, async () => {
-		if (!isAuthenticated(req)) return res.sendStatus(403);
+		if (!isAuthenticated(req)) return res.sendStatus(401);
 		next();
 	});
 

@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 
 import userRouter from "./routers/user.router";
+import authRouter from "./routers/auth.router";
 
 // Enable enviroment variables
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(cors());
 
 // Routes
 app.use("/user", userRouter);
+app.use("/auth", authRouter);
 
 // Starts server after connect to database
 app.listen(process.env.PORT, () => {

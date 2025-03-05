@@ -10,7 +10,7 @@ export function validateData(schema: AnyZodObject) {
 			next();
 		} catch (error) {
 			if (error instanceof ZodError) {
-				res.sendStatus(404);
+				res.sendStatus(400);
 			} else {
 				res.sendStatus(500);
 			}
