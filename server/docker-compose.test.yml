@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  server-test:
+    build: .
+    ports:
+      - "3001:3001"
+    depends_on:
+      - db-test
+    volumes:
+      - .:/app
+    command: bash -c "
+      npm run test:prisma
+      && npm run test
+      "
+
+  db-test:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test-fluxogramas-interativos
+    ports:
+      - "2344:5432"
+    volumes:
+      - pgdata-test:/var/lib/postgresql/data
+
+volumes:
+  pgdata-test:
