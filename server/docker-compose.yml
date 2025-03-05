@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  server:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    command: npm start
+
+  db:
+    image: postgres:17
+    restart: always
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: fluxogramas-interativos
+    ports:
+      - "2345:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

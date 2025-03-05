@@ -1,9 +1,9 @@
-import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 
-import userRouter from "./routers/user.router";
-import authRouter from "./routers/auth.router";
+import dotenv from "@/lib/dotenv";
+import userRouter from "@/routers/user.router";
+import authRouter from "@/routers/auth.router";
 
 // Enable enviroment variables
 dotenv.config();
