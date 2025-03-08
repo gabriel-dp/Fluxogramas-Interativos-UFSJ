@@ -19,6 +19,8 @@ services:
   db-test:
     image: postgres:17
     restart: always
+    logging:
+      driver: none
     environment:
       POSTGRES_USER: test
       POSTGRES_PASSWORD: test
