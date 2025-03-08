@@ -7,11 +7,11 @@
 		"prepare": "npx ts-patch install -s",
 		"test": "jest",
 		"test:auto": "npm run test:auto:start ; npm run test:auto:finish",
-		"test:auto:start": "docker-compose --env-file .env.test -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test",
-		"test:auto:finish": "docker-compose --env-file .env.test -f docker-compose.test.yml down",
+		"test:auto:start": "docker-compose -p test --env-file .env.test -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test",
+		"test:auto:finish": "docker-compose -p test --env-file .env.test -f docker-compose.test.yml down",
 		"test:prisma": "npm run test:prisma:generate && npm run test:prisma:push",
 		"test:prisma:generate": "dotenv -e .env.test -- npx prisma generate --no-hints",
-		"test:prisma:push": "dotenv -e .env.test -- npx prisma db push"
+		"test:prisma:push": "dotenv -e .env.test -- npx prisma db push --skip-generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.4.1",

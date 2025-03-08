@@ -14,11 +14,12 @@ services:
   db:
     image: postgres:17
     restart: always
+    logging:
+      driver: none
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: fluxogramas-interativos
-      POSTGRES_LOGGING: 0
     ports:
       - "2345:5432"
     volumes:
