@@ -1,11 +1,12 @@
-import { api, expectFail, expectSuccesss } from "./test.utils";
+import { api, expectFail, expectSuccess, signInToken } from "./utils.tests";
+import { ADMIN_CREDENTIALS } from "./consts.tests";
 
 describe("POST /auth/register", () => {
-	describe("Without admin privileges", () => {
+	describe("Without auth", () => {
 		it("should register an user providing login and password", async () => {
-			await expectSuccesss(201, () =>
+			await expectSuccess(201, () =>
 				api.post("/auth/register", {
-					login: "loginlogin",
+					login: "login1login",
 					password: "12345678",
 				})
 			);
@@ -14,7 +15,16 @@ describe("POST /auth/register", () => {
 		it("should not register user with repeated login", async () => {
 			await expectFail(400, () =>
 				api.post("/auth/register", {
-					login: "loginlogin",
+					login: "login1login",
+					password: "12345678",
+				})
+			);
+		});
+
+		it("should not register user with login with less than 4 chars", async () => {
+			await expectFail(400, () =>
+				api.post("/auth/register", {
+					login: "abc",
 					password: "12345678",
 				})
 			);
@@ -30,7 +40,7 @@ describe("POST /auth/register", () => {
 		});
 
 		it("should not register admin user without admin privileges", async () => {
-			await expectFail(403, () =>
+			await expectFail(401, () =>
 				api.post("/auth/register", {
 					login: "login3login",
 					password: "12345678",
@@ -57,24 +67,10 @@ describe("POST /auth/register", () => {
 	});
 
 	describe("With admin privileges", () => {
-		let token: string | undefined = undefined;
-
-		it("should login as admin", async () => {
-			await expectSuccesss(200, async () => {
-				const response = await api.post("auth/sign-in", {
-					login: "administrator",
-					password: "@admin123",
-				});
-
-				token = response.data.token;
-				if (!token) fail("should retrieve token");
-
-				return response;
-			});
-		});
-
 		it("should register an admin user", async () => {
-			await expectSuccesss(201, () =>
+			const token = await signInToken(ADMIN_CREDENTIALS);
+
+			await expectSuccess(201, () =>
 				api.post(
 					"auth/register",
 					{

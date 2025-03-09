@@ -4,4 +4,5 @@ module.exports = {
 	transform: {
 		"^.+.ts$": ["ts-jest", {}],
 	},
+	globalSetup: "./src/__test__/setup.tests.ts",
 };

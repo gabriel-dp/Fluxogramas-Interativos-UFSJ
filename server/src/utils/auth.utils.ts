@@ -1,6 +1,8 @@
 import { Request } from "express";
 import { verify } from "jsonwebtoken";
 
+import { registerFirstAdminIfNotExists } from "@/controllers/auth.controller";
+
 const secret = process.env.JWT_SECRET;
 
 export interface UserTokenData {
@@ -39,4 +41,8 @@ export function isAuthenticated(req: AuthRequest) {
 
 export function isAdministrator(req: AuthRequest) {
 	return req.user?.isAdmin;
+}
+
+export async function authConfig() {
+	await registerFirstAdminIfNotExists();
 }
