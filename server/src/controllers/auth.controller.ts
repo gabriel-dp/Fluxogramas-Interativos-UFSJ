@@ -29,18 +29,19 @@ async function signIn(req: Request, res: Response) {
 
 		const data: UserTokenData = { id: user.id, isAdmin: user.isAdmin };
 		const token = sign(data, secret, { expiresIn: EXPIRATION_TIME });
-		res.json({ token });
+
+		res.json({ ...user, password: undefined, token });
 	} catch (error) {
 		return res.sendStatus(500);
 	}
 }
 
-async function registerFirstAdminIfNotExists() {
+export async function registerFirstAdminIfNotExists() {
 	const administratorExists = await prisma.user.findFirst({ where: { isAdmin: true } });
 	if (administratorExists) return;
 
 	const ADMIN = {
-		login: "administrator",
+		login: "admin",
 		password: "@admin123",
 	};
 
@@ -52,9 +53,9 @@ async function registerFirstAdminIfNotExists() {
 			isAdmin: true,
 		},
 	});
-}
 
-registerFirstAdminIfNotExists();
+	console.log(`Administrator created,`, ADMIN);
+}
 
 const AuthController = {
 	register,

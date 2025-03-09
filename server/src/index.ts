@@ -9,6 +9,7 @@ import userRouter from "@/routers/user.router";
 import authRouter from "@/routers/auth.router";
 import defaultRouter from "@/routers/default.router";
 import { requestLog } from "@/middlewares/logs.middleware";
+import { authConfig } from "@/utils/auth.utils";
 
 // Config express app
 const app = express();
@@ -24,8 +25,10 @@ app.use("/user", userRouter);
 app.use("/auth", authRouter);
 
 // Starts server after connect to database
-app.listen(process.env.PORT, () => {
-	console.log(`Listening on port ${process.env.PORT}...`, "\n");
+authConfig().then(() => {
+	app.listen(process.env.PORT, () => {
+		console.log(`Listening on port ${process.env.PORT}...`, "\n");
+	});
 });
 
 export default app;
