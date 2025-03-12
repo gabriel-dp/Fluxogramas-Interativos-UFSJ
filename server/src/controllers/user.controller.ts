@@ -50,7 +50,7 @@ async function createOne(req: AuthRequest, res: Response) {
 
 	try {
 		const existingUser = await prisma.user.findUnique({ where: { login } });
-		if (existingUser) return res.sendStatus(400);
+		if (existingUser) return res.sendStatus(409);
 
 		const passwordHash = await hash(password, 10);
 		const user = await prisma.user.create({
@@ -83,14 +83,17 @@ async function updateOne(req: AuthRequest, res: Response) {
 	}
 
 	try {
-		if (login) {
-			const existingUser = await prisma.user.findFirst({
-				where: {
-					login,
-					NOT: { id },
-				},
+		const existingUser = await prisma.user.findFirst({
+			where: { id },
+		});
+		console.log("<><><>", existingUser);
+		if (!existingUser) return res.sendStatus(404);
+
+		if (login && login != existingUser.login) {
+			const existingLogin = await prisma.user.findFirst({
+				where: { login, id: { not: id } },
 			});
-			if (existingUser) return res.sendStatus(400);
+			if (existingLogin) return res.sendStatus(409);
 		}
 
 		const passwordHash = password ? await hash(password, 10) : undefined;
@@ -102,6 +105,7 @@ async function updateOne(req: AuthRequest, res: Response) {
 			},
 			where: { id },
 		});
+		console.log("<><><>", user);
 
 		return res.status(200).json({ ...user, password: undefined });
 	} catch (error) {
@@ -113,10 +117,10 @@ async function deleteOne(req: Request, res: Response) {
 	const id = getId(req);
 
 	try {
-		await prisma.user.delete({ where: { id } });
-
 		const existingUser = await prisma.user.findUnique({ where: { id } });
 		if (!existingUser) return res.sendStatus(404);
+
+		await prisma.user.delete({ where: { id } });
 
 		return res.sendStatus(200);
 	} catch (error) {
