@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 
 import prisma from "@/lib/prisma";
@@ -29,10 +29,32 @@ async function signIn(req: Request, res: Response) {
 
 		const data: UserTokenData = { id: user.id, isAdmin: user.isAdmin };
 		const token = sign(data, secret, { expiresIn: EXPIRATION_TIME });
-		res.json({ token });
+
+		res.json({ ...user, password: undefined, token });
 	} catch (error) {
 		return res.sendStatus(500);
 	}
+}
+
+export async function registerFirstAdminIfNotExists() {
+	const administratorExists = await prisma.user.findFirst({ where: { isAdmin: true } });
+	if (administratorExists) return;
+
+	const ADMIN = {
+		login: "admin",
+		password: "@admin123",
+	};
+
+	const passwordHash = await hash(ADMIN.password, 10);
+	await prisma.user.create({
+		data: {
+			login: ADMIN.login,
+			password: passwordHash,
+			isAdmin: true,
+		},
+	});
+
+	console.log(`Administrator created,`, ADMIN);
 }
 
 const AuthController = {

@@ -2,9 +2,16 @@
 	"name": "server-ufsj-curriculum",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "nodemon src/index.ts",
+		"start": "nodemon src/index.ts --quiet",
 		"build": "npx tsc",
-		"prepare": "npx ts-patch install -s"
+		"prepare": "npx ts-patch install -s",
+		"test": "jest --runInBand",
+		"test:auto": "npm run test:auto:start ; npm run test:auto:finish",
+		"test:auto:start": "docker-compose -p test --env-file .env.test -f docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test",
+		"test:auto:finish": "docker-compose -p test --env-file .env.test -f docker-compose.test.yml down",
+		"test:prisma": "npm run test:prisma:generate && npm run test:prisma:push",
+		"test:prisma:generate": "dotenv -e .env.test -- npx prisma generate --no-hints",
+		"test:prisma:push": "dotenv -e .env.test -- npx prisma db push --skip-generate"
 	},
 	"dependencies": {
 		"@prisma/client": "^6.4.1",
@@ -14,18 +21,25 @@
 		"express": "^4.18.2",
 		"jsonwebtoken": "^9.0.2",
 		"mongoose": "^7.0.3",
+		"uninstall": "^0.0.0",
 		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@types/cors": "^2.8.13",
 		"@types/express": "^4.17.17",
+		"@types/jest": "^29.5.14",
 		"@types/jsonwebtoken": "^9.0.9",
 		"@types/node": "^18.15.11",
-		"nodemon": "^2.0.22",
+		"axios": "^1.8.1",
+		"dotenv-cli": "^8.0.0",
+		"jest": "^29.7.0",
+		"nodemon": "^3.1.9",
 		"prisma": "^6.4.1",
+		"ts-jest": "^29.2.6",
 		"ts-node": "^10.9.1",
 		"ts-patch": "^2.1.0",
 		"tsconfig-paths": "^4.2.0",
-		"typescript": "^5.0.3"
+		"typescript": "^5.0.3",
+		"wait-on": "^8.0.2"
 	}
 }
