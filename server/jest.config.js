@@ -5,4 +5,5 @@ module.exports = {
 		"^.+.ts$": ["ts-jest", {}],
 	},
 	globalSetup: "./src/__test__/setup.tests.ts",
+	verbose: true,
 };
