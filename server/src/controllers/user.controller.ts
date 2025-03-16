@@ -86,7 +86,6 @@ async function updateOne(req: AuthRequest, res: Response) {
 		const existingUser = await prisma.user.findFirst({
 			where: { id },
 		});
-		console.log("<><><>", existingUser);
 		if (!existingUser) return res.sendStatus(404);
 
 		if (login && login != existingUser.login) {
@@ -105,7 +104,6 @@ async function updateOne(req: AuthRequest, res: Response) {
 			},
 			where: { id },
 		});
-		console.log("<><><>", user);
 
 		return res.status(200).json({ ...user, password: undefined });
 	} catch (error) {
