@@ -1,0 +1,141 @@
+import { authHeaders, signIn } from "./auth.tests";
+import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS } from "./consts.tests";
+import { api, expectFail, expectSuccess } from "./utils.tests";
+
+describe("GET /course", () => {
+	let courses: object[];
+
+	it("should retrieve data from all avaliable courses", async () => {
+		const response = await expectSuccess(200, () => api.get("/course"));
+		courses = response?.data;
+	});
+
+	it("should not retrieve data from components", async () => {
+		courses.forEach((course) => {
+			expect(course).not.toHaveProperty("components");
+		});
+	});
+
+	// Validate fields
+});
+
+describe("GET /course/:id", () => {
+	let course: object;
+
+	it("should retrieve data from a single course", async () => {
+		const response = await expectSuccess(200, () => api.get(`/course/${1}`));
+		course = response?.data;
+	});
+
+	it("should retrieve data from components", async () => {
+		expect(course).toHaveProperty("components");
+	});
+
+	it("should not retrieve data from an invalid couse (12345678)", async () => {
+		await expectFail(404, () => api.get(`/course/${12345678}`));
+	});
+
+	// Validate fields
+});
+
+describe("POST /course", () => {
+	describe("No auth", () => {
+		it("should not create courses", async () => {
+			await expectFail(401, () => api.post("/course", {}));
+		});
+	});
+
+	describe("Normal user", () => {
+		it("should not create courses", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectFail(403, () => api.post("/course", {}, authHeaders(token)));
+		});
+	});
+
+	describe("Admin", () => {
+		it("should create a course providing its data", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectSuccess(201, () => api.post("/course", {}, authHeaders(token)));
+		});
+
+		it("should not create a course with repeated code", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(409, () => api.post("/course", {}, authHeaders(token)));
+		});
+
+		// Validate required fields
+	});
+});
+
+describe("PATCH /course/:id", () => {
+	describe("No auth", () => {
+		it("should not update courses", async () => {
+			await expectFail(401, () => api.patch(`/course/${1}`, {}));
+		});
+	});
+
+	describe("Normal user", () => {
+		it("should update course with permission", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectSuccess(200, () => api.patch(`/course/${1}`, {}, authHeaders(token)));
+		});
+
+		it("should not update course without permission", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectFail(403, () => api.patch(`/course/${2}`, {}, authHeaders(token)));
+		});
+
+		it("should not update code of courses", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectFail(403, () => api.patch(`/course/${1}`, {}, authHeaders(token)));
+		});
+
+		// Validate required fields
+	});
+
+	describe("Admin", () => {
+		it("should update any field from any course", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectSuccess(200, () => api.patch(`/course/${1}`, {}, authHeaders(token)));
+		});
+
+		it("should update an invalid couse (12345678)", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(404, () => api.patch(`/course/${12345678}`, {}, authHeaders(token)));
+		});
+
+		// Validate required fields
+	});
+});
+
+describe("DELETE /course/:id", () => {
+	describe("No auth", () => {
+		it("should not delete courses", async () => {
+			await expectFail(401, () => api.delete(`/course/${1}`));
+		});
+	});
+
+	describe("Normal user", () => {
+		it("should not delete courses", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectFail(403, () => api.delete(`/course/${1}`, authHeaders(token)));
+		});
+	});
+
+	describe("Admin", () => {
+		it("should delete existing course", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectSuccess(200, () => api.delete(`/course/${1}`, authHeaders(token)));
+		});
+
+		it("should not delete course more than once", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(404, () => api.delete(`/course/${1}`, authHeaders(token)));
+		});
+
+		it("should not delete an invalid course (12345678)", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(404, () => api.delete(`/course/${12345678}`, authHeaders(token)));
+		});
+	});
+});
