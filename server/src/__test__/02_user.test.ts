@@ -76,6 +76,40 @@ describe("GET /user/:id", () => {
 			userData = response?.data;
 			expect(userData).not.toHaveProperty("password");
 		});
+
+		it("should not retrieve an invalid user (12345678)", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(404, () => api.get(`/user/${12345678}`, authHeaders(token)));
+		});
+	});
+});
+
+describe("POST /user", () => {
+	describe("No auth", () => {
+		it("should not create users", async () => {
+			await expectFail(401, () => api.post("/user", {}));
+		});
+	});
+
+	describe("Normal user", () => {
+		it("should not create users", async () => {
+			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			await expectFail(403, () => api.post("/user", {}, authHeaders(token)));
+		});
+	});
+
+	describe("Admin", () => {
+		const login = generateNewUserData();
+
+		it("should create user", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectSuccess(201, () => api.post("/user", login, authHeaders(token)));
+		});
+
+		it("should not create users with repeated login", async () => {
+			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			await expectFail(409, () => api.post("/user", login, authHeaders(token)));
+		});
 	});
 });
 
@@ -210,7 +244,7 @@ describe("DELETE /user/:id", () => {
 
 			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
 			idToDelete = (await signIn(loginToDelete)).data.id;
-			await expectSuccess(200, () => api.delete(`/user/${idToDelete}`, authHeaders(tokenAdmin)));
+			await expectSuccess(204, () => api.delete(`/user/${idToDelete}`, authHeaders(tokenAdmin)));
 		});
 
 		it("should not delete a user more than once", async () => {

@@ -1,13 +1,5 @@
 import { expectFail, expectSuccess } from "./utils.tests";
-import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS } from "./consts.tests";
-import {
-	generateNewUserData,
-	generateString,
-	generateUniqueLogin,
-	generateValidPassword,
-	register,
-	signIn,
-} from "./auth.tests";
+import { generateString, generateUniqueLogin, generateValidPassword, register, signIn } from "./auth.tests";
 
 describe("POST /auth/register", () => {
 	const repeatLogin = generateUniqueLogin().toLowerCase();
@@ -114,37 +106,15 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register admin user", async () => {
-		await expectFail(401, () =>
+		const response = await expectSuccess(201, () =>
 			register({
 				login: generateUniqueLogin(),
 				password: generateValidPassword(),
 				isAdmin: true,
 			})
 		);
-	});
-
-	describe("Normal user", () => {
-		it("should be able to register a user", async () => {
-			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
-			await expectSuccess(201, () => register(generateNewUserData(), token));
-		});
-	});
-
-	describe("Admin", () => {
-		it("should register an admin user", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
-			const response = await expectSuccess(201, () =>
-				register(
-					{
-						...generateNewUserData(),
-						isAdmin: true,
-					},
-					token
-				)
-			);
-			expect(response?.data).toHaveProperty("id");
-			expect(response?.data.isAdmin).toBe(true);
-		});
+		expect(response?.data).toHaveProperty("isAdmin");
+		expect(response?.data.isAdmin).toBe(false);
 	});
 });
 
@@ -162,13 +132,13 @@ describe("POST /auth/sign-in", () => {
 	it("should not login user using wrong password", async () => {
 		const credentials = {
 			login: generateUniqueLogin(),
-			password: generateString(10, "0"),
+			password: generateString(10, "1"),
 		};
 		await register(credentials);
 		await expectFail(400, () =>
 			signIn({
 				login: credentials.login,
-				password: generateString(10, "1"),
+				password: generateString(10, "2"),
 			})
 		);
 	});

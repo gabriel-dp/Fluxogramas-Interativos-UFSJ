@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 
-import { getId } from "@/utils/request.utils";
+import { getPossibleId } from "@/utils/request.utils";
 
 export function validateData(schema: AnyZodObject) {
 	return (req: Request, res: Response, next: NextFunction) => {
@@ -19,7 +19,7 @@ export function validateData(schema: AnyZodObject) {
 }
 
 export function validateId(req: Request, res: Response, next: NextFunction) {
-	const id = getId(req);
+	const id = getPossibleId(req);
 	if (!id) return res.sendStatus(400);
 	next();
 }

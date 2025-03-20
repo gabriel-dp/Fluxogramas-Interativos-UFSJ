@@ -17,8 +17,8 @@ export function authHeaders(token?: string): AxiosRequestConfig<Credentials> {
 	return headers;
 }
 
-export async function register(credentials: Credentials, token?: string) {
-	const response = await api.post("/auth/register", credentials, token ? authHeaders(token) : undefined);
+export async function register(credentials: Credentials) {
+	const response = await api.post("/auth/register", credentials);
 	return response;
 }
 
