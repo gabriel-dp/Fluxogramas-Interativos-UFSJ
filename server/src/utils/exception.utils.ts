@@ -1,5 +1,6 @@
 import { Response } from "express";
 
+import { log } from "./log.utils";
 import { AuthRequest, isAdministrator, isAuthenticated } from "./auth.utils";
 
 export class RequestException extends Error {
@@ -14,6 +15,7 @@ export class RequestException extends Error {
 
 export function handleError(res: Response, error: unknown) {
 	if (error instanceof RequestException) {
+		log.debug(`${error.name} (${error.code}) - ${error.message}`);
 		return res.status(error.code).json(error.message);
 	}
 	return res.status(500).json(error);

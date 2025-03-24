@@ -1,3 +1,4 @@
+import { log } from "@/utils/log.utils";
 import UserService from "@/modules/user/user.service";
 
 const INITIAL_ADMIN = {
@@ -6,9 +7,9 @@ const INITIAL_ADMIN = {
 	isAdmin: true,
 };
 
-export default async function authConfig() {
+export default async function databaseConfig() {
 	const admin = await UserService.registerFirstAdminIfNotExists({ ...INITIAL_ADMIN });
 	if (admin) {
-		console.log(`Administrator created (${admin.id}),`, INITIAL_ADMIN);
+		log.info(`Administrator created (${admin.id}), ${JSON.stringify(INITIAL_ADMIN)}`);
 	}
 }

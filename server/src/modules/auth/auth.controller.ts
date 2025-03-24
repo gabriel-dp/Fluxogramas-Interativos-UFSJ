@@ -21,7 +21,6 @@ async function signIn(req: Request, res: Response) {
 	const data: SignInSchema = req.body;
 
 	try {
-		console.log(data);
 		const user = await AuthService.signIn(data);
 		const token = generateToken({ id: user.id, isAdmin: user.isAdmin });
 		return res.status(200).json({ ...user, password: undefined, token });
