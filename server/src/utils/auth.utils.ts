@@ -2,7 +2,7 @@ import { Request } from "express";
 import { compare, hash } from "bcryptjs";
 import { sign, verify } from "jsonwebtoken";
 
-const secret = process.env.JWT_SECRET;
+const secret = process.env.SERVER_JWT_SECRET;
 const EXPIRATION_TIME = "1h";
 
 export interface UserTokenData {

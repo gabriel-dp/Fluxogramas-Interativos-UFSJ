@@ -16,7 +16,11 @@ function config() {
 		throw new Error(`Unknown environment: ${env}`);
 	}
 
-	dotenv.config({ path: `.env.${selected}` });
+	if (selected != ENVIRONMENTS.production) {
+		dotenv.config({ path: `.env.${selected}` });
+	} else {
+		dotenv.config();
+	}
 }
 
 // Overrides dotenv.config()

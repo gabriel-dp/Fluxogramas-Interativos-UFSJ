@@ -11,8 +11,8 @@ import { log } from "@/utils/log.utils";
 log.info(`Starting server...`);
 const app = express();
 configApp(app).then(() => {
-	app.listen(process.env.PORT, () => {
-		log.info(`Listening on port ${process.env.PORT}...`);
+	app.listen(process.env.SERVER_PORT, () => {
+		log.info(`Listening on port ${process.env.SERVER_PORT}...`);
 	});
 });
 
