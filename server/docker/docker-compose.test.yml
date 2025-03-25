@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  server-test:
+    image: server-test-image
+    container_name: server-test-container
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    env_file:
+      - ../.env.test
+    ports:
+      - "${SERVER_PORT:-3001}:${SERVER_PORT:-3001}"
+    depends_on:
+      - db-test
+    volumes:
+      - ..:/app
+    command: "sh docker/scripts/run-test.sh"
+
+  db-test:
+    image: postgres:17
+    container_name: db-test-container
+    restart: always
+    logging:
+      driver: none
+    env_file:
+      - ../.env.test
+    ports:
+      - "2344:5432"

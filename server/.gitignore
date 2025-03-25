@@ -1,2 +1,6 @@
 node_modules
+
 .env*
+!.env.example
+
+.server_db_setup_done
