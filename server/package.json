@@ -12,8 +12,8 @@
 		"dev:start": "docker-compose -f docker/docker-compose.yml up",
 		"dev:finish": "docker-compose -f docker/docker-compose.yml down",
 		"test": "dotenv -e .env.test -- jest --runInBand",
-		"test:start": "docker-compose -p test -f docker/docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test-container",
-		"test:finish": "docker-compose -p test -f docker/docker-compose.test.yml -v down",
+		"test:start": "docker-compose -p test -f docker/docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test",
+		"test:finish": "docker-compose -p test -f docker/docker-compose.test.yml down",
 		"test:auto": "npm run test:start ; npm run test:finish"
 	},
 	"dependencies": {
