@@ -1,5 +1,6 @@
-import { NotFoundException } from "@/utils/exception.utils";
-import { Service } from "..";
+import { Service } from "@/modules";
+import { ConflictException, NotFoundException } from "@/utils/exception.utils";
+
 import { CreateCourseData, ICourse, UpdateCourseData } from "./course.model";
 import CourseRepository from "./course.repository";
 
@@ -15,11 +16,16 @@ const CourseService: Service<ICourse, CreateCourseData, UpdateCourseData> = {
 	},
 
 	async create(data) {
+		if ((await CourseRepository.getOneByCode(data.code)) != null) throw new ConflictException("Course code");
 		return CourseRepository.create(data);
 	},
 
 	async update(id, data) {
 		await this.getOne(id);
+		if (data.code) {
+			const sameCode = await CourseRepository.getOneByCode(data.code);
+			if (sameCode && sameCode.id != id) throw new ConflictException("Cousre code");
+		}
 		return CourseRepository.update(id, data);
 	},
 

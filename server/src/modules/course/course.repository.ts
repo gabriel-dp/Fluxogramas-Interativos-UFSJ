@@ -1,6 +1,5 @@
-import prisma from "@/lib/prisma";
-
 import { Repository } from "@/modules";
+import prisma from "@/lib/prisma";
 
 import { CreateCourseData, ICourse, ICourseComplete, UpdateCourseData } from "./course.model";
 
@@ -28,7 +27,9 @@ const defaultSelectFields = {
 	},
 };
 
-const CourseRepository: Repository<ICourse | ICourseComplete, CreateCourseData, UpdateCourseData> = {
+const CourseRepository: Repository<ICourse | ICourseComplete, CreateCourseData, UpdateCourseData> & {
+	getOneByCode: (code: string) => Promise<ICourse | null>;
+} = {
 	async getAll() {
 		return prisma.course.findMany({
 			select: defaultSelectFields,
@@ -75,6 +76,13 @@ const CourseRepository: Repository<ICourse | ICourseComplete, CreateCourseData, 
 	async delete(id) {
 		return prisma.course.delete({
 			where: { id },
+			select: defaultSelectFields,
+		});
+	},
+
+	async getOneByCode(code: string) {
+		return prisma.course.findUnique({
+			where: { code },
 			select: defaultSelectFields,
 		});
 	},

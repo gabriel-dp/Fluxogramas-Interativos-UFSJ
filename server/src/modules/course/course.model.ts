@@ -1,16 +1,17 @@
 import { z } from "zod";
 
-import { IType } from "./attributes/type/type.model";
-import { IShift } from "./attributes/shift/shift.model";
-import { ICampus } from "./attributes/campus/campus.model";
+import { IType } from "./type/type.model";
+import { IShift } from "./shift/shift.model";
+import { ICampus } from "./campus/campus.model";
 
 export const courseSchema = z.object({
 	id: z.number().int().positive(),
 	code: z.string().min(3).max(10),
 	name: z.string().min(1).max(128),
-	campusId: z.number(),
-	shiftId: z.number(),
-	typeId: z.number(),
+	hours: z.number().int().positive(),
+	campusId: z.number().int().positive(),
+	shiftId: z.number().int().positive(),
+	typeId: z.number().int().positive(),
 });
 
 export const createCourseSchema = courseSchema.omit({ id: true });

@@ -3,16 +3,16 @@ import { Router } from "express";
 import { validateData, validateId } from "@/middlewares/data.middleware";
 import { requireAdmin, requireAuth } from "@/middlewares/security.middleware";
 
-import CourseController from "./course.controller";
-import { createCourseSchema, updateCourseSchema } from "./course.model";
+import CourseController from "./campus.controller";
+import { createCampusSchema, updateCampusSchema } from "./campus.model";
 
 const router = Router();
 
 router.get("/", CourseController.readMany);
 router.get("/:id", validateId, CourseController.readOne);
 
-router.post("/", requireAdmin, validateData(createCourseSchema), CourseController.createOne);
-router.patch("/:id", requireAuth, validateId, validateData(updateCourseSchema), CourseController.updateOne);
+router.post("/", requireAdmin, validateData(createCampusSchema), CourseController.createOne);
+router.patch("/:id", requireAuth, validateId, validateData(updateCampusSchema), CourseController.updateOne);
 router.delete("/:id", requireAdmin, validateId, CourseController.deleteOne);
 
 export default router;
