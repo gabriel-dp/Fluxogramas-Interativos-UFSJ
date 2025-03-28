@@ -4,28 +4,26 @@ import { Repository } from "@/modules";
 
 import { CreateUserData, IUser, UpdateUserData } from "./user.model";
 
+const defaultSelectFields = {
+	id: true,
+	login: true,
+	isAdmin: true,
+};
+
 const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
-	loginExists: (login: string) => Promise<boolean>;
+	getOneByLogin: (login: string) => Promise<IUser | null>;
 	anyAdminExists: () => Promise<boolean>;
 } = {
 	async getAll() {
 		return prisma.user.findMany({
-			select: {
-				id: true,
-				login: true,
-				isAdmin: true,
-			},
+			select: defaultSelectFields,
 		});
 	},
 
 	async getOne(id: number) {
 		return prisma.user.findUnique({
 			where: { id },
-			select: {
-				id: true,
-				login: true,
-				isAdmin: true,
-			},
+			select: defaultSelectFields,
 		});
 	},
 
@@ -36,11 +34,7 @@ const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
 				password: data.password,
 				isAdmin: data.isAdmin,
 			},
-			select: {
-				id: true,
-				login: true,
-				isAdmin: true,
-			},
+			select: defaultSelectFields,
 		});
 	},
 
@@ -52,27 +46,22 @@ const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
 				password: data.password,
 				isAdmin: data.isAdmin,
 			},
-			select: {
-				id: true,
-				login: true,
-				isAdmin: true,
-			},
+			select: defaultSelectFields,
 		});
 	},
 
 	async delete(id: number) {
 		return prisma.user.delete({
 			where: { id },
-			select: {
-				id: true,
-				login: true,
-				isAdmin: true,
-			},
+			select: defaultSelectFields,
 		});
 	},
 
-	async loginExists(login: string) {
-		return prisma.user.findUnique({ where: { login } }).then((user) => user != null);
+	async getOneByLogin(login: string) {
+		return prisma.user.findUnique({
+			where: { login },
+			select: { ...defaultSelectFields, password: true },
+		});
 	},
 
 	async anyAdminExists() {

@@ -6,7 +6,6 @@ import UserRepository from "./user.repository";
 import { CreateUserData, IUser, UpdateUserData } from "./user.model";
 
 const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
-	ensureUniqueLogin: (login: string) => Promise<void>;
 	registerFirstAdminIfNotExists: (data: CreateUserData) => Promise<IUser | undefined>;
 } = {
 	async getAll() {
@@ -20,15 +19,16 @@ const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
 	},
 
 	async create(data) {
-		await this.ensureUniqueLogin(data.login);
+		if ((await UserRepository.getOneByLogin(data.login)) != null) throw new ConflictException("User login");
 		data.password = await encryptPassword(data.password);
 		return UserRepository.create(data);
 	},
 
 	async update(id, data) {
-		const user = await this.getOne(id);
-		if (data.login && data.login != user.login) {
-			await this.ensureUniqueLogin(data.login);
+		await this.getOne(id);
+		if (data.login) {
+			const sameLogin = await UserRepository.getOneByLogin(data.login);
+			if (sameLogin && sameLogin.id != id) throw new ConflictException("User login");
 		}
 		if (data.password) {
 			data.password = await encryptPassword(data.password);
@@ -39,12 +39,6 @@ const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
 	async delete(id) {
 		await this.getOne(id);
 		return UserRepository.delete(id);
-	},
-
-	async ensureUniqueLogin(login: string) {
-		if (await UserRepository.loginExists(login)) {
-			throw new ConflictException("User login conflict");
-		}
 	},
 
 	async registerFirstAdminIfNotExists(data) {
