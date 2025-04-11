@@ -7,15 +7,10 @@ import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
-import ThemeSwitch from "@/components/ThemeSwitch";
 
 import { Screen, Header, CurriculumContainer } from "./styles";
 
-interface HomeProps {
-	toggleTheme: () => void;
-}
-
-export default function CourseData(props: HomeProps) {
+export default function CourseData() {
 	const { code } = useParams();
 	const [loading, setLoading] = useState(true);
 	const [course, setCourse] = useState<Course | null>(null);
@@ -43,7 +38,6 @@ export default function CourseData(props: HomeProps) {
 						<FaMapMarkerAlt className="icon" /> {course ? course.campus : "-"}
 					</span>
 				</div>
-				<ThemeSwitch toggleTheme={props.toggleTheme} />
 			</Header>
 			<CurriculumContainer hasData={course !== null}>
 				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum course={course} />}
