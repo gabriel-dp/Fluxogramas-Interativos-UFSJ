@@ -39,7 +39,7 @@ export default function CourseData() {
 					</span>
 				</div>
 			</Header>
-			<CurriculumContainer hasData={course !== null}>
+			<CurriculumContainer>
 				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum course={course} />}
 			</CurriculumContainer>
 			<Footer />
