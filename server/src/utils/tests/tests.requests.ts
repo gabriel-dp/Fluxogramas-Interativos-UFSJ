@@ -1,14 +1,23 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const api = axios.create({
 	baseURL: process.env.SERVER_URL,
 });
 
+export function authHeaders(token?: string): AxiosRequestConfig {
+	const headers = {
+		headers: {
+			authorization: `Bearer ${token}`,
+		},
+	};
+	return headers;
+}
+
 export function fail(message: string) {
 	throw new Error(message);
 }
 
-export async function expectSuccess(status: number, func: () => Promise<AxiosResponse>) {
+export async function expectRequestSuccess(status: number, func: () => Promise<AxiosResponse>) {
 	try {
 		const response = await func();
 		expect(response.status).toBe(status);
@@ -18,7 +27,7 @@ export async function expectSuccess(status: number, func: () => Promise<AxiosRes
 	}
 }
 
-export async function expectFail(status: number, func: () => Promise<AxiosResponse>) {
+export async function expectRequestFail(status: number, func: () => Promise<AxiosResponse>) {
 	let response;
 	try {
 		response = await func();
