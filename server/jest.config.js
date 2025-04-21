@@ -4,6 +4,9 @@ module.exports = {
 	transform: {
 		"^.+.ts$": ["ts-jest", {}],
 	},
-	globalSetup: "./src/__test__/setup.tests.ts",
+	moduleNameMapper: {
+		"^@/(.*)$": "<rootDir>/src/$1",
+	},
+	setupFilesAfterEnv: ["./src/utils/tests/tests.setup.ts"],
 	verbose: true,
 };

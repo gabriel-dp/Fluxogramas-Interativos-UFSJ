@@ -1,14 +1,30 @@
-import { expectFail, expectSuccess } from "./utils.tests";
-import { generateString, generateUniqueLogin, generateValidPassword, register, signIn } from "./auth.tests";
+import { api, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import {
+	Credentials,
+	generateString,
+	generateUniqueLogin,
+	generateValidPassword,
+} from "@/utils/tests/tests.credentials";
+
+async function register(credentials: Partial<Credentials>) {
+	const response = await api.post("auth/register", credentials);
+	return response;
+}
+
+async function signIn(credentials: Partial<Credentials>) {
+	const response = await api.post("auth/sign-in", credentials);
+	return response;
+}
 
 describe("POST /auth/register", () => {
 	const repeatLogin = generateUniqueLogin().toLowerCase();
 
 	it("should register user providing login and password", async () => {
-		const response = await expectSuccess(201, () =>
+		const response = await expectRequestSuccess(201, () =>
 			register({
 				login: repeatLogin,
 				password: generateValidPassword(),
+				isAdmin: false,
 			})
 		);
 		expect(response?.data).toHaveProperty("id");
@@ -16,7 +32,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should register another user with uppercase repeated login", async () => {
-		const response = await expectSuccess(201, () =>
+		const response = await expectRequestSuccess(201, () =>
 			register({
 				login: repeatLogin.toUpperCase(),
 				password: generateValidPassword(),
@@ -27,7 +43,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with repeated login", async () => {
-		await expectFail(409, () =>
+		await expectRequestFail(409, () =>
 			register({
 				login: repeatLogin,
 				password: generateValidPassword(),
@@ -36,7 +52,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with repeated login", async () => {
-		await expectFail(409, () =>
+		await expectRequestFail(409, () =>
 			register({
 				login: repeatLogin,
 				password: generateValidPassword(),
@@ -45,7 +61,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with login with less than 4 chars", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateString(3),
 				password: generateValidPassword(),
@@ -54,7 +70,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with login with more than 64 chars", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateString(65),
 				password: generateValidPassword(),
@@ -63,7 +79,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with password with less than 8 chars", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateUniqueLogin(),
 				password: generateString(7),
@@ -72,7 +88,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with password with more than 64 chars", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateUniqueLogin(),
 				password: generateString(65),
@@ -81,7 +97,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user with a blank login", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateString(10, " "),
 				password: generateValidPassword(),
@@ -90,7 +106,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user without password", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				login: generateUniqueLogin(),
 			})
@@ -98,7 +114,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register user without login", async () => {
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			register({
 				password: generateValidPassword(),
 			})
@@ -106,7 +122,7 @@ describe("POST /auth/register", () => {
 	});
 
 	it("should not register admin user", async () => {
-		const response = await expectSuccess(201, () =>
+		const response = await expectRequestSuccess(201, () =>
 			register({
 				login: generateUniqueLogin(),
 				password: generateValidPassword(),
@@ -125,7 +141,7 @@ describe("POST /auth/sign-in", () => {
 			password: generateString(10, "0"),
 		};
 		await register(credentials);
-		const response = await expectSuccess(200, () => signIn(credentials));
+		const response = await expectRequestSuccess(200, () => signIn(credentials));
 		expect(response?.data).toHaveProperty("token");
 	});
 
@@ -135,7 +151,7 @@ describe("POST /auth/sign-in", () => {
 			password: generateString(10, "1"),
 		};
 		await register(credentials);
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			signIn({
 				login: credentials.login,
 				password: generateString(10, "2"),
@@ -149,7 +165,7 @@ describe("POST /auth/sign-in", () => {
 			password: generateString(10, "0"),
 		};
 		await register(credentials);
-		await expectFail(400, () =>
+		await expectRequestFail(400, () =>
 			signIn({
 				login: generateUniqueLogin(),
 				password: credentials.password,
