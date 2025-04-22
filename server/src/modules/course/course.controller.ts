@@ -20,6 +20,7 @@ async function readOne(req: Request, res: Response) {
 
 	try {
 		const course = await CourseService.getOne(id);
+		console.log(course);
 		return res.status(200).json(course);
 	} catch (error) {
 		return handleError(res, error);

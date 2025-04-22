@@ -20,8 +20,11 @@ const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
 
 	async create(data) {
 		if ((await UserRepository.getOneByLogin(data.login)) != null) throw new ConflictException("User login");
-		data.password = await encryptPassword(data.password);
-		return UserRepository.create(data);
+		const newData = {
+			...data,
+			password: await encryptPassword(data.password),
+		};
+		return UserRepository.create(newData);
 	},
 
 	async update(id, data) {
@@ -30,10 +33,11 @@ const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
 			const sameLogin = await UserRepository.getOneByLogin(data.login);
 			if (sameLogin && sameLogin.id != id) throw new ConflictException("User login");
 		}
-		if (data.password) {
-			data.password = await encryptPassword(data.password);
-		}
-		return UserRepository.update(id, data);
+		const newData = {
+			...data,
+			password: data.password ? await encryptPassword(data.password) : undefined,
+		};
+		return UserRepository.update(id, newData);
 	},
 
 	async delete(id) {

@@ -7,10 +7,10 @@ import {
 	generateUniqueLogin,
 } from "@/utils/tests/tests.credentials";
 
-import UserRepository from "../user.repository";
+import UserService from "../user.service";
 
 async function signIn(credentials: Partial<Credentials>) {
-	const response = await api.post("auth/sign-in", credentials);
+	const response = await api.post("auth/sign-in", { login: credentials.login, password: credentials.password });
 	return response;
 }
 
@@ -129,7 +129,7 @@ describe("PATCH /user/:id", () => {
 		const loginUpdate = generateNewUserData();
 
 		it("should update its own data", async () => {
-			await UserRepository.create(loginOriginal);
+			await UserService.create(loginOriginal);
 
 			const { id, token } = (await signIn(loginOriginal)).data;
 			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, loginUpdate, authHeaders(token)));
@@ -167,7 +167,7 @@ describe("PATCH /user/:id", () => {
 		const loginUpdate = generateNewUserData();
 
 		it("should update data of other users and make admin", async () => {
-			await UserRepository.create(loginOriginal);
+			await UserService.create(loginOriginal);
 
 			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
 			const { id: idNormal } = (await signIn(loginOriginal)).data;
@@ -232,7 +232,7 @@ describe("DELETE /user/:id", () => {
 		const loginToNotDelete = generateNewUserData();
 
 		it("should not be able to delete", async () => {
-			await UserRepository.create(loginToNotDelete);
+			await UserService.create(loginToNotDelete);
 			const { id, token } = (await signIn(loginToNotDelete)).data;
 			await expectRequestFail(403, () => api.delete(`/user/${id}`, authHeaders(token)));
 		});
@@ -243,7 +243,7 @@ describe("DELETE /user/:id", () => {
 		let idToDelete: number;
 
 		it("should be able to delete users", async () => {
-			await UserRepository.create(loginToDelete);
+			await UserService.create(loginToDelete);
 
 			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
 			idToDelete = (await signIn(loginToDelete)).data.id;
