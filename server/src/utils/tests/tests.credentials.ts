@@ -1,3 +1,6 @@
+import AuthService from "@/modules/auth/auth.service";
+import { IUser } from "@/modules/user/user.model";
+
 export type Credentials = {
 	login: string;
 	password: string;
@@ -35,4 +38,8 @@ export function generateNewUserData(): Credentials {
 		password: generateValidPassword(),
 		isAdmin: false,
 	};
+}
+
+export async function signIn(credentials: Pick<Credentials, "login" | "password">): Promise<IUser & { token: string }> {
+	return AuthService.signIn({ login: credentials.login, password: credentials.password });
 }

@@ -1,18 +1,13 @@
 import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
 import {
-	Credentials,
 	ADMIN_CREDENTIALS,
 	NORMAL_CREDENTIALS,
 	generateNewUserData,
 	generateUniqueLogin,
+	signIn,
 } from "@/utils/tests/tests.credentials";
 
 import UserService from "../user.service";
-
-async function signIn(credentials: Partial<Credentials>) {
-	const response = await api.post("auth/sign-in", { login: credentials.login, password: credentials.password });
-	return response;
-}
 
 describe("GET /user", () => {
 	describe("No auth", () => {
@@ -23,7 +18,7 @@ describe("GET /user", () => {
 
 	describe("Normal user", () => {
 		it("should not retrieve data from all users", async () => {
-			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { token } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(403, () => api.get("/user", authHeaders(token)));
 		});
 	});
@@ -32,7 +27,7 @@ describe("GET /user", () => {
 		let usersList: object[] = [];
 
 		it("should retrieve data from all users", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token } = await signIn(ADMIN_CREDENTIALS);
 			const response = await expectRequestSuccess(200, () => api.get("/user", authHeaders(token)));
 			usersList = response?.data;
 		});
@@ -54,12 +49,12 @@ describe("GET /user/:id", () => {
 
 	describe("Normal user", () => {
 		it("should retrieve its own data", async () => {
-			const { id, token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { id, token } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestSuccess(200, () => api.get(`/user/${id}`, authHeaders(token)));
 		});
 
 		it("should not retrieve other users data", async () => {
-			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { token } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(403, () => api.get(`/user/${1}`, authHeaders(token)));
 		});
 	});
@@ -68,13 +63,13 @@ describe("GET /user/:id", () => {
 		let userData;
 
 		it("should retrieve its own data", async () => {
-			const { id, token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { id, token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestSuccess(200, () => api.get(`/user/${id}`, authHeaders(token)));
 		});
 
 		it("should retrieve other users data", async () => {
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
-			const { id: idNormal } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
+			const { id: idNormal } = await signIn(NORMAL_CREDENTIALS);
 			const response = await expectRequestSuccess(200, () => api.get(`/user/${idNormal}`, authHeaders(tokenAdmin)));
 
 			userData = response?.data;
@@ -82,7 +77,7 @@ describe("GET /user/:id", () => {
 		});
 
 		it("should not retrieve an invalid user (12345678)", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () => api.get(`/user/${12345678}`, authHeaders(token)));
 		});
 	});
@@ -97,7 +92,7 @@ describe("POST /user", () => {
 
 	describe("Normal user", () => {
 		it("should not create users", async () => {
-			const { token } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { token } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(403, () => api.post("/user", {}, authHeaders(token)));
 		});
 	});
@@ -106,12 +101,12 @@ describe("POST /user", () => {
 		const login = generateNewUserData();
 
 		it("should create user", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestSuccess(201, () => api.post("/user", login, authHeaders(token)));
 		});
 
 		it("should not create users with repeated login", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(409, () => api.post("/user", login, authHeaders(token)));
 		});
 	});
@@ -131,33 +126,33 @@ describe("PATCH /user/:id", () => {
 		it("should update its own data", async () => {
 			await UserService.create(loginOriginal);
 
-			const { id, token } = (await signIn(loginOriginal)).data;
+			const { id, token } = await signIn(loginOriginal);
 			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, loginUpdate, authHeaders(token)));
 		});
 
 		it("should login only with new credentials", async () => {
-			await expectRequestSuccess(200, () => signIn(loginUpdate));
-			await expectRequestFail(400, () => signIn(loginOriginal));
+			await expect(signIn(loginUpdate)).resolves.toBeDefined();
+			await expect(signIn(loginOriginal)).rejects.toThrow();
 		});
 
 		it("should update its own data (reset to original)", async () => {
-			const { id, token } = (await signIn(loginUpdate)).data;
+			const { id, token } = await signIn(loginUpdate);
 			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, loginOriginal, authHeaders(token)));
 		});
 
 		it("should login only with the new credentials (reseted to original)", async () => {
-			await expectRequestSuccess(200, () => signIn(loginOriginal));
-			await expectRequestFail(400, () => signIn(loginUpdate));
+			await expect(signIn(loginOriginal)).resolves.toBeDefined();
+			await expect(signIn(loginUpdate)).rejects.toThrow();
 		});
 
 		it("should not make users admin", async () => {
-			const { id, token } = (await signIn(loginOriginal)).data;
+			const { id, token } = await signIn(loginOriginal);
 			await expectRequestFail(403, () => api.patch(`/user/${id}`, { isAdmin: true }, authHeaders(token)));
 		});
 
 		it("should not update other users data", async () => {
-			const { token: tokenNormal } = (await signIn(NORMAL_CREDENTIALS)).data;
-			const { id: idAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token: tokenNormal } = await signIn(NORMAL_CREDENTIALS);
+			const { id: idAdmin } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(403, () => api.get(`/user/${idAdmin}`, authHeaders(tokenNormal)));
 		});
 	});
@@ -169,8 +164,8 @@ describe("PATCH /user/:id", () => {
 		it("should update data of other users and make admin", async () => {
 			await UserService.create(loginOriginal);
 
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
-			const { id: idNormal } = (await signIn(loginOriginal)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
+			const { id: idNormal } = await signIn(loginOriginal);
 			await expectRequestSuccess(200, () =>
 				api.patch(
 					`/user/${idNormal}`,
@@ -181,39 +176,36 @@ describe("PATCH /user/:id", () => {
 					authHeaders(tokenAdmin)
 				)
 			);
-
-			await expectRequestFail(400, () => signIn(loginOriginal));
-			await expectRequestSuccess(200, () => signIn(loginUpdate));
 		});
 
 		it("should login only with new credentials", async () => {
-			await expectRequestSuccess(200, () => signIn(loginUpdate));
-			await expectRequestFail(400, () => signIn(loginOriginal));
+			await expect(signIn(loginUpdate)).resolves.toBeDefined();
+			await expect(signIn(loginOriginal)).rejects.toThrow();
 		});
 
 		it("should update data of other users (reset to original)", async () => {
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
-			const { id: idNormal } = (await signIn(loginUpdate)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
+			const { id: idNormal } = await signIn(loginUpdate);
 			await expectRequestSuccess(200, () =>
 				api.patch(`/user/${idNormal}`, { ...loginOriginal, isAdmin: false }, authHeaders(tokenAdmin))
 			);
 		});
 
 		it("should login only with the new credentials (reseted to original)", async () => {
-			await expectRequestSuccess(200, () => signIn(loginOriginal));
-			await expectRequestFail(400, () => signIn(loginUpdate));
+			await expect(signIn(loginOriginal)).resolves.toBeDefined();
+			await expect(signIn(loginUpdate)).rejects.toThrow();
 		});
 
 		it("should not update an invalid user (12345678)", async () => {
-			const { token } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () =>
 				api.patch(`/user/${12345678}`, { login: generateUniqueLogin() }, authHeaders(token))
 			);
 		});
 
 		it("should not update login to another existing", async () => {
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
-			const { id: idNormal } = (await signIn(NORMAL_CREDENTIALS)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
+			const { id: idNormal } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(409, () =>
 				api.patch(`/user/${idNormal}`, { login: ADMIN_CREDENTIALS.login }, authHeaders(tokenAdmin))
 			);
@@ -233,7 +225,7 @@ describe("DELETE /user/:id", () => {
 
 		it("should not be able to delete", async () => {
 			await UserService.create(loginToNotDelete);
-			const { id, token } = (await signIn(loginToNotDelete)).data;
+			const { id, token } = await signIn(loginToNotDelete);
 			await expectRequestFail(403, () => api.delete(`/user/${id}`, authHeaders(token)));
 		});
 	});
@@ -245,18 +237,18 @@ describe("DELETE /user/:id", () => {
 		it("should be able to delete users", async () => {
 			await UserService.create(loginToDelete);
 
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
-			idToDelete = (await signIn(loginToDelete)).data.id;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
+			idToDelete = (await signIn(loginToDelete)).id;
 			await expectRequestSuccess(204, () => api.delete(`/user/${idToDelete}`, authHeaders(tokenAdmin)));
 		});
 
 		it("should not delete a user more than once", async () => {
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () => api.delete(`/user/${idToDelete}`, authHeaders(tokenAdmin)));
 		});
 
 		it("should not delete an invalid user (12345678)", async () => {
-			const { token: tokenAdmin } = (await signIn(ADMIN_CREDENTIALS)).data;
+			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () => api.delete(`/user/${12345678}`, authHeaders(tokenAdmin)));
 		});
 	});
