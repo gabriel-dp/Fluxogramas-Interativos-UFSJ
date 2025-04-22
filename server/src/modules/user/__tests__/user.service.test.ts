@@ -11,7 +11,7 @@ describe("UserService", () => {
 		expect(users.length).toBeGreaterThanOrEqual(usersCredentials.length);
 
 		usersCredentials.forEach(async (credentials) => {
-			expect(users.some((user) => user.login == credentials.login)).toBe(true);
+			expect(users.filter((user) => user.login == credentials.login).length).toBe(1);
 		});
 	});
 

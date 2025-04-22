@@ -7,15 +7,10 @@ async function signIn(credentials: Partial<Credentials>) {
 }
 
 describe("GET /course", () => {
-	let courses: object[];
-
 	it("should retrieve data from all avaliable courses", async () => {
 		const response = await expectRequestSuccess(200, () => api.get("/course"));
-		courses = response?.data;
-	});
-
-	it("should not retrieve data from components", async () => {
-		courses.forEach((course) => {
+		const courses: object[] = response?.data;
+		courses.forEach((course: object) => {
 			expect(course).not.toHaveProperty("components");
 		});
 	});
@@ -24,14 +19,9 @@ describe("GET /course", () => {
 });
 
 describe("GET /course/:id", () => {
-	let course: object;
-
 	it("should retrieve data from a single course", async () => {
 		const response = await expectRequestSuccess(200, () => api.get(`/course/${1}`));
-		course = response?.data;
-	});
-
-	it("should retrieve data from components", async () => {
+		const course = response?.data;
 		expect(course).toHaveProperty("components");
 	});
 
