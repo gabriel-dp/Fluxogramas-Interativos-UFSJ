@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 
-import { generateToken } from "@/utils/auth.utils";
 import { handleError } from "@/utils/exception.utils";
 
 import AuthService from "./auth.service";
@@ -22,8 +21,7 @@ async function signIn(req: Request, res: Response) {
 
 	try {
 		const user = await AuthService.signIn(data);
-		const token = generateToken({ id: user.id, isAdmin: user.isAdmin });
-		return res.status(200).json({ ...user, password: undefined, token });
+		return res.status(200).json({ ...user, password: undefined });
 	} catch (error) {
 		return handleError(res, error);
 	}
