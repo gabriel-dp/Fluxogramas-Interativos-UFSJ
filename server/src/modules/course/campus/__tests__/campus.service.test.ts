@@ -1,8 +1,6 @@
 import CampusService from "../campus.service";
 
-function generateUniqueCampus(): { name: string } {
-	return { name: `campus${process.hrtime.bigint()}` };
-}
+import { generateUniqueCampus } from "./campus.repository.test";
 
 describe("CampusService", () => {
 	it("should create and read many campuses (10)", async () => {
@@ -65,7 +63,7 @@ describe("CampusService", () => {
 		await expect(CampusService.create({ ...data2, name: campus.name })).rejects.toThrow();
 	});
 
-	it("should not update campus login to an existing one", async () => {
+	it("should not update campus name to an existing one", async () => {
 		const data1 = generateUniqueCampus();
 		const data2 = generateUniqueCampus();
 

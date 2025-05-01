@@ -12,20 +12,20 @@ const TypeRepository: Repository<IType, CreateTypeData, UpdateTypeData> & {
 	getOneByName: (name: string) => Promise<IType | null>;
 } = {
 	async getAll() {
-		return prisma.campus.findMany({
+		return prisma.type.findMany({
 			select: defaultSelectFields,
 		});
 	},
 
 	async getOne(id) {
-		return prisma.campus.findUnique({
+		return prisma.type.findUnique({
 			where: { id },
 			select: defaultSelectFields,
 		});
 	},
 
 	async create(data) {
-		return prisma.campus.create({
+		return prisma.type.create({
 			data: {
 				name: data.name,
 			},
@@ -34,7 +34,7 @@ const TypeRepository: Repository<IType, CreateTypeData, UpdateTypeData> & {
 	},
 
 	async update(id, data) {
-		return prisma.campus.update({
+		return prisma.type.update({
 			where: { id },
 			data: {
 				name: data.name,
@@ -44,14 +44,14 @@ const TypeRepository: Repository<IType, CreateTypeData, UpdateTypeData> & {
 	},
 
 	async delete(id) {
-		return prisma.campus.delete({
+		return prisma.type.delete({
 			where: { id },
 			select: defaultSelectFields,
 		});
 	},
 
 	async getOneByName(name) {
-		return prisma.campus.findUnique({
+		return prisma.type.findUnique({
 			where: { name },
 			select: defaultSelectFields,
 		});

@@ -1,8 +1,6 @@
 import TypeService from "../type.service";
 
-function generateUniqueType(): { name: string } {
-	return { name: `type${process.hrtime.bigint()}` };
-}
+import { generateUniqueType } from "./type.repository.test";
 
 describe("TypeService", () => {
 	it("should create and read many types (10)", async () => {
@@ -65,7 +63,7 @@ describe("TypeService", () => {
 		await expect(TypeService.create({ ...data2, name: type.name })).rejects.toThrow();
 	});
 
-	it("should not update type login to an existing one", async () => {
+	it("should not update type name to an existing one", async () => {
 		const data1 = generateUniqueType();
 		const data2 = generateUniqueType();
 

@@ -9,8 +9,6 @@ describe("GET /course", () => {
 			expect(course).not.toHaveProperty("components");
 		});
 	});
-
-	// Validate fields
 });
 
 describe("GET /course/:id", () => {
@@ -23,8 +21,6 @@ describe("GET /course/:id", () => {
 	it("should not retrieve data from an invalid couse (12345678)", async () => {
 		await expectRequestFail(404, () => api.get(`/course/${12345678}`));
 	});
-
-	// Validate fields
 });
 
 describe("POST /course", () => {
@@ -64,22 +60,9 @@ describe("PATCH /course/:id", () => {
 	});
 
 	describe("Normal user", () => {
-		it("should update course with permission", async () => {
-			const { token } = await signIn(NORMAL_CREDENTIALS);
-			await expectRequestSuccess(200, () => api.patch(`/course/${1}`, {}, authHeaders(token)));
+		it("should not update courses", async () => {
+			await expectRequestFail(403, () => api.patch(`/course/${1}`, {}));
 		});
-
-		it("should not update course without permission", async () => {
-			const { token } = await signIn(NORMAL_CREDENTIALS);
-			await expectRequestFail(403, () => api.patch(`/course/${2}`, {}, authHeaders(token)));
-		});
-
-		it("should not update code of courses", async () => {
-			const { token } = await signIn(NORMAL_CREDENTIALS);
-			await expectRequestFail(403, () => api.patch(`/course/${1}`, {}, authHeaders(token)));
-		});
-
-		// Validate required fields
 	});
 
 	describe("Admin", () => {

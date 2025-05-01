@@ -12,20 +12,20 @@ const ShiftRepository: Repository<IShift, CreateShiftData, UpdateShiftData> & {
 	getOneByName: (name: string) => Promise<IShift | null>;
 } = {
 	async getAll() {
-		return prisma.campus.findMany({
+		return prisma.shift.findMany({
 			select: defaultSelectFields,
 		});
 	},
 
 	async getOne(id) {
-		return prisma.campus.findUnique({
+		return prisma.shift.findUnique({
 			where: { id },
 			select: defaultSelectFields,
 		});
 	},
 
 	async create(data) {
-		return prisma.campus.create({
+		return prisma.shift.create({
 			data: {
 				name: data.name,
 			},
@@ -34,7 +34,7 @@ const ShiftRepository: Repository<IShift, CreateShiftData, UpdateShiftData> & {
 	},
 
 	async update(id, data) {
-		return prisma.campus.update({
+		return prisma.shift.update({
 			where: { id },
 			data: {
 				name: data.name,
@@ -44,14 +44,14 @@ const ShiftRepository: Repository<IShift, CreateShiftData, UpdateShiftData> & {
 	},
 
 	async delete(id) {
-		return prisma.campus.delete({
+		return prisma.shift.delete({
 			where: { id },
 			select: defaultSelectFields,
 		});
 	},
 
 	async getOneByName(name) {
-		return prisma.campus.findUnique({
+		return prisma.shift.findUnique({
 			where: { name },
 			select: defaultSelectFields,
 		});

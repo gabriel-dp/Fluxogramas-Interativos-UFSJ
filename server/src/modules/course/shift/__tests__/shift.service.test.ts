@@ -1,8 +1,6 @@
 import ShiftService from "../shift.service";
 
-function generateUniqueShift(): { name: string } {
-	return { name: `shift${process.hrtime.bigint()}` };
-}
+import { generateUniqueShift } from "./shift.repository.test";
 
 describe("ShiftService", () => {
 	it("should create and read many shifts (10)", async () => {
@@ -65,7 +63,7 @@ describe("ShiftService", () => {
 		await expect(ShiftService.create({ ...data2, name: shift.name })).rejects.toThrow();
 	});
 
-	it("should not update shift login to an existing one", async () => {
+	it("should not update shift name to an existing one", async () => {
 		const data1 = generateUniqueShift();
 		const data2 = generateUniqueShift();
 

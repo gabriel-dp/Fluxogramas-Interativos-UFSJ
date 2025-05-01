@@ -1,6 +1,6 @@
 import CampusRepository from "../campus.repository";
 
-function generateUniqueCampus(): { name: string } {
+export function generateUniqueCampus(): { name: string } {
 	return { name: `campus${process.hrtime.bigint()}` };
 }
 

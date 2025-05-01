@@ -1,6 +1,6 @@
 import ShiftRepository from "../shift.repository";
 
-function generateUniqueShift(): { name: string } {
+export function generateUniqueShift(): { name: string } {
 	return { name: `shift${process.hrtime.bigint()}` };
 }
 

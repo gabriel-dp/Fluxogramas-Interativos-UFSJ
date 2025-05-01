@@ -3,9 +3,7 @@ import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/uti
 
 import TypeService from "../type.service";
 
-function generateUniqueType(): { name: string } {
-	return { name: `type${process.hrtime.bigint()}` };
-}
+import { generateUniqueType } from "./type.repository.test";
 
 describe("POST /course/type", () => {
 	describe("No auth", () => {

@@ -3,9 +3,7 @@ import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/uti
 
 import ShiftService from "../shift.service";
 
-function generateUniqueShift(): { name: string } {
-	return { name: `shift${process.hrtime.bigint()}` };
-}
+import { generateUniqueShift } from "./shift.repository.test";
 
 describe("POST /course/shift", () => {
 	describe("No auth", () => {
