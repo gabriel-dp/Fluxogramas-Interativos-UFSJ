@@ -1,6 +1,6 @@
 import TypeRepository from "../type.repository";
 
-function generateUniqueType(): { name: string } {
+export function generateUniqueType(): { name: string } {
 	return { name: `type${process.hrtime.bigint()}` };
 }
 

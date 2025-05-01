@@ -3,9 +3,7 @@ import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/uti
 
 import CampusService from "../campus.service";
 
-function generateUniqueCampus(): { name: string } {
-	return { name: `campus${process.hrtime.bigint()}` };
-}
+import { generateUniqueCampus } from "./campus.repository.test";
 
 describe("POST /course/campus", () => {
 	describe("No auth", () => {
