@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { getId } from "@/utils/request.utils";
 import { handleError } from "@/utils/exception.utils";
 
-import CourseService from "./course.repository";
+import CourseService from "./course.service";
 import { CreateCourseData, UpdateCourseData } from "./course.model";
 
 async function readMany(req: Request, res: Response) {
@@ -20,7 +20,6 @@ async function readOne(req: Request, res: Response) {
 
 	try {
 		const course = await CourseService.getOne(id);
-		console.log(course);
 		return res.status(200).json(course);
 	} catch (error) {
 		return handleError(res, error);
