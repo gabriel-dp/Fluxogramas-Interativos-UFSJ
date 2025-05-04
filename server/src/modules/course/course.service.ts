@@ -11,7 +11,7 @@ const CourseService: Service<ICourse, CreateCourseData, UpdateCourseData> = {
 
 	async getOne(id) {
 		const found = await CourseRepository.getOne(id);
-		if (!found) throw new NotFoundException("User");
+		if (!found) throw new NotFoundException("Course");
 		return found;
 	},
 
