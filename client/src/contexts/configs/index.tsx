@@ -8,6 +8,7 @@ interface StoredConfigs {
 }
 
 interface ConfigsContextI extends StoredConfigs {
+	darkMode: boolean;
 	toggleTheme: () => void;
 }
 

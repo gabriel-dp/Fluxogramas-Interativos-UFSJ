@@ -1,15 +1,33 @@
-import { FaSlidersH as MainIcon } from "react-icons/fa";
+import { FaSlidersH as MainIcon, FaSun as LightIcon, FaMoon as DarkIcon, FaUserLock as AuthIcon } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-import ButtonTheme from "./ButtonTheme";
-import { ButtonsStack, MainButton } from "./styles";
+import useConfigs from "@/contexts/configs/useConfigs";
+
+import { ButtonsStack, MainButton, SecondaryButton } from "./styles";
 
 export default function ActionButtons() {
+	const { darkMode, toggleTheme } = useConfigs();
+
+	const navigate = useNavigate();
+	function goToAuth() {
+		navigate("dashboard");
+	}
+
+	const buttons = [
+		<SecondaryButton key="theme" onClick={toggleTheme}>
+			{!darkMode ? <DarkIcon className="icon" /> : <LightIcon className="icon" />}
+		</SecondaryButton>,
+		<SecondaryButton key="auth" onClick={goToAuth}>
+			<AuthIcon />
+		</SecondaryButton>,
+	];
+
 	return (
-		<ButtonsStack quantity={1}>
+		<ButtonsStack quantity={buttons.length}>
 			<MainButton>
 				<MainIcon />
 			</MainButton>
-			<ButtonTheme />
+			{buttons.map((button) => button)}
 		</ButtonsStack>
 	);
 }

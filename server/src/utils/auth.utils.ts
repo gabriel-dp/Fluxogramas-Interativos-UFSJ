@@ -25,7 +25,7 @@ export async function validatePassword(password: string, hash: string) {
 export function generateToken(userData: UserTokenData) {
 	if (!secret) throw new Error("Secret not defined");
 
-	const token = sign(userData, secret, { expiresIn: EXPIRATION_TIME });
+	const token = sign(userData, secret, { expiresIn: EXPIRATION_TIME, algorithm: "HS256" });
 	return token;
 }
 

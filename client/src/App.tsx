@@ -1,4 +1,4 @@
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 
 import AppProvider from "@/contexts";
 import Router from "@/routes";
@@ -9,7 +9,7 @@ export default function App() {
 		<AppProvider>
 			<Router />
 			<ActionButtons />
-			<Analytics/>
+			<Analytics />
 		</AppProvider>
 	);
 }
