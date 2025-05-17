@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 
-import { AuthRequest, getDataFromToken, getToken, isAdministrator, isAuthenticated } from "@/utils/auth.utils";
+import { AuthRequest, getDataFromAccessToken, getToken, isAdministrator, isAuthenticated } from "@/utils/auth.utils";
 
 export const getAuth = async (req: AuthRequest, res: Response, next: NextFunction) => {
 	req.user = undefined; // Clear any user data on request
@@ -8,7 +8,7 @@ export const getAuth = async (req: AuthRequest, res: Response, next: NextFunctio
 	try {
 		const token = getToken(req);
 		if (token) {
-			req.user = getDataFromToken(token);
+			req.user = getDataFromAccessToken(token);
 		}
 	} catch (error) {
 		return res.sendStatus(500);

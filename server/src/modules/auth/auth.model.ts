@@ -10,3 +10,10 @@ export const signInSchema = z.object({
 	password: z.string(),
 });
 export type SignInSchema = z.TypeOf<typeof signInSchema>;
+
+export type RefreshToken = {
+	id: number;
+	userId: number;
+	tokenHash: string;
+	createdAt: Date;
+};
