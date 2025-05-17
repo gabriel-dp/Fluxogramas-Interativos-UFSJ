@@ -1,10 +1,18 @@
-import { generateAccessToken, generateRefreshToken, encryptToken, validatePassword } from "@/utils/auth.utils";
+import ms from "ms";
+
+import {
+	generateAccessToken,
+	generateRefreshToken,
+	encryptToken,
+	validatePassword,
+	validateToken,
+} from "@/utils/auth.utils";
 import { BadRequestException } from "@/utils/exception.utils";
 import UserService from "@/modules/user/user.service";
 import { IUser } from "@/modules/user/user.model";
 
 import AuthRepository from "./auth.repository";
-import { RegisterData, SignInSchema } from "./auth.model";
+import { RegisterData, SignInSchema, RefreshToken } from "./auth.model";
 
 const AuthService = {
 	async register(data: RegisterData): Promise<IUser> {
@@ -27,17 +35,20 @@ const AuthService = {
 		return { user, accessToken, refreshToken };
 	},
 
-	async createRefreshToken(userId: number, token: string) {
+	async createRefreshToken(userId: number, token: string): Promise<RefreshToken> {
 		const tokenHash = await encryptToken(token);
-		return await AuthRepository.createRefreshToken(userId, tokenHash);
+		const expiresAt = new Date(Date.now() + ms((process.env.REFRESH_TOKEN_EXPIRATION as ms.StringValue) ?? "7d"));
+		return await AuthRepository.createRefreshToken({ userId, tokenHash, expiresAt });
 	},
 
-	async validateRefreshToken(userId: number, token: string) {
-		return await AuthRepository.validateRefreshToken(userId, token);
+	async validateRefreshToken(userId: number, token: string): Promise<boolean> {
+		const existingToken = await AuthRepository.getUserRefreshToken(userId);
+		if (!existingToken) return false;
+		return await validateToken(token, existingToken.tokenHash);
 	},
 
 	async logout(userId: number): Promise<void> {
-		await AuthRepository.deleteRefreshToken(userId);
+		await AuthRepository.deleteUserRefreshToken(userId);
 	},
 };
 

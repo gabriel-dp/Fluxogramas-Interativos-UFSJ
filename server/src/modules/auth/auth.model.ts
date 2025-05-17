@@ -16,4 +16,5 @@ export type RefreshToken = {
 	userId: number;
 	tokenHash: string;
 	createdAt: Date;
+	expiresAt: Date;
 };
