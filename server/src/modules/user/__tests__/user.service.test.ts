@@ -11,7 +11,7 @@ describe("UserService", () => {
 		expect(users.length).toBeGreaterThanOrEqual(usersCredentials.length);
 
 		usersCredentials.forEach(async (credentials) => {
-			expect(users.filter((user) => user.login == credentials.login).length).toBe(1);
+			expect(users.filter((user) => user.username == credentials.username).length).toBe(1);
 		});
 	});
 
@@ -40,7 +40,7 @@ describe("UserService", () => {
 		expect(updated.id).toBe(user.id);
 
 		const fetched = await UserService.getOne(updated.id);
-		expect(fetched.login).toBe(credentialsNew.login);
+		expect(fetched.username).toBe(credentialsNew.username);
 	});
 
 	it("should delete a user and not fetch after deleted", async () => {
@@ -61,15 +61,15 @@ describe("UserService", () => {
 		expect(user.password).not.toBe(credentials.password);
 	});
 
-	it("should not create users with same login", async () => {
+	it("should not create users with same username", async () => {
 		const credentials1 = generateNewUserData();
 		const credentials2 = generateNewUserData();
 
 		const user = await UserService.create({ ...credentials1, isAdmin: false });
-		await expect(UserService.create({ ...credentials2, login: user.login, isAdmin: false })).rejects.toThrow();
+		await expect(UserService.create({ ...credentials2, username: user.username, isAdmin: false })).rejects.toThrow();
 	});
 
-	it("should not update user login to an existing one", async () => {
+	it("should not update user username to an existing one", async () => {
 		const credentials1 = generateNewUserData();
 		const credentials2 = generateNewUserData();
 

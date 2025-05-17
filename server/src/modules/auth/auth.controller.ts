@@ -64,7 +64,7 @@ async function logout(req: Request, res: Response) {
 
 	try {
 		const tokenData = getDataFromRefreshToken(token);
-		if (tokenData) {
+		if (tokenData && (await AuthService.validateRefreshToken(tokenData.id, token))) {
 			await AuthService.logout(tokenData.id);
 		}
 	} catch (error) {
@@ -78,7 +78,7 @@ async function logout(req: Request, res: Response) {
 		});
 	}
 
-	res.sendStatus(204);
+	return res.sendStatus(204);
 }
 
 const AuthController = {

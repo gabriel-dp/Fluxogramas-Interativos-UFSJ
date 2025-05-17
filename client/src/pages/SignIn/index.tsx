@@ -1,16 +1,44 @@
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "@/contexts/auth/useAuth";
+
 export default function SignIn() {
+	const navigate = useNavigate();
+	const { isAuthenticated, login } = useAuth();
+
+	const [username, setUsername] = useState("");
+	const [password, setPassword] = useState("");
+	const [error, setError] = useState<string | null>(null);
+
+	useEffect(() => {
+		if (isAuthenticated) {
+			navigate("/dashboard", { replace: true });
+		}
+	}, [isAuthenticated, navigate]);
+	if (isAuthenticated) return null;
+
+	async function handleSubmit() {
+		if (!(await login({ username, password }))) {
+			setError("Invalid credentials. Please try again.");
+		}
+	}
+
 	return (
-		<form>
+		<form onSubmit={(e) => e.preventDefault()}>
 			<label>
 				<p>Username</p>
-				<input type="text" />
+				<input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
 			</label>
 			<label>
 				<p>Password</p>
-				<input type="password" />
+				<input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 			</label>
+			{error && <p style={{ color: "red" }}>{error}</p>}
 			<div>
-				<button type="submit">Submit</button>
+				<button type="button" onClick={handleSubmit}>
+					Submit
+				</button>
 			</div>
 		</form>
 	);

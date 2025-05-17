@@ -11,7 +11,7 @@ describe("UserRepository", () => {
 		expect(users.length).toBeGreaterThanOrEqual(usersCredentials.length);
 
 		usersCredentials.forEach(async (credentials) => {
-			expect(users.filter((user) => user.login == credentials.login).length).toBe(1);
+			expect(users.filter((user) => user.username == credentials.username).length).toBe(1);
 		});
 	});
 
@@ -23,7 +23,7 @@ describe("UserRepository", () => {
 
 		const fetched = await UserRepository.getOne(user.id);
 		expect(fetched).not.toBeNull();
-		expect(fetched?.login).toBe(credentials.login);
+		expect(fetched?.username).toBe(credentials.username);
 	});
 
 	it("should not fetch an invalid user (99999)", async () => {
@@ -42,7 +42,7 @@ describe("UserRepository", () => {
 		expect(updated.id).toBe(user.id);
 
 		const fetched = await UserRepository.getOne(updated.id);
-		expect(fetched?.login).toBe(credentialsNew.login);
+		expect(fetched?.username).toBe(credentialsNew.username);
 	});
 
 	it("should delete a user and not fetch after deleted", async () => {
@@ -58,15 +58,15 @@ describe("UserRepository", () => {
 		expect(fetched).toBeNull();
 	});
 
-	it("should fetch a user by its login", async () => {
+	it("should fetch a user by its username", async () => {
 		const credentials = generateNewUserData();
 
 		const user = await UserRepository.create({ ...credentials, isAdmin: false });
 		expect(user).not.toBeNull();
 
-		const fetched = await UserRepository.getOneByLogin(user.login);
+		const fetched = await UserRepository.getOneByUsername(user.username);
 		expect(fetched).not.toBeNull();
 		expect(fetched?.id).toBe(user.id);
-		expect(fetched?.login).toBe(user.login);
+		expect(fetched?.username).toBe(user.username);
 	});
 });

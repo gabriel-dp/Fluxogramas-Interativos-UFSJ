@@ -2,7 +2,7 @@ import { api, expectRequestFail, expectRequestSuccess } from "@/utils/tests/test
 import {
 	Credentials,
 	generateString,
-	generateUniqueLogin,
+	generateUniqueUsername,
 	generateValidPassword,
 } from "@/utils/tests/tests.credentials";
 
@@ -17,62 +17,62 @@ async function signIn(credentials: Partial<Credentials>) {
 }
 
 describe("POST /auth/register", () => {
-	const repeatLogin = generateUniqueLogin().toLowerCase();
+	const repeatUsername = generateUniqueUsername().toLowerCase();
 
-	it("should register user providing login and password", async () => {
+	it("should register user providing username and password", async () => {
 		const response = await expectRequestSuccess(201, () =>
 			register({
-				login: repeatLogin,
+				username: repeatUsername,
 				password: generateValidPassword(),
 				isAdmin: false,
 			})
 		);
 		expect(response?.data).toHaveProperty("id");
-		expect(response?.data.login).toBe(repeatLogin);
+		expect(response?.data.username).toBe(repeatUsername);
 	});
 
-	it("should register another user with uppercase repeated login", async () => {
+	it("should register another user with uppercase repeated username", async () => {
 		const response = await expectRequestSuccess(201, () =>
 			register({
-				login: repeatLogin.toUpperCase(),
+				username: repeatUsername.toUpperCase(),
 				password: generateValidPassword(),
 			})
 		);
 		expect(response?.data).toHaveProperty("id");
-		expect(response?.data.login).toBe(repeatLogin.toUpperCase());
+		expect(response?.data.username).toBe(repeatUsername.toUpperCase());
 	});
 
-	it("should not register user with repeated login", async () => {
+	it("should not register user with repeated username", async () => {
 		await expectRequestFail(409, () =>
 			register({
-				login: repeatLogin,
+				username: repeatUsername,
 				password: generateValidPassword(),
 			})
 		);
 	});
 
-	it("should not register user with repeated login", async () => {
+	it("should not register user with repeated username", async () => {
 		await expectRequestFail(409, () =>
 			register({
-				login: repeatLogin,
+				username: repeatUsername,
 				password: generateValidPassword(),
 			})
 		);
 	});
 
-	it("should not register user with login with less than 4 chars", async () => {
+	it("should not register user with username with less than 4 chars", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateString(3),
+				username: generateString(3),
 				password: generateValidPassword(),
 			})
 		);
 	});
 
-	it("should not register user with login with more than 64 chars", async () => {
+	it("should not register user with username with more than 64 chars", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateString(65),
+				username: generateString(65),
 				password: generateValidPassword(),
 			})
 		);
@@ -81,7 +81,7 @@ describe("POST /auth/register", () => {
 	it("should not register user with password with less than 8 chars", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateUniqueLogin(),
+				username: generateUniqueUsername(),
 				password: generateString(7),
 			})
 		);
@@ -90,16 +90,16 @@ describe("POST /auth/register", () => {
 	it("should not register user with password with more than 64 chars", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateUniqueLogin(),
+				username: generateUniqueUsername(),
 				password: generateString(65),
 			})
 		);
 	});
 
-	it("should not register user with a blank login", async () => {
+	it("should not register user with a blank username", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateString(10, " "),
+				username: generateString(10, " "),
 				password: generateValidPassword(),
 			})
 		);
@@ -108,12 +108,12 @@ describe("POST /auth/register", () => {
 	it("should not register user without password", async () => {
 		await expectRequestFail(400, () =>
 			register({
-				login: generateUniqueLogin(),
+				username: generateUniqueUsername(),
 			})
 		);
 	});
 
-	it("should not register user without login", async () => {
+	it("should not register user without username", async () => {
 		await expectRequestFail(400, () =>
 			register({
 				password: generateValidPassword(),
@@ -124,7 +124,7 @@ describe("POST /auth/register", () => {
 	it("should not register admin user", async () => {
 		const response = await expectRequestSuccess(201, () =>
 			register({
-				login: generateUniqueLogin(),
+				username: generateUniqueUsername(),
 				password: generateValidPassword(),
 				isAdmin: true,
 			})
@@ -135,9 +135,9 @@ describe("POST /auth/register", () => {
 });
 
 describe("POST /auth/sign-in", () => {
-	it("should login user using its credentials", async () => {
+	it("should username user using its credentials", async () => {
 		const credentials = {
-			login: generateUniqueLogin(),
+			username: generateUniqueUsername(),
 			password: generateString(10, "0"),
 		};
 		await register(credentials);
@@ -145,29 +145,29 @@ describe("POST /auth/sign-in", () => {
 		expect(response?.data).toHaveProperty("token");
 	});
 
-	it("should not login user using wrong password", async () => {
+	it("should not username user using wrong password", async () => {
 		const credentials = {
-			login: generateUniqueLogin(),
+			username: generateUniqueUsername(),
 			password: generateString(10, "1"),
 		};
 		await register(credentials);
 		await expectRequestFail(400, () =>
 			signIn({
-				login: credentials.login,
+				username: credentials.username,
 				password: generateString(10, "2"),
 			})
 		);
 	});
 
-	it("should not login user using wrong login", async () => {
+	it("should not username user using wrong username", async () => {
 		const credentials = {
-			login: generateUniqueLogin(),
+			username: generateUniqueUsername(),
 			password: generateString(10, "0"),
 		};
 		await register(credentials);
 		await expectRequestFail(400, () =>
 			signIn({
-				login: generateUniqueLogin(),
+				username: generateUniqueUsername(),
 				password: credentials.password,
 			})
 		);

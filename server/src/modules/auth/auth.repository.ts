@@ -4,12 +4,12 @@ import { IUser } from "@/modules/user/user.model";
 import { RefreshToken } from "./auth.model";
 
 const AuthRepository = {
-	async getUserByLogin(login: string): Promise<(IUser & { password: string }) | null> {
+	async getUserByUsername(username: string): Promise<(IUser & { password: string }) | null> {
 		return prisma.user.findFirst({
-			where: { login },
+			where: { username },
 			select: {
 				id: true,
-				login: true,
+				username: true,
 				password: true,
 				isAdmin: true,
 			},

@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id       Int     @id @default(autoincrement())
-  login    String  @unique
+  username String  @unique
   password String
   isAdmin  Boolean @default(false)
 

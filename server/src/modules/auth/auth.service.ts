@@ -20,8 +20,8 @@ const AuthService = {
 	},
 
 	async signIn(data: SignInSchema): Promise<{ user: IUser; accessToken: string; refreshToken: string }> {
-		const user = await AuthRepository.getUserByLogin(data.login);
-		if (!user) throw new BadRequestException("User sign-in login");
+		const user = await AuthRepository.getUserByUsername(data.username);
+		if (!user) throw new BadRequestException("User sign-in username");
 
 		const match = await validatePassword(data.password, user.password);
 		if (!match) throw new BadRequestException("User sign-in password");
