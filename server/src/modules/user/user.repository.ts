@@ -6,12 +6,12 @@ import { CreateUserData, IUser, UpdateUserData } from "./user.model";
 
 const defaultSelectFields = {
 	id: true,
-	login: true,
+	username: true,
 	isAdmin: true,
 };
 
 const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
-	getOneByLogin: (login: string) => Promise<IUser | null>;
+	getOneByUsername: (username: string) => Promise<IUser | null>;
 	anyAdminExists: () => Promise<boolean>;
 } = {
 	async getAll() {
@@ -30,7 +30,7 @@ const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
 	async create(data: CreateUserData) {
 		return prisma.user.create({
 			data: {
-				login: data.login,
+				username: data.username,
 				password: data.password,
 				isAdmin: data.isAdmin,
 			},
@@ -42,7 +42,7 @@ const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
 		return prisma.user.update({
 			where: { id },
 			data: {
-				login: data.login,
+				username: data.username,
 				password: data.password,
 				isAdmin: data.isAdmin,
 			},
@@ -57,9 +57,9 @@ const UserRepository: Repository<IUser, CreateUserData, UpdateUserData> & {
 		});
 	},
 
-	async getOneByLogin(login: string) {
+	async getOneByUsername(username: string) {
 		return prisma.user.findUnique({
-			where: { login },
+			where: { username },
 			select: { ...defaultSelectFields, password: true },
 		});
 	},

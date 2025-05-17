@@ -29,7 +29,7 @@ const PermissionUserCourseRepository = {
 			include: { user: true },
 			orderBy: {
 				user: {
-					login: "asc",
+					username: "asc",
 				},
 			},
 		});

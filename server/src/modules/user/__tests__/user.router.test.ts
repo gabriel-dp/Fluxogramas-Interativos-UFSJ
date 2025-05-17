@@ -3,7 +3,7 @@ import {
 	ADMIN_CREDENTIALS,
 	NORMAL_CREDENTIALS,
 	generateNewUserData,
-	generateUniqueLogin,
+	generateUniqueUsername,
 	signIn,
 } from "@/utils/tests/tests.credentials";
 
@@ -98,16 +98,16 @@ describe("POST /user", () => {
 	});
 
 	describe("Admin", () => {
-		const login = generateNewUserData();
+		const username = generateNewUserData();
 
 		it("should create user", async () => {
 			const { token } = await signIn(ADMIN_CREDENTIALS);
-			await expectRequestSuccess(201, () => api.post("/user", login, authHeaders(token)));
+			await expectRequestSuccess(201, () => api.post("/user", username, authHeaders(token)));
 		});
 
-		it("should not create users with repeated login", async () => {
+		it("should not create users with repeated username", async () => {
 			const { token } = await signIn(ADMIN_CREDENTIALS);
-			await expectRequestFail(409, () => api.post("/user", login, authHeaders(token)));
+			await expectRequestFail(409, () => api.post("/user", username, authHeaders(token)));
 		});
 	});
 });
@@ -120,33 +120,33 @@ describe("PATCH /user/:id", () => {
 	});
 
 	describe("Normal user", () => {
-		const loginOriginal = generateNewUserData();
-		const loginUpdate = generateNewUserData();
+		const usernameOriginal = generateNewUserData();
+		const usernameUpdate = generateNewUserData();
 
 		it("should update its own data", async () => {
-			await UserService.create(loginOriginal);
+			await UserService.create(usernameOriginal);
 
-			const { id, token } = await signIn(loginOriginal);
-			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, loginUpdate, authHeaders(token)));
+			const { id, token } = await signIn(usernameOriginal);
+			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, usernameUpdate, authHeaders(token)));
 		});
 
-		it("should login only with new credentials", async () => {
-			await expect(signIn(loginUpdate)).resolves.toBeDefined();
-			await expect(signIn(loginOriginal)).rejects.toThrow();
+		it("should username only with new credentials", async () => {
+			await expect(signIn(usernameUpdate)).resolves.toBeDefined();
+			await expect(signIn(usernameOriginal)).rejects.toThrow();
 		});
 
 		it("should update its own data (reset to original)", async () => {
-			const { id, token } = await signIn(loginUpdate);
-			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, loginOriginal, authHeaders(token)));
+			const { id, token } = await signIn(usernameUpdate);
+			await expectRequestSuccess(200, () => api.patch(`/user/${id}`, usernameOriginal, authHeaders(token)));
 		});
 
-		it("should login only with the new credentials (reseted to original)", async () => {
-			await expect(signIn(loginOriginal)).resolves.toBeDefined();
-			await expect(signIn(loginUpdate)).rejects.toThrow();
+		it("should username only with the new credentials (reseted to original)", async () => {
+			await expect(signIn(usernameOriginal)).resolves.toBeDefined();
+			await expect(signIn(usernameUpdate)).rejects.toThrow();
 		});
 
 		it("should not make users admin", async () => {
-			const { id, token } = await signIn(loginOriginal);
+			const { id, token } = await signIn(usernameOriginal);
 			await expectRequestFail(403, () => api.patch(`/user/${id}`, { isAdmin: true }, authHeaders(token)));
 		});
 
@@ -158,19 +158,19 @@ describe("PATCH /user/:id", () => {
 	});
 
 	describe("Admin", () => {
-		const loginOriginal = generateNewUserData();
-		const loginUpdate = generateNewUserData();
+		const usernameOriginal = generateNewUserData();
+		const usernameUpdate = generateNewUserData();
 
 		it("should update data of other users and make admin", async () => {
-			await UserService.create(loginOriginal);
+			await UserService.create(usernameOriginal);
 
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
-			const { id: idNormal } = await signIn(loginOriginal);
+			const { id: idNormal } = await signIn(usernameOriginal);
 			await expectRequestSuccess(200, () =>
 				api.patch(
 					`/user/${idNormal}`,
 					{
-						...loginUpdate,
+						...usernameUpdate,
 						isAdmin: true,
 					},
 					authHeaders(tokenAdmin)
@@ -178,36 +178,36 @@ describe("PATCH /user/:id", () => {
 			);
 		});
 
-		it("should login only with new credentials", async () => {
-			await expect(signIn(loginUpdate)).resolves.toBeDefined();
-			await expect(signIn(loginOriginal)).rejects.toThrow();
+		it("should username only with new credentials", async () => {
+			await expect(signIn(usernameUpdate)).resolves.toBeDefined();
+			await expect(signIn(usernameOriginal)).rejects.toThrow();
 		});
 
 		it("should update data of other users (reset to original)", async () => {
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
-			const { id: idNormal } = await signIn(loginUpdate);
+			const { id: idNormal } = await signIn(usernameUpdate);
 			await expectRequestSuccess(200, () =>
-				api.patch(`/user/${idNormal}`, { ...loginOriginal, isAdmin: false }, authHeaders(tokenAdmin))
+				api.patch(`/user/${idNormal}`, { ...usernameOriginal, isAdmin: false }, authHeaders(tokenAdmin))
 			);
 		});
 
-		it("should login only with the new credentials (reseted to original)", async () => {
-			await expect(signIn(loginOriginal)).resolves.toBeDefined();
-			await expect(signIn(loginUpdate)).rejects.toThrow();
+		it("should username only with the new credentials (reseted to original)", async () => {
+			await expect(signIn(usernameOriginal)).resolves.toBeDefined();
+			await expect(signIn(usernameUpdate)).rejects.toThrow();
 		});
 
 		it("should not update an invalid user (12345678)", async () => {
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () =>
-				api.patch(`/user/${12345678}`, { login: generateUniqueLogin() }, authHeaders(token))
+				api.patch(`/user/${12345678}`, { username: generateUniqueUsername() }, authHeaders(token))
 			);
 		});
 
-		it("should not update login to another existing", async () => {
+		it("should not update username to another existing", async () => {
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
 			const { id: idNormal } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(409, () =>
-				api.patch(`/user/${idNormal}`, { login: ADMIN_CREDENTIALS.login }, authHeaders(tokenAdmin))
+				api.patch(`/user/${idNormal}`, { username: ADMIN_CREDENTIALS.username }, authHeaders(tokenAdmin))
 			);
 		});
 	});
@@ -221,24 +221,24 @@ describe("DELETE /user/:id", () => {
 	});
 
 	describe("Normal user", () => {
-		const loginToNotDelete = generateNewUserData();
+		const usernameToNotDelete = generateNewUserData();
 
 		it("should not be able to delete", async () => {
-			await UserService.create(loginToNotDelete);
-			const { id, token } = await signIn(loginToNotDelete);
+			await UserService.create(usernameToNotDelete);
+			const { id, token } = await signIn(usernameToNotDelete);
 			await expectRequestFail(403, () => api.delete(`/user/${id}`, authHeaders(token)));
 		});
 	});
 
 	describe("Admin", () => {
-		const loginToDelete = generateNewUserData();
+		const usernameToDelete = generateNewUserData();
 		let idToDelete: number;
 
 		it("should be able to delete users", async () => {
-			await UserService.create(loginToDelete);
+			await UserService.create(usernameToDelete);
 
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
-			idToDelete = (await signIn(loginToDelete)).id;
+			idToDelete = (await signIn(usernameToDelete)).id;
 			await expectRequestSuccess(204, () => api.delete(`/user/${idToDelete}`, authHeaders(tokenAdmin)));
 		});
 

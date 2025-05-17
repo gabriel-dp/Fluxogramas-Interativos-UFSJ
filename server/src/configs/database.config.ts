@@ -2,7 +2,7 @@ import { log } from "@/utils/log.utils";
 import UserService from "@/modules/user/user.service";
 
 const INITIAL_ADMIN = {
-	login: "admin",
+	username: "admin",
 	password: "@admin123",
 	isAdmin: true,
 };

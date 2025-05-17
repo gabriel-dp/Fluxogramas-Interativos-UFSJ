@@ -2,19 +2,19 @@ import AuthService from "@/modules/auth/auth.service";
 import { IUser } from "@/modules/user/user.model";
 
 export type Credentials = {
-	login: string;
+	username: string;
 	password: string;
 	isAdmin: boolean;
 };
 
 export const ADMIN_CREDENTIALS: Credentials = {
-	login: "admin",
+	username: "admin",
 	password: "@admin123",
 	isAdmin: true,
 };
 
 export const NORMAL_CREDENTIALS: Credentials = {
-	login: "login",
+	username: "username",
 	password: "12345678",
 	isAdmin: false,
 };
@@ -23,8 +23,8 @@ export function generateString(length: number, char = "0"): string {
 	return char.repeat(length);
 }
 
-export function generateUniqueLogin() {
-	return `login${process.hrtime.bigint()}`;
+export function generateUniqueUsername() {
+	return `username${process.hrtime.bigint()}`;
 }
 
 export function generateValidPassword() {
@@ -34,12 +34,18 @@ export function generateValidPassword() {
 
 export function generateNewUserData(): Credentials {
 	return {
-		login: generateUniqueLogin(),
+		username: generateUniqueUsername(),
 		password: generateValidPassword(),
 		isAdmin: false,
 	};
 }
 
-export async function signIn(credentials: Pick<Credentials, "login" | "password">): Promise<IUser & { token: string }> {
-	return AuthService.signIn({ login: credentials.login, password: credentials.password });
+export async function signIn(
+	credentials: Pick<Credentials, "username" | "password">
+): Promise<IUser & { token: string }> {
+	const { user, accessToken } = await AuthService.signIn({
+		username: credentials.username,
+		password: credentials.password,
+	});
+	return { ...user, token: accessToken };
 }
