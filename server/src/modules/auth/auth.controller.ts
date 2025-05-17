@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
+import ms from "ms";
 
 import { handleError } from "@/utils/exception.utils";
+import { generateAccessToken, getDataFromRefreshToken } from "@/utils/auth.utils";
 
 import AuthService from "./auth.service";
 import { RegisterData, SignInSchema } from "./auth.model";
-import { generateAccessToken, getDataFromRefreshToken } from "@/utils/auth.utils";
+
+const COOKIE_REFRESH_PATH = "/auth/refresh";
 
 async function register(req: Request, res: Response) {
 	const data: RegisterData = req.body;
@@ -27,8 +30,8 @@ async function signIn(req: Request, res: Response) {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "strict",
-			path: "/auth/refresh",
-			maxAge: 7 * 24 * 60 * 60 * 1000,
+			path: COOKIE_REFRESH_PATH,
+			maxAge: ms((process.env.REFRESH_TOKEN_EXPIRATION as ms.StringValue) ?? "7d"),
 		});
 
 		return res.status(200).json({ ...user, password: undefined, token: accessToken });
@@ -71,8 +74,7 @@ async function logout(req: Request, res: Response) {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "strict",
-			path: "/auth/refresh",
-			maxAge: 7 * 24 * 60 * 60 * 1000,
+			path: COOKIE_REFRESH_PATH,
 		});
 	}
 

@@ -24,6 +24,7 @@ model RefreshToken {
   id        Int      @id @default(autoincrement())
   tokenHash String
   createdAt DateTime @default(now())
+  expiresAt DateTime
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int  @unique
