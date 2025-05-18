@@ -5,7 +5,7 @@ import { log } from "@/utils/log.utils";
 const PROTECTED_FIELDS = ["password", "token"];
 
 export function requestLog(req: Request, res: Response, next: NextFunction) {
-	const body = { ...req.body };
+	const body = { ...req.body } as Record<string, unknown>;
 	PROTECTED_FIELDS.forEach((field) => {
 		if (field in body) {
 			body[field] = "...";

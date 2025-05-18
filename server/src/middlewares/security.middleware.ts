@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 
 import { AuthRequest, getDataFromAccessToken, getToken, isAdministrator, isAuthenticated } from "@/utils/auth.utils";
 
-export const getAuth = async (req: AuthRequest, res: Response, next: NextFunction) => {
+export const getAuth = (req: AuthRequest, res: Response, next: NextFunction) => {
 	req.user = undefined; // Clear any user data on request
 
 	try {
@@ -17,14 +17,14 @@ export const getAuth = async (req: AuthRequest, res: Response, next: NextFunctio
 	next();
 };
 
-export const requireAuth = async (req: AuthRequest, res: Response, next: NextFunction) =>
-	getAuth(req, res, async () => {
+export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction) =>
+	void getAuth(req, res, () => {
 		if (!isAuthenticated(req)) return res.sendStatus(401);
 		next();
 	});
 
-export const requireAdmin = async (req: AuthRequest, res: Response, next: NextFunction) =>
-	requireAuth(req, res, async () => {
+export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) =>
+	requireAuth(req, res, () => {
 		if (!isAdministrator(req)) return res.sendStatus(403);
 		next();
 	});

@@ -10,7 +10,7 @@ import { RegisterData, SignInSchema } from "./auth.model";
 const COOKIE_REFRESH_PATH = "/auth/refresh";
 
 async function register(req: Request, res: Response) {
-	const data: RegisterData = req.body;
+	const data = req.body as RegisterData;
 
 	try {
 		const user = await AuthService.register(data);
@@ -21,7 +21,7 @@ async function register(req: Request, res: Response) {
 }
 
 async function signIn(req: Request, res: Response) {
-	const data: SignInSchema = req.body;
+	const data = req.body as SignInSchema;
 
 	try {
 		const { user, accessToken, refreshToken } = await AuthService.signIn(data);
@@ -41,7 +41,7 @@ async function signIn(req: Request, res: Response) {
 }
 
 async function refreshToken(req: Request, res: Response) {
-	const { refreshToken } = req.cookies;
+	const { refreshToken } = req.cookies as { refreshToken: string };
 
 	try {
 		const refreshTokenData = getDataFromRefreshToken(refreshToken);
@@ -56,15 +56,15 @@ async function refreshToken(req: Request, res: Response) {
 }
 
 async function logout(req: Request, res: Response) {
-	const token = req.cookies.refreshToken;
+	const { refreshToken } = req.cookies as { refreshToken: string };
 
-	if (!token) {
+	if (!refreshToken) {
 		return res.sendStatus(204);
 	}
 
 	try {
-		const tokenData = getDataFromRefreshToken(token);
-		if (tokenData && (await AuthService.validateRefreshToken(tokenData.id, token))) {
+		const tokenData = getDataFromRefreshToken(refreshToken);
+		if (tokenData && (await AuthService.validateRefreshToken(tokenData.id, refreshToken))) {
 			await AuthService.logout(tokenData.id);
 		}
 	} catch (error) {

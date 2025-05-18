@@ -32,7 +32,7 @@ export default function SignIn() {
 			</label>
 			{error && <p style={{ color: "red" }}>{error}</p>}
 			<div>
-				<button type="button" onClick={() => void handleSubmit}>
+				<button type="button" onClick={() => void handleSubmit()}>
 					Submit
 				</button>
 			</div>

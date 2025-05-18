@@ -30,7 +30,7 @@ async function getUsersByCourse(req: Request, res: Response) {
 
 async function setUserPermissions(req: Request, res: Response) {
 	const userId = getId(req);
-	const data: CreatePermissionUserCourseData = req.body;
+	const data = req.body as CreatePermissionUserCourseData;
 
 	try {
 		const users = await PermissionUserCouseService.setUserPermissions({ userId, courseIds: data.courseIds });
