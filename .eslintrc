@@ -8,9 +8,9 @@
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/recommended",
+		"plugin:@typescript-eslint/recommended-requiring-type-checking", // add this to enable type-aware rules
 		"plugin:react-hooks/recommended"
 	],
-	"overrides": [],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": "latest",
@@ -28,5 +28,19 @@
 		"@typescript-eslint/no-use-before-define": "error",
 		"react-hooks/rules-of-hooks": "error",
 		"react-hooks/exhaustive-deps": "error"
-	}
+	},
+	"overrides": [
+		{
+			"files": ["client/**/*.ts", "client/**/*.tsx"],
+			"parserOptions": {
+				"project": "./client/tsconfig.json"
+			}
+		},
+		{
+			"files": ["server/**/*.ts", "server/**/*.tsx"],
+			"parserOptions": {
+				"project": "./server/tsconfig.json"
+			}
+		}
+	]
 }

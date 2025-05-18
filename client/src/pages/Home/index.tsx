@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { Routes } from "@/routes";
 import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
@@ -21,7 +22,7 @@ export default function Home() {
 			setAllCourses(await requestAllCourses());
 			setLoading(false);
 		}
-		asyncSetAllCourses();
+		void asyncSetAllCourses();
 	}, []);
 
 	useEffect(() => {
@@ -38,7 +39,7 @@ export default function Home() {
 
 	const navigate = useNavigate();
 	function handleCourseClick(code: string) {
-		navigate(code);
+		navigate(Routes.course(code));
 	}
 
 	return (

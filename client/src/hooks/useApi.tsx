@@ -1,15 +1,21 @@
 import { useEffect, useMemo } from "react";
-import axios, { AxiosInstance } from "axios";
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 
-import { useAuth } from "@/contexts/auth/useAuth";
+import useAuth from "@/contexts/auth/useAuth";
+
+interface CustomAxiosRequestConfig extends AxiosRequestConfig {
+	_retry?: boolean;
+}
 
 export default function useApi(): AxiosInstance {
 	const { token: accessToken, setToken: setAccessToken, logout } = useAuth();
 
 	const api = useMemo(() => {
-		if (import.meta.env.VITE_API_URL == undefined) throw Error("API URL env variable not set");
+		const baseURL = import.meta.env.VITE_API_URL as string;
+		if (!baseURL) throw new Error("API URL env variable not set");
+
 		return axios.create({
-			baseURL: import.meta.env.VITE_API_URL,
+			baseURL,
 			withCredentials: true,
 		});
 	}, []);
@@ -25,23 +31,25 @@ export default function useApi(): AxiosInstance {
 
 		// Response interceptor for handling token refresh when access token is invalid
 		const resInterceptor = api.interceptors.response.use(
-			(res) => res,
-			async (error) => {
-				const originalRequest = error.config;
+			(response) => response,
+			async (error: AxiosError) => {
+				const originalRequest = error.config as CustomAxiosRequestConfig;
 
-				if (error.response?.status === 401 && !originalRequest._retry) {
+				if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
 					originalRequest._retry = true;
 
 					try {
-						const refreshRes = await api.post("/auth/refresh");
-						const newAccessToken = refreshRes.data.accessToken;
+						const refreshRes = await api.post<{ token: string }>("/auth/refresh");
+						const newAccessToken = refreshRes.data.token;
 
 						setAccessToken(newAccessToken);
 
+						if (!originalRequest.headers) originalRequest.headers = {};
 						originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
 						return api(originalRequest);
 					} catch (refreshError) {
-						logout(); // if refresh fails
+						await logout(); // if refresh fails
 						return Promise.reject(refreshError);
 					}
 				}
