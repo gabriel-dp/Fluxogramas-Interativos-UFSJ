@@ -5,9 +5,9 @@ import { ThemeProvider } from "./theme/ThemeContext";
 export default function AppProvider(props: React.PropsWithChildren) {
 	return (
 		<ConfigsProvider>
-			<AuthProvider>
-				<ThemeProvider>{props.children}</ThemeProvider>
-			</AuthProvider>
+			<ThemeProvider>
+				<AuthProvider>{props.children}</AuthProvider>
+			</ThemeProvider>
 		</ConfigsProvider>
 	);
 }
