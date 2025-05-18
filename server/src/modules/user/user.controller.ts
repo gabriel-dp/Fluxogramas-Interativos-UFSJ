@@ -28,7 +28,7 @@ async function readOne(req: AuthRequest, res: Response) {
 }
 
 async function createOne(req: AuthRequest, res: Response) {
-	const data: CreateUserData = req.body;
+	const data = req.body as CreateUserData;
 
 	try {
 		const user = await UserService.create(data);
@@ -40,7 +40,7 @@ async function createOne(req: AuthRequest, res: Response) {
 
 async function updateOne(req: AuthRequest, res: Response) {
 	const id = getId(req);
-	const data: UpdateUserData = req.body;
+	const data = req.body as UpdateUserData;
 
 	try {
 		const user = await UserService.update(id, data);
@@ -61,7 +61,7 @@ async function deleteOne(req: Request, res: Response) {
 	}
 }
 
-export async function sameUserOrAdmin(req: AuthRequest, res: Response, next: NextFunction) {
+export function sameUserOrAdmin(req: AuthRequest, res: Response, next: NextFunction) {
 	const id = getId(req);
 
 	try {
@@ -75,8 +75,8 @@ export async function sameUserOrAdmin(req: AuthRequest, res: Response, next: Nex
 	next();
 }
 
-export async function adminFieldsCheck(req: AuthRequest, res: Response, next: NextFunction) {
-	const data: CreateUserData = req.body;
+export function adminFieldsCheck(req: AuthRequest, res: Response, next: NextFunction) {
+	const data = req.body as CreateUserData;
 
 	try {
 		// Only admins can create other admins

@@ -21,7 +21,7 @@ export default function CourseData() {
 			setCourse(await requestCourse(code ?? ""));
 			setLoading(false);
 		}
-		asyncSetCourse();
+		void asyncSetCourse();
 	}, [code]);
 
 	return (

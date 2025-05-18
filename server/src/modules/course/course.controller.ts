@@ -27,7 +27,7 @@ async function readOne(req: Request, res: Response) {
 }
 
 async function createOne(req: Request, res: Response) {
-	const data: CreateCourseData = req.body;
+	const data = req.body as CreateCourseData;
 
 	try {
 		const course = await CourseService.create(data);
@@ -39,7 +39,7 @@ async function createOne(req: Request, res: Response) {
 
 async function updateOne(req: Request, res: Response) {
 	const id = getId(req);
-	const data: UpdateCourseData = req.body;
+	const data = req.body as UpdateCourseData;
 
 	try {
 		const course = await CourseService.update(id, data);

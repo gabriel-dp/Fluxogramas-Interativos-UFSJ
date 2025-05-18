@@ -27,7 +27,7 @@ async function readOne(req: Request, res: Response) {
 }
 
 async function createOne(req: Request, res: Response) {
-	const data: CreateShiftData = req.body;
+	const data = req.body as CreateShiftData;
 
 	try {
 		const course = await ShiftService.create(data);
@@ -39,7 +39,7 @@ async function createOne(req: Request, res: Response) {
 
 async function updateOne(req: Request, res: Response) {
 	const id = getId(req);
-	const data: UpdateShiftData = req.body;
+	const data = req.body as UpdateShiftData;
 
 	try {
 		const course = await ShiftService.update(id, data);

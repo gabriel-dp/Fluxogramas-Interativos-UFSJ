@@ -7,7 +7,7 @@ export const api = axios.create({
 export function authHeaders(token?: string): AxiosRequestConfig {
 	const headers = {
 		headers: {
-			authorization: `Bearer ${token}`,
+			authorization: `Bearer ${token ?? ""}`,
 		},
 	};
 	return headers;
@@ -23,7 +23,7 @@ export async function expectRequestSuccess(status: number, func: () => Promise<A
 		expect(response.status).toBe(status);
 		return response;
 	} catch (error) {
-		fail(`should success, expect ${status}, got ${(error as AxiosError).response?.status}`);
+		fail(`should success, expect ${status}, got ${(error as AxiosError).response?.status ?? "???"}`);
 	}
 }
 
