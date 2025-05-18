@@ -6,6 +6,7 @@ import { generateAccessToken, getDataFromRefreshToken } from "@/utils/auth.utils
 
 import AuthService from "./auth.service";
 import { RegisterData, SignInSchema } from "./auth.model";
+import UserService from "../user/user.service";
 
 const COOKIE_REFRESH_PATH = "/auth/refresh";
 
@@ -34,7 +35,7 @@ async function signIn(req: Request, res: Response) {
 			maxAge: ms((process.env.REFRESH_TOKEN_EXPIRATION as ms.StringValue) ?? "7d"),
 		});
 
-		return res.status(200).json({ ...user, password: undefined, token: accessToken });
+		return res.status(200).json({ user: { ...user, password: undefined }, token: accessToken });
 	} catch (error) {
 		return handleError(res, error);
 	}
@@ -47,7 +48,9 @@ async function refreshToken(req: Request, res: Response) {
 		const refreshTokenData = getDataFromRefreshToken(refreshToken);
 		if (refreshTokenData && (await AuthService.validateRefreshToken(refreshTokenData.id, refreshToken))) {
 			const accessToken = generateAccessToken({ id: refreshTokenData.id, isAdmin: refreshTokenData.isAdmin });
-			return res.status(200).json({ token: accessToken });
+			const user = await UserService.getOne(refreshTokenData.id);
+
+			return res.status(200).json({ user: { ...user, password: undefined }, token: accessToken });
 		}
 		return res.sendStatus(403);
 	} catch (error) {

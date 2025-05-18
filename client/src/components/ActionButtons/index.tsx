@@ -3,15 +3,21 @@ import { FaSlidersH as MainIcon, FaSun as LightIcon, FaMoon as DarkIcon, FaUserL
 
 import { Routes } from "@/routes";
 import useConfigs from "@/contexts/configs/useConfigs";
+import useAuth from "@/contexts/auth/useAuth";
 
 import { ButtonsStack, MainButton, SecondaryButton } from "./styles";
 
 export default function ActionButtons() {
+	const navigate = useNavigate();
+	const { isAuthenticated } = useAuth();
 	const { darkMode, toggleTheme } = useConfigs();
 
-	const navigate = useNavigate();
 	function goToAuth() {
-		navigate(Routes.signIn);
+		if (isAuthenticated) {
+			navigate(Routes.dashboard);
+		} else {
+			navigate(Routes.signIn);
+		}
 	}
 
 	const buttons = [
