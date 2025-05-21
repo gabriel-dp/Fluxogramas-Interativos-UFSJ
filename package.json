@@ -9,8 +9,8 @@
 		"dev": "npm-run-all --parallel dev:client dev:server",
 		"dev:client": "cd client && npm start",
 		"dev:server": "cd server && npm start",
-		"docker:start": "docker-compose -f docker/docker-compose.yml up",
-		"docker:end": "docker-compose -f docker/docker-compose.yml down",
+		"docker:up": "docker-compose -f docker/docker-compose.yml up",
+		"docker:down": "docker-compose -f docker/docker-compose.yml down",
 		"test": "npm run test:start ; npm run test:finish",
 		"test:start": "docker-compose -p test -f docker/docker-compose.test.yml up --abort-on-container-exit --exit-code-from server-test",
 		"test:finish": "docker-compose -p test -f docker/docker-compose.test.yml down"
