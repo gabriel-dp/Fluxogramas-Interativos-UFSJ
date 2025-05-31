@@ -8,8 +8,9 @@
 		"eslint:recommended",
 		"plugin:react/recommended",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:@typescript-eslint/recommended-requiring-type-checking", // add this to enable type-aware rules
-		"plugin:react-hooks/recommended"
+		"plugin:@typescript-eslint/recommended-requiring-type-checking", 
+		"plugin:react-hooks/recommended",
+		"plugin:prettier/recommended"
 	],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
