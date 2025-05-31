@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
-import DataTable, { TableColumn } from "react-data-table-component";
+import { TableColumn } from "react-data-table-component";
 
 import useAuth from "@/contexts/auth/useAuth";
 import useApi from "@/hooks/useApi";
 import { IUser } from "@/types/user";
+import DataTable from "@/components/DataTable";
 
 const columns: TableColumn<IUser>[] = [
 	{
 		name: "Id",
 		selector: (row) => row.id,
+		sortable: true,
 	},
 	{
-		name: "Usuário",
+		name: "Nome",
 		selector: (row) => row.username,
+		sortable: true,
 	},
 	{
-		name: "Admin",
-		selector: (row) => row.isAdmin,
+		name: "Administrador?",
+		selector: (row) => (row.isAdmin ? "Sim" : "Não"),
+		sortable: true,
 	},
 ];
 
@@ -24,6 +28,7 @@ export default function Users() {
 	const api = useApi();
 	const { user } = useAuth();
 	const [users, setUsers] = useState<IUser[]>([]);
+	const [selectedUser, setSelectedUser] = useState<IUser | undefined>();
 
 	useEffect(() => {
 		async function requestUsers() {
@@ -37,7 +42,9 @@ export default function Users() {
 
 	return (
 		<>
-			<DataTable columns={columns} data={users} />
+			<h1>Listagem de usuários</h1>
+			<DataTable columns={columns} data={users} onRowClicked={(e) => setSelectedUser(e)} />
+			<>{JSON.stringify(selectedUser)}</>
 		</>
 	);
 }
