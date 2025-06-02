@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Routes } from "@/routes";
-import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
 import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
@@ -21,8 +20,8 @@ export default function Home() {
 	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
 
 	useEffect(() => {
-		async function asyncSetAllCourses() {
-			setAllCourses(await requestAllCourses());
+		function asyncSetAllCourses() {
+			setAllCourses([]);
 			setLoading(false);
 		}
 		void asyncSetAllCourses();

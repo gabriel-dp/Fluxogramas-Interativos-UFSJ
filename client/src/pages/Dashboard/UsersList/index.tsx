@@ -24,7 +24,7 @@ const columns: TableColumn<IUser>[] = [
 	},
 ];
 
-export default function Users() {
+export default function UsersList() {
 	const api = useApi();
 	const { user } = useAuth();
 	const [users, setUsers] = useState<IUser[]>([]);
@@ -41,10 +41,10 @@ export default function Users() {
 	}, [api, user]);
 
 	return (
-		<>
-			<h1>Listagem de usuários</h1>
+		<div>
+			<h1>Listagem de Usuários</h1>
 			<DataTable columns={columns} data={users} onRowClicked={(e) => setSelectedUser(e)} />
 			<>{JSON.stringify(selectedUser)}</>
-		</>
+		</div>
 	);
 }

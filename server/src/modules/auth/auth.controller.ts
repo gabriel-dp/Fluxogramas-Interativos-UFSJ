@@ -8,8 +8,6 @@ import AuthService from "./auth.service";
 import { RegisterData, SignInSchema } from "./auth.model";
 import UserService from "../user/user.service";
 
-const COOKIE_REFRESH_PATH = "/auth/refresh";
-
 async function register(req: Request, res: Response) {
 	const data = req.body as RegisterData;
 
@@ -31,7 +29,7 @@ async function signIn(req: Request, res: Response) {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "strict",
-			path: COOKIE_REFRESH_PATH,
+			path: "/",
 			maxAge: ms((process.env.REFRESH_TOKEN_EXPIRATION as ms.StringValue) ?? "7d"),
 		});
 
@@ -77,7 +75,7 @@ async function logout(req: Request, res: Response) {
 			httpOnly: true,
 			secure: process.env.NODE_ENV === "production",
 			sameSite: "strict",
-			path: COOKIE_REFRESH_PATH,
+			path: "/",
 		});
 	}
 

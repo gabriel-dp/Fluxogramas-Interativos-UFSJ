@@ -1,7 +1,7 @@
-interface CourseEditorProps {
-	code: string;
-}
+import { useParams } from "react-router-dom";
 
-export default function CourseEditor(props: CourseEditorProps) {
-	return <>{props.code}</>;
+export default function CourseEditor() {
+	const { code } = useParams();
+
+	return <>{code}</>;
 }
