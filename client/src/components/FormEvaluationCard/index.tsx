@@ -1,22 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import useStoredState from "@/hooks/useStoredState";
 
 import { CardContainer } from "./styles";
 
 export default function FormEvaluation() {
-	const FORMS_LINK = "https://forms.google.com";
+	const FORMS_LINK = "https://forms.gle/nnmqozewNsN1cMVq7";
 
-	const [shouldDisplay, setShouldDisplay] = useStoredState("fluxogramas-interativos-evaluation", { display: true });
-	const [shouldRender, setShouldRender] = useState(shouldDisplay.display);
+	const [evaluation, setEvaluation] = useStoredState("fluxogramas-interativos-evaluation", {
+		display: true,
+		firstAccess: true,
+	});
+	const [shouldRender, setShouldRender] = useState(evaluation.display && !evaluation.firstAccess);
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setEvaluation((state) => {
+				setShouldRender(state.display);
+				return { ...state, firstAccess: false };
+			});
+		}, 10 * 1000);
+
+		return () => clearTimeout(timer);
+	}, [setEvaluation]);
 
 	function handlePositive() {
-		setShouldDisplay({ display: false });
+		setEvaluation((state) => ({ ...state, display: false }));
 	}
 
 	function handleNegative() {
 		setShouldRender(false);
-		setShouldDisplay({ display: false });
+		setEvaluation((state) => ({ ...state, display: false }));
 	}
 
 	function handleClose() {
