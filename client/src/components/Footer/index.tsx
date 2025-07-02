@@ -10,6 +10,15 @@ export default function Footer() {
 						Caso haja informações erradas, entre em contato via <a href="mailto:gabriel.meira.2004@gmail.com">email</a>
 					</p>
 				</div>
+				<a
+					className="evaluation"
+					onClick={() => 0}
+					href="https://forms.gle/nnmqozewNsN1cMVq7"
+					target="_blank"
+					rel="noopener noreferrer"
+				>
+					Avalie a ferramenta!
+				</a>
 				<div>
 					<p>
 						<a href="https://github.com/gabriel-dp/Fluxogramas-Interativos-UFSJ">Ver código-fonte do projeto</a>

@@ -7,6 +7,7 @@ import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
+import FormEvaluationCard from "@/components/FormEvaluationCard";
 
 import { Screen, Header, CurriculumContainer } from "./styles";
 
@@ -25,6 +26,7 @@ export default function CourseData() {
 
 	return (
 		<Screen>
+			<FormEvaluationCard />
 			<Header>
 				<p>{course ? course.name : "-"}</p>
 				<div>
