@@ -40,4 +40,19 @@ export const FooterContent = styled.div`
 			}
 		}
 	}
+
+	.evaluation {
+		appearance: none;
+		cursor: pointer;
+		padding: 0.5rem 1rem;
+		border: none;
+		border-radius: 0.25rem;
+		flex: 1;
+		background-color: ${(props) => props.theme.primary};
+		color: ${(props) => props.theme.primaryText};
+		font-size: 0.75rem;
+		padding: 0.625rem 1rem;
+		text-align: center;
+		text-decoration: none;
+	}
 `;
