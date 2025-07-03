@@ -14,7 +14,7 @@ export default function Home() {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 
-	const [search, setSearch] = useState(queryParams.get("search"));
+	const [search, setSearch] = useState(queryParams.get("search") ?? "");
 	const [loading, setLoading] = useState(true);
 	const [allCourses, setAllCourses] = useState<Course[]>([]);
 	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
