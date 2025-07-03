@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { requestAllCourses } from "@/services/course/requests";
 import { Course } from "@/services/course/types";
@@ -11,7 +11,10 @@ import logo from "@/assets/logo.png";
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
 
 export default function Home() {
-	const [search, setSearch] = useState("");
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
+
+	const [search, setSearch] = useState(queryParams.get("search"));
 	const [loading, setLoading] = useState(true);
 	const [allCourses, setAllCourses] = useState<Course[]>([]);
 	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
