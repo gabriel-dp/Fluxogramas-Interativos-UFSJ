@@ -19,7 +19,7 @@ export default function FormEvaluation() {
 				setShouldRender(state.display);
 				return { ...state, firstAccess: false };
 			});
-		}, 10 * 1000);
+		}, 5 * 1000);
 
 		return () => clearTimeout(timer);
 	}, [setEvaluation]);
@@ -30,7 +30,6 @@ export default function FormEvaluation() {
 
 	function handleNegative() {
 		setShouldRender(false);
-		setEvaluation((state) => ({ ...state, display: false }));
 	}
 
 	function handleClose() {
@@ -50,7 +49,7 @@ export default function FormEvaluation() {
 					Avaliar
 				</a>
 				<button className="no" onClick={handleNegative}>
-					Não, obrigado
+					Agora não
 				</button>
 			</div>
 		</CardContainer>
