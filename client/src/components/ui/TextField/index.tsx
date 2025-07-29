@@ -1,42 +1,38 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, forwardRef } from "react";
+
 import { InputWrapper, StyledInput, StyledLabel, Wrapper } from "./styles";
 
 interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	label: string;
 }
 
-const TextField: React.FC<TextFieldProps> = ({ label, value, ...props }) => {
+const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, value, onFocus, onBlur, ...props }, ref) => {
 	const [focused, setFocused] = useState(false);
-	const inputRef = useRef<HTMLInputElement>(null);
+	const [filled, setFilled] = useState(false);
 
-	const isFloating = focused || !!value;
+	const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+		setFocused(false);
+		setFilled(!!e.target.value);
+		onBlur?.(e);
+	};
 
-	useEffect(() => {
-		if (inputRef.current && document.activeElement === inputRef.current) {
-			setFocused(true);
-		}
-	}, []);
+	const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+		setFocused(true);
+		onFocus?.(e);
+	};
+
+	const isFloating = focused || filled || !!value;
 
 	return (
 		<Wrapper>
 			<InputWrapper>
-				<StyledInput
-					{...props}
-					ref={inputRef}
-					value={value}
-					onFocus={(e) => {
-						setFocused(true);
-						props.onFocus?.(e);
-					}}
-					onBlur={(e) => {
-						setFocused(false);
-						props.onBlur?.(e);
-					}}
-				/>
+				<StyledInput {...props} ref={ref} value={value} onFocus={handleFocus} onBlur={handleBlur} />
 				<StyledLabel isFloating={isFloating}>{label}</StyledLabel>
 			</InputWrapper>
 		</Wrapper>
 	);
-};
+});
+
+TextField.displayName = "TextField";
 
 export default TextField;

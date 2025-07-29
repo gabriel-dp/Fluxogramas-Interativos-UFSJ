@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Routes } from "@/routes";
 import useAuth from "@/contexts/auth/useAuth";
 import TextField from "@/components/ui/TextField";
-import { Button } from "@/components/ui/Button";
+import Button from "@/components/ui/Button";
 
 import { SignInFormContainer, SignInFormTitle } from "./styles";
 

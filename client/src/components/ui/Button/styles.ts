@@ -13,12 +13,12 @@ const categoryStyles = {
 		}
 	`,
 	secondary: css`
-		background-color: ${(props) => props.theme.primaryText};
+		background-color: transparent;
 		color: ${(props) => props.theme.primary};
-		border: none;
+		border: 1px solid ${(props) => props.theme.primary};
 
 		&:hover {
-			background-color: ${(props) => props.theme.primaryText};
+			background-color: ${(props) => props.theme.primaryText}AA;
 		}
 	`,
 };
@@ -28,7 +28,9 @@ export const StyledButton = styled.button<{ $category: ButtonCategory }>`
 	font-size: 1rem;
 	border-radius: 0.25rem;
 	cursor: pointer;
-	transition: background-color 0.2s ease, color 0.2s ease;
+	transition:
+		background-color 0.2s ease,
+		color 0.2s ease;
 
 	white-space: nowrap;
 	overflow: hidden;

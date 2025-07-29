@@ -6,6 +6,8 @@ import useApi from "@/hooks/useApi";
 import { ICourseComplete } from "@/types/course";
 import DataTable from "@/components/DataTable";
 
+import { DashboardContent } from "../styles";
+
 const columns: TableColumn<ICourseComplete>[] = [
 	{
 		name: "Id",
@@ -56,10 +58,10 @@ export default function Course() {
 	}, [api, user]);
 
 	return (
-		<div>
+		<DashboardContent>
 			<h1>Listagem de Cursos</h1>
 			<DataTable columns={columns} data={courses} onRowClicked={(e) => setSelectedCourse(e)} />
 			<>{JSON.stringify(selectedCourse)}</>
-		</div>
+		</DashboardContent>
 	);
 }

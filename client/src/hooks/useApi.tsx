@@ -55,7 +55,7 @@ export default function useApi(): AxiosInstance {
 				}
 
 				return Promise.reject(error);
-			}
+			},
 		);
 
 		return () => {

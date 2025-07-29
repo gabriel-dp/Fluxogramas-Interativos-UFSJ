@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
 import useAuth from "@/contexts/auth/useAuth";
-import useApi from "@/hooks/useApi";
 import { IUser } from "@/types/user";
 import DataTable from "@/components/DataTable";
+import Button from "@/components/ui/Button";
+
+import UserForm from "./UserForm";
+import { DashboardContent } from "../styles";
+import useUserService from "@/services/userService";
 
 const columns: TableColumn<IUser>[] = [
 	{
@@ -25,26 +29,29 @@ const columns: TableColumn<IUser>[] = [
 ];
 
 export default function UsersList() {
-	const api = useApi();
+	const { readAll } = useUserService();
 	const { user } = useAuth();
 	const [users, setUsers] = useState<IUser[]>([]);
-	const [selectedUser, setSelectedUser] = useState<IUser | undefined>();
+	const [selectedUser, setSelectedUser] = useState<IUser | null | undefined>();
+
+	const requestUsers = useCallback(async () => {
+		if (user?.isAdmin) {
+			setUsers(await readAll());
+		}
+	}, [readAll, user]);
 
 	useEffect(() => {
-		async function requestUsers() {
-			if (user?.isAdmin) {
-				const response = await api.get<IUser[]>("user");
-				setUsers(response.data);
-			}
-		}
 		void requestUsers();
-	}, [api, user]);
+	}, [requestUsers]);
 
 	return (
-		<div>
-			<h1>Listagem de Usuários</h1>
+		<DashboardContent>
+			<div style={{ display: "flex", justifyContent: "space-between" }}>
+				<h1>Listagem de Usuários</h1>
+				<Button onClick={() => setSelectedUser(null)}>Criar</Button>
+			</div>
 			<DataTable columns={columns} data={users} onRowClicked={(e) => setSelectedUser(e)} />
-			<>{JSON.stringify(selectedUser)}</>
-		</div>
+			<UserForm selectedUser={selectedUser} refresh={() => void requestUsers()} />
+		</DashboardContent>
 	);
 }

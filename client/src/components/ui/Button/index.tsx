@@ -8,10 +8,12 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	category?: ButtonCategory;
 }
 
-export const Button: React.FC<ButtonProps> = ({ children, category = "primary", ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, category = "primary", ...props }) => {
 	return (
 		<StyledButton $category={category} {...props}>
 			{children}
 		</StyledButton>
 	);
 };
+
+export default Button;
