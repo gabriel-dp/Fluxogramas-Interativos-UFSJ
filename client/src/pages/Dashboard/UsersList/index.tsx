@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
+import useUserService from "@/services/userService";
 import useAuth from "@/contexts/auth/useAuth";
 import { IUser } from "@/types/user";
 import DataTable from "@/components/DataTable";
@@ -8,7 +9,6 @@ import Button from "@/components/ui/Button";
 
 import UserForm from "./UserForm";
 import { DashboardContent } from "../styles";
-import useUserService from "@/services/userService";
 
 const columns: TableColumn<IUser>[] = [
 	{

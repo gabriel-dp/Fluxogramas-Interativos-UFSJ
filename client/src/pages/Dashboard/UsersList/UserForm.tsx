@@ -45,7 +45,7 @@ export default function UserForm(props: UserFormI) {
 
 	async function onSubmit(data: UserFormFields) {
 		if (props.selectedUser) {
-			await updateOne({ ...data, id: props.selectedUser.id });
+			await updateOne(props.selectedUser.id, data);
 		} else {
 			await createOne(data);
 		}

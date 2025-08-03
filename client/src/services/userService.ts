@@ -1,6 +1,7 @@
+import { useCallback } from "react";
+
 import useApi from "@/hooks/useApi";
 import { IUser } from "@/types/user";
-import { useCallback } from "react";
 
 export default function useUserService() {
 	const api = useApi();
@@ -19,8 +20,8 @@ export default function useUserService() {
 	);
 
 	const updateOne = useCallback(
-		async (data: Partial<IUser> & { id: number }): Promise<IUser> => {
-			const response = await api.patch<IUser>(`/user/${data.id}`, data);
+		async (id: number, data: object): Promise<IUser> => {
+			const response = await api.patch<IUser>(`/user/${id}`, data);
 			return response.data;
 		},
 		[api],

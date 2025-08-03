@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
-import useAuth from "@/contexts/auth/useAuth";
-import useApi from "@/hooks/useApi";
+import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
 import DataTable from "@/components/DataTable";
+import Button from "@/components/ui/Button";
 
 import { DashboardContent } from "../styles";
+import CourseForm from "./CourseForm";
 
 const columns: TableColumn<ICourseComplete>[] = [
 	{
@@ -42,26 +43,27 @@ const columns: TableColumn<ICourseComplete>[] = [
 ];
 
 export default function Course() {
-	const api = useApi();
-	const { user } = useAuth();
+	const { readAll } = useCourseService();
 	const [courses, setCourses] = useState<ICourseComplete[]>([]);
-	const [selectedCourse, setSelectedCourse] = useState<ICourseComplete | undefined>();
+	const [selectedCourse, setSelectedCourse] = useState<ICourseComplete | null | undefined>();
+
+	const requestCourses = useCallback(async () => {
+		setCourses(await readAll());
+		setSelectedCourse(undefined);
+	}, [readAll]);
 
 	useEffect(() => {
-		async function requestUsers() {
-			if (user?.isAdmin) {
-				const response = await api.get<ICourseComplete[]>("course");
-				setCourses(response.data);
-			}
-		}
-		void requestUsers();
-	}, [api, user]);
+		void requestCourses();
+	}, [requestCourses]);
 
 	return (
 		<DashboardContent>
-			<h1>Listagem de Cursos</h1>
+			<div style={{ display: "flex", justifyContent: "space-between" }}>
+				<h1>Listagem de Cursos</h1>
+				<Button onClick={() => setSelectedCourse(null)}>Criar</Button>
+			</div>
 			<DataTable columns={columns} data={courses} onRowClicked={(e) => setSelectedCourse(e)} />
-			<>{JSON.stringify(selectedCourse)}</>
+			<CourseForm selectedCourse={selectedCourse} refresh={() => void requestCourses()} />
 		</DashboardContent>
 	);
 }
