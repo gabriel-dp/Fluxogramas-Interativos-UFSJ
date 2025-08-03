@@ -23,6 +23,8 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, value, 
 
 	const isFloating = focused || filled || !!value;
 
+	console.log(value);
+
 	return (
 		<Wrapper>
 			<InputWrapper>

@@ -19,8 +19,13 @@ interface UserFormI {
 }
 
 export default function UserForm(props: UserFormI) {
-	const { create, update } = useUserService();
-	const { control, reset, handleSubmit } = useForm<UserFormFields>();
+	const { createOne, updateOne, deleteOne } = useUserService();
+	const { control, reset, handleSubmit } = useForm<UserFormFields>({
+		defaultValues: {
+			username: "",
+			password: "",
+		},
+	});
 
 	useEffect(() => {
 		if (props.selectedUser) {
@@ -40,14 +45,20 @@ export default function UserForm(props: UserFormI) {
 
 	async function onSubmit(data: UserFormFields) {
 		if (props.selectedUser) {
-			console.log("editando:", data);
-			await update({ ...data, id: props.selectedUser.id });
+			await updateOne({ ...data, id: props.selectedUser.id });
 		} else {
-			console.log("criando:", data);
-			await create(data);
+			await createOne(data);
 		}
 		props.refresh();
 	}
+
+	async function onDelete() {
+		if (props.selectedUser) {
+			await deleteOne(props.selectedUser.id);
+		}
+		props.refresh();
+	}
+
 	return (
 		<DashboardForm
 			onSubmit={(e) => {
@@ -55,7 +66,7 @@ export default function UserForm(props: UserFormI) {
 				e.preventDefault();
 			}}
 		>
-			{!props.selectedUser ? <h2>Novo Usuário</h2> : <h2>Editar Usuário ({props.selectedUser.id})</h2>}
+			{props.selectedUser ? <h2>Editar Usuário ({props.selectedUser.id})</h2> : <h2>Novo Usuário</h2>}
 			<div>
 				<Controller
 					name="username"
@@ -73,7 +84,9 @@ export default function UserForm(props: UserFormI) {
 			{props.selectedUser ? (
 				<div>
 					<Button type="submit">Salvar</Button>
-					<Button category="secondary">Deletar</Button>
+					<Button onClick={() => void onDelete()} category="secondary">
+						Deletar
+					</Button>
 				</div>
 			) : (
 				<div>

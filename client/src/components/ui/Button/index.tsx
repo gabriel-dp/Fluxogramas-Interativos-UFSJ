@@ -8,9 +8,9 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 	category?: ButtonCategory;
 }
 
-const Button: React.FC<ButtonProps> = ({ children, category = "primary", ...props }) => {
+const Button: React.FC<ButtonProps> = ({ children, category = "primary", type = "button", ...props }) => {
 	return (
-		<StyledButton $category={category} {...props}>
+		<StyledButton $category={category} type={type} {...props}>
 			{children}
 		</StyledButton>
 	);
