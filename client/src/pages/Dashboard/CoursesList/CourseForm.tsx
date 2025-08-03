@@ -10,10 +10,9 @@ import { IType } from "@/types/course-attributes/type";
 import { IShift } from "@/types/course-attributes/shift";
 import { ICampus } from "@/types/course-attributes/campus";
 import TextField from "@/components/ui/TextField";
-import Button from "@/components/ui/Button";
 
-import { DashboardForm } from "../styles";
 import OptionSelector from "@/components/ui/OptionSelector";
+import EntityForm from "@/components/EntityForm";
 
 interface CourseFormFields {
 	code: string;
@@ -101,14 +100,16 @@ export default function CourseForm(props: CourseFormI) {
 	}
 
 	return (
-		<DashboardForm
+		<EntityForm
+			entity="Curso"
+			selectedEntity={props.selectedCourse}
 			onSubmit={(e) => {
 				void handleSubmit(onSubmit)();
 				e.preventDefault();
 			}}
+			onDelete={onDelete}
 		>
-			{props.selectedCourse ? <h2>Editar Curso ({props.selectedCourse.id})</h2> : <h2>Novo Curso</h2>}
-			<div>
+			<div className="row">
 				<Controller
 					name="code"
 					control={control}
@@ -120,7 +121,7 @@ export default function CourseForm(props: CourseFormI) {
 					render={({ field }) => <TextField label="Nome*" {...field} required />}
 				/>
 			</div>
-			<div>
+			<div className="row">
 				<Controller
 					name="typeId"
 					control={control}
@@ -151,18 +152,6 @@ export default function CourseForm(props: CourseFormI) {
 					)}
 				/>
 			</div>
-			{props.selectedCourse ? (
-				<div>
-					<Button type="submit">Salvar</Button>
-					<Button onClick={() => void onDelete()} category="secondary">
-						Deletar
-					</Button>
-				</div>
-			) : (
-				<div>
-					<Button type="submit">Criar</Button>
-				</div>
-			)}
-		</DashboardForm>
+		</EntityForm>
 	);
 }

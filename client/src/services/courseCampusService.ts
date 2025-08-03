@@ -8,7 +8,7 @@ export default function useCourseCampusService() {
 
 	const readAll = useCallback(async (): Promise<ICampus[]> => {
 		const result = await api.get<ICampus[]>("/course/campus");
-		return result.data;
+		return result.data.sort((a, b) => a.name.localeCompare(b.name));
 	}, [api]);
 
 	const createOne = useCallback(

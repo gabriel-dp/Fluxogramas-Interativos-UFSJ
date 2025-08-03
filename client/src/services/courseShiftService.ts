@@ -8,7 +8,7 @@ export default function useCourseShiftService() {
 
 	const readAll = useCallback(async (): Promise<IShift[]> => {
 		const result = await api.get<IShift[]>("/course/shift");
-		return result.data;
+		return result.data.sort((a, b) => a.name.localeCompare(b.name));
 	}, [api]);
 
 	const createOne = useCallback(

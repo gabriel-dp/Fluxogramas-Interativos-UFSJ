@@ -51,7 +51,12 @@ export default function UsersList() {
 				<h1>Listagem de Usuários</h1>
 				<Button onClick={() => setSelectedUser(null)}>Criar</Button>
 			</div>
-			<DataTable columns={columns} data={users} onRowClicked={(e) => setSelectedUser(e)} defaultSortFieldId={1} />
+			<DataTable
+				columns={columns}
+				data={users}
+				onRowClicked={(e) => setSelectedUser({ ...e })}
+				defaultSortFieldId={1}
+			/>
 			<UserForm selectedUser={selectedUser} refresh={() => void requestUsers()} />
 		</DashboardContent>
 	);

@@ -62,7 +62,7 @@ const OptionSelector = forwardRef<OptionSelectorRef, OptionSelectorProps>(
 					value={currentValue}
 					onChange={handleChange}
 					disabled={disabled}
-					defaultValue={-1}
+					$default={currentValue === "-1"}
 				>
 					<option className="default" value={-1}>
 						-- Selecione --

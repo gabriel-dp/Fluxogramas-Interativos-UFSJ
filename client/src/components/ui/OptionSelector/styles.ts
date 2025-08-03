@@ -8,14 +8,14 @@ export const Wrapper = styled.div`
 	gap: 0.375rem !important;
 `;
 
-export const StyledSelect = styled.select`
+export const StyledSelect = styled.select<{ $default: boolean }>`
 	padding: 0.75rem 0.75rem;
 	padding-right: 2.25rem;
 	font-size: 1rem;
 	border: none;
 	border-radius: 0.25rem;
 	background-color: ${(props) => props.theme.secondary};
-	color: ${(props) => props.theme.text};
+	color: ${(props) => (props.$default ? props.theme.text + "77" : props.theme.text)};
 	transition: border-color 0.2s ease;
 
 	&:focus {
@@ -37,6 +37,7 @@ export const StyledSelect = styled.select`
 	background-size: 1rem;
 
 	option {
+		color: ${(props) => props.theme.text};
 		&.default {
 			color: ${(props) => props.theme.text}77;
 		}

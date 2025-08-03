@@ -3,10 +3,8 @@ import { useForm, Controller } from "react-hook-form";
 
 import useUserService from "@/services/userService";
 import { IUser } from "@/types/user";
+import EntityForm from "@/components/EntityForm";
 import TextField from "@/components/ui/TextField";
-import Button from "@/components/ui/Button";
-
-import { DashboardForm } from "../styles";
 
 interface UserFormFields {
 	username: string;
@@ -60,14 +58,16 @@ export default function UserForm(props: UserFormI) {
 	}
 
 	return (
-		<DashboardForm
+		<EntityForm
+			entity="Usuário"
+			selectedEntity={props.selectedUser}
 			onSubmit={(e) => {
 				void handleSubmit(onSubmit)();
 				e.preventDefault();
 			}}
+			onDelete={onDelete}
 		>
-			{props.selectedUser ? <h2>Editar Usuário ({props.selectedUser.id})</h2> : <h2>Novo Usuário</h2>}
-			<div>
+			<div className="row">
 				<Controller
 					name="username"
 					control={control}
@@ -81,18 +81,6 @@ export default function UserForm(props: UserFormI) {
 					></Controller>
 				)}
 			</div>
-			{props.selectedUser ? (
-				<div>
-					<Button type="submit">Salvar</Button>
-					<Button onClick={() => void onDelete()} category="secondary">
-						Deletar
-					</Button>
-				</div>
-			) : (
-				<div>
-					<Button type="submit">Criar</Button>
-				</div>
-			)}
-		</DashboardForm>
+		</EntityForm>
 	);
 }

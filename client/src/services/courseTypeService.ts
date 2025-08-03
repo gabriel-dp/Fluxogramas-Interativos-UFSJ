@@ -8,7 +8,7 @@ export default function useCourseTypeService() {
 
 	const readAll = useCallback(async (): Promise<IType[]> => {
 		const result = await api.get<IType[]>("/course/type");
-		return result.data;
+		return result.data.sort((a, b) => a.name.localeCompare(b.name));
 	}, [api]);
 
 	const createOne = useCallback(
