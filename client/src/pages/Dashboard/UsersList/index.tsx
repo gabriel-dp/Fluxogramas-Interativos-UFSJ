@@ -2,12 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { TableColumn } from "react-data-table-component";
 
 import useUserService from "@/services/userService";
-import useAuth from "@/contexts/auth/useAuth";
 import { IUser } from "@/types/user";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
 
 import UserForm from "./UserForm";
+import UserPermissionForm from "./UserPermissionForm";
 import { DashboardContent } from "../styles";
 
 const columns: TableColumn<IUser>[] = [
@@ -29,17 +29,15 @@ const columns: TableColumn<IUser>[] = [
 ];
 
 export default function UsersList() {
-	const { readAll } = useUserService();
-	const { user } = useAuth();
 	const [users, setUsers] = useState<IUser[]>([]);
 	const [selectedUser, setSelectedUser] = useState<IUser | null | undefined>();
 
+	const { readAll: readAllUsers } = useUserService();
+
 	const requestUsers = useCallback(async () => {
-		if (user?.isAdmin) {
-			setUsers(await readAll());
-		}
+		setUsers(await readAllUsers());
 		setSelectedUser(undefined);
-	}, [readAll, user]);
+	}, [readAllUsers]);
 
 	useEffect(() => {
 		void requestUsers();
@@ -58,6 +56,7 @@ export default function UsersList() {
 				defaultSortFieldId={1}
 			/>
 			<UserForm selectedUser={selectedUser} refresh={() => void requestUsers()} />
+			<UserPermissionForm selectedUser={selectedUser} />
 		</DashboardContent>
 	);
 }

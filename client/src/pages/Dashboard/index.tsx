@@ -9,7 +9,7 @@ export default function Dashboard() {
 		<DashboardContainer>
 			<DashboardContent>
 				<>
-					<h1>Bem vindo {user?.username}!</h1>
+					<h1>Bem vindo, {user?.username}!</h1>
 					<p>Use o menu lateral para navegar.</p>
 				</>
 			</DashboardContent>

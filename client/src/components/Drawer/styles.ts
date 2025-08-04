@@ -82,6 +82,10 @@ export const DrawerContent = styled.div`
 		border-bottom: 1px solid ${(props) => props.theme.gray};
 		margin: 0.5rem 0;
 	}
+
+	button {
+		margin-bottom: 1rem;
+	}
 `;
 
 export const ToggleButton = styled.button.attrs({ className: "control-button" })`

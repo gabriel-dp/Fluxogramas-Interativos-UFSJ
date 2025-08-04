@@ -1,18 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowRight as OpenIcon, MdClose as CloseIcon } from "react-icons/md";
 
+import { Routes } from "@/routes";
+import { ICourse } from "@/types/course";
 import useAuth from "@/contexts/auth/useAuth";
+import useCourseService from "@/services/courseService";
+import Button from "@/components/ui/Button";
 
 import { DrawerContainer, DrawerContent, ToggleButton } from "./styles";
-import { Routes } from "@/routes";
 
 export default function Drawer() {
-	const [drawerOpen, setDrawerOpen] = useState(false);
 	const { user } = useAuth();
 	const navigate = useNavigate();
+	const { readAllByUser } = useCourseService();
 
-	const courses = ["CCOMP-2023"];
+	const [drawerOpen, setDrawerOpen] = useState(false);
+	const [courses, setCourses] = useState<ICourse[]>([]);
+
+	useEffect(() => {
+		async function getCourses() {
+			if (user && !user.isAdmin) {
+				setCourses(await readAllByUser(user.id));
+			}
+		}
+		void getCourses();
+	}, [readAllByUser, user]);
 
 	function handleNavigate(route: string) {
 		navigate(route);
@@ -28,6 +41,7 @@ export default function Drawer() {
 		<>
 			<DrawerContainer open={drawerOpen}>
 				<DrawerContent>
+					<Button onClick={() => handleNavigate(Routes.dashboard)}>Menu</Button>
 					{user?.isAdmin ? (
 						<div className="drawer-group">
 							<h3 className="drawer-title">Administração</h3>
@@ -44,8 +58,8 @@ export default function Drawer() {
 							<h3 className="drawer-title">Cursos</h3>
 							<ul>
 								{courses.map((course) => (
-									<li key={course} onClick={() => handleNavigate(Routes.dashboard_courses_course(course))}>
-										{course}
+									<li key={course.id} onClick={() => handleNavigate(Routes.dashboard_courses_course(course.code))}>
+										{course.name}
 									</li>
 								))}
 							</ul>

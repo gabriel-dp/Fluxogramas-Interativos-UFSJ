@@ -6,8 +6,9 @@ import { ICourseComplete } from "@/types/course";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
 
-import { DashboardContent } from "../styles";
 import CourseForm from "./CourseForm";
+import { DashboardContent } from "../styles";
+import useAuth from "@/contexts/auth/useAuth";
 
 const columns: TableColumn<ICourseComplete>[] = [
 	{
@@ -43,6 +44,7 @@ const columns: TableColumn<ICourseComplete>[] = [
 ];
 
 export default function Course() {
+	const { user } = useAuth();
 	const { readAll } = useCourseService();
 	const [courses, setCourses] = useState<ICourseComplete[]>([]);
 	const [selectedCourse, setSelectedCourse] = useState<ICourseComplete | null | undefined>();
@@ -55,6 +57,8 @@ export default function Course() {
 	useEffect(() => {
 		void requestCourses();
 	}, [requestCourses]);
+
+	if (!user?.isAdmin) return null;
 
 	return (
 		<DashboardContent>

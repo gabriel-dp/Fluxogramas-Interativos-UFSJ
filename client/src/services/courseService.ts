@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 
 import useApi from "@/hooks/useApi";
-import { ICourseComplete } from "@/types/course";
+import { ICourse, ICourseComplete } from "@/types/course";
 
 export default function useCourseService() {
 	const api = useApi();
@@ -35,5 +35,21 @@ export default function useCourseService() {
 		[api],
 	);
 
-	return { readAll, createOne, updateOne, deleteOne };
+	const readAllByUser = useCallback(
+		async (id: number): Promise<ICourse[]> => {
+			const response = await api.get<ICourse[]>(`/permission_user_course/user/${id}`);
+			return response.data;
+		},
+		[api],
+	);
+
+	const saveUserCourses = useCallback(
+		async (id: number, data: object): Promise<boolean> => {
+			const response = await api.put<void>(`/permission_user_course/user/${id}`, data);
+			return response.status == 200;
+		},
+		[api],
+	);
+
+	return { readAll, createOne, updateOne, deleteOne, readAllByUser, saveUserCourses };
 }

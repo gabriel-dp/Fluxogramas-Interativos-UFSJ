@@ -6,7 +6,7 @@ interface EntityFormProps<T extends { id: number }> extends React.PropsWithChild
 	entity: string;
 	selectedEntity: T | null | undefined;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	onDelete: () => Promise<void>;
+	onDelete?: () => Promise<void>;
 }
 
 export default function EntityForm<T extends { id: number }>(props: EntityFormProps<T>) {
@@ -22,8 +22,8 @@ export default function EntityForm<T extends { id: number }>(props: EntityFormPr
 			<div>{props.children}</div>
 			<div className="row">
 				<Button type="submit">Salvar</Button>
-				{props.selectedEntity && (
-					<Button onClick={() => void props.onDelete()} category="secondary">
+				{props.selectedEntity && props.onDelete && (
+					<Button onClick={() => props.onDelete && void props.onDelete()} category="secondary">
 						Deletar
 					</Button>
 				)}

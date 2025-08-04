@@ -14,5 +14,6 @@ export const DashboardForm = styled.form`
 
 	.row {
 		flex-direction: row;
+		align-items: center;
 	}
 `;

@@ -9,19 +9,7 @@ import CourseData from "@/pages/CourseData";
 import SignIn from "@/pages/SignIn";
 import UsersList from "@/pages/Dashboard/UsersList";
 import CoursesList from "@/pages/Dashboard/CoursesList";
-import CourseEditor from "./pages/Dashboard/CourseEditor";
-
-const ProtectedRoute = () => {
-	const { isAuthenticated } = useAuth();
-	return isAuthenticated ? (
-		<div style={{ display: "flex" }}>
-			<Drawer />
-			<Outlet />
-		</div>
-	) : (
-		<Navigate to="/sign-in" replace />
-	);
-};
+import CourseEditor from "@/pages/Dashboard/CourseEditor";
 
 export const Routes = {
 	home: "/",
@@ -33,6 +21,23 @@ export const Routes = {
 	course: (code: string) => `/curso/${code}`,
 };
 
+const DashboardProtectedRoute = () => {
+	const { isAuthenticated } = useAuth();
+	return isAuthenticated ? (
+		<div style={{ display: "flex" }}>
+			<Drawer />
+			<Outlet />
+		</div>
+	) : (
+		<Navigate to={Routes.signIn} replace />
+	);
+};
+
+const DashboardAdminRoute = () => {
+	const { user } = useAuth();
+	return user?.isAdmin ? <Outlet /> : <Navigate to={Routes.dashboard} replace />;
+};
+
 export default function Router() {
 	return (
 		<BrowserRouter>
@@ -41,10 +46,12 @@ export default function Router() {
 				<Route path={Routes.home} element={<Home />} />
 				<Route path={Routes.signIn} element={<SignIn />} />
 				<Route path={Routes.course(":code")} element={<CourseData />} />
-				<Route element={<ProtectedRoute />}>
+				<Route element={<DashboardProtectedRoute />}>
 					<Route path={Routes.dashboard} element={<Dashboard />} />
-					<Route path={Routes.dashboard_users} element={<UsersList />} />
-					<Route path={Routes.dashboard_courses} element={<CoursesList />} />
+					<Route element={<DashboardAdminRoute />}>
+						<Route path={Routes.dashboard_users} element={<UsersList />} />
+						<Route path={Routes.dashboard_courses} element={<CoursesList />} />
+					</Route>
 					<Route path={Routes.dashboard_courses_course(":code")} element={<CourseEditor />} />
 				</Route>
 				<Route path="*" element={<Navigate to={Routes.home} />} />

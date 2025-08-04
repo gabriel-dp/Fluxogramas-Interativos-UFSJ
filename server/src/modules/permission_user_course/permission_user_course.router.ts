@@ -1,14 +1,15 @@
 import { Router } from "express";
 
-import { requireAdmin } from "@/middlewares/security.middleware";
+import { requireAdmin, requireAuth } from "@/middlewares/security.middleware";
+import { validateData, validateId } from "@/middlewares/data.middleware";
+import { sameUserOrAdmin } from "@/modules/user/user.controller";
 
 import PermissionUserCourseController from "./permission_user_course.controller";
-import { validateData, validateId } from "@/middlewares/data.middleware";
 import { createPermissionUserCourseSchema } from "./permission_user_course.model";
 
 const router = Router();
 
-router.get("/user/:id", requireAdmin, validateId, PermissionUserCourseController.getCoursesByUser);
+router.get("/user/:id", requireAuth, validateId, sameUserOrAdmin, PermissionUserCourseController.getCoursesByUser);
 router.get("/course/:id", requireAdmin, validateId, PermissionUserCourseController.getUsersByCourse);
 
 router.put(
@@ -16,7 +17,7 @@ router.put(
 	requireAdmin,
 	validateId,
 	validateData(createPermissionUserCourseSchema),
-	PermissionUserCourseController.setUserPermissions
+	PermissionUserCourseController.setUserPermissions,
 );
 
 export default router;
