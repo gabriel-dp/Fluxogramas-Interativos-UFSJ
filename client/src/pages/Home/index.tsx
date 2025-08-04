@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Routes } from "@/routes";
-import { Course } from "@/services/course/types";
+import useCourseService from "@/services/courseService";
+import { ICourseComplete } from "@/types/course";
 import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
@@ -14,18 +15,19 @@ export default function Home() {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 
+	const { readAll } = useCourseService();
 	const [search, setSearch] = useState(queryParams.get("search") ?? "");
 	const [loading, setLoading] = useState(true);
-	const [allCourses, setAllCourses] = useState<Course[]>([]);
-	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+	const [allCourses, setAllCourses] = useState<ICourseComplete[]>([]);
+	const [selectedCourses, setSelectedCourses] = useState<ICourseComplete[]>([]);
 
 	useEffect(() => {
-		function asyncSetAllCourses() {
-			setAllCourses([]);
+		async function asyncSetAllCourses() {
+			setAllCourses(await readAll());
 			setLoading(false);
 		}
 		void asyncSetAllCourses();
-	}, []);
+	}, [readAll]);
 
 	useEffect(() => {
 		if (allCourses.length > 0) {
@@ -59,9 +61,9 @@ export default function Home() {
 									<p>{course.name}</p>
 								</div>
 								<div className="course-data">
-									<span>{course.shift}</span>
-									<span>{course.type}</span>
-									<span>{course.campus}</span>
+									<span>{course.shift.name}</span>
+									<span>{course.type.name}</span>
+									<span>{course.campus.name}</span>
 								</div>
 							</CourseElement>
 						))

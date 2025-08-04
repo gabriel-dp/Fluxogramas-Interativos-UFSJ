@@ -18,7 +18,7 @@ export const Routes = {
 	dashboard_users: "/dashboard/users",
 	dashboard_courses: "/dashboard/courses",
 	dashboard_courses_course: (code: string) => `/dashboard/courses/${code}`,
-	course: (code: string) => `/curso/${code}`,
+	course: (code: string) => `/${code}`,
 };
 
 const DashboardProtectedRoute = () => {
@@ -45,7 +45,6 @@ export default function Router() {
 			<RouteGroup>
 				<Route path={Routes.home} element={<Home />} />
 				<Route path={Routes.signIn} element={<SignIn />} />
-				<Route path={Routes.course(":code")} element={<CourseData />} />
 				<Route element={<DashboardProtectedRoute />}>
 					<Route path={Routes.dashboard} element={<Dashboard />} />
 					<Route element={<DashboardAdminRoute />}>
@@ -54,6 +53,7 @@ export default function Router() {
 					</Route>
 					<Route path={Routes.dashboard_courses_course(":code")} element={<CourseEditor />} />
 				</Route>
+				<Route path={Routes.course(":code")} element={<CourseData />} />
 				<Route path="*" element={<Navigate to={Routes.home} />} />
 			</RouteGroup>
 		</BrowserRouter>
