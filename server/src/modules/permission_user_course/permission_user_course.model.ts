@@ -24,7 +24,7 @@ export function convertToSinglePermissions(permissions: IPermissionsUserCourse):
 
 export function convertToPermissionsObject(
 	userId: number,
-	permissions: ISinglePermissionUserCourse[]
+	permissions: ISinglePermissionUserCourse[],
 ): IPermissionsUserCourse {
 	return { userId, courseIds: permissions.map((permission) => permission.courseId) };
 }

@@ -41,7 +41,7 @@ export function generateNewUserData(): Credentials {
 }
 
 export async function signIn(
-	credentials: Pick<Credentials, "username" | "password">
+	credentials: Pick<Credentials, "username" | "password">,
 ): Promise<IUser & { token: string }> {
 	const { user, accessToken } = await AuthService.signIn({
 		username: credentials.username,
