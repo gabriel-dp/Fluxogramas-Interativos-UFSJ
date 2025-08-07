@@ -10,7 +10,7 @@ services:
     env_file:
       - ../server/.env.development
     ports:
-      - "${SERVER_PORT:-3000}:${SERVER_PORT:-3000}"
+      - "${SERVER_PORT:-3000}:3000"
     depends_on:
       - db
     volumes:
@@ -40,7 +40,7 @@ services:
     env_file:
       - ../client/.env
     ports:
-      - "${VITE_PORT:-5173}:${VITE_PORT:-5173}"
+      - "${VITE_PORT:-5173}:5173"
     depends_on:
       - server
     volumes:
