@@ -39,9 +39,12 @@ cp .env.example .env.development
 | `POSTGRES_DB` | Name of the PostgreSQL database on container. *(e.g., `fluxogramas`)* | `string` |
 | `PRISMA_DATABASE_URL` | Connection URL for the PostgreSQL database. Should be formatted as `postgres://<user>:<password>@<host>/<database>`. *(e.g., `postgres://root:root@db/fluxogramas`)* | `string` |
 | `SERVER_PORT` | Port number the server should listen on. *(e.g., `3000`)* | `number` |
-| `SERVER_URL` | Base URL for API requests, mainly used in tests. *(e.g., `http://localhost:3000`)* | `string` |
-| `SERVER_JWT_SECRET` | Secret key for signing and verifying JWT tokens. **Recommended: 32-character hash**. | `string` |
+| `SERVER_LOCAL_PORT` | Port number the server should run on local. Used in tests. *(e.g., `3001`)* | `string` |
 | `SERVER_LOG_LEVEL` | Defines the logging level for the server. | `"DBG"` \| `"INF"` \| `"WRN"` \| `"ERR"` \| `"DISABLED"` |
+| `ACCESS_TOKEN_SECRET` | Secret key for signing and verifying Access JWT tokens. **Recommended: 32-character hash**. | `string` |
+| `REFRESH_TOKEN_SECRET` | Secret key for signing and verifying Refresh JWT tokens. **Recommended: 32-character hash**. | `string` |
+| `ACCESS_TOKEN_EXPIRATION` | Expiration time for Access JWT tokens. *(e.g., `15m`)*. | `string` |
+| `REFRESH_TOKEN_EXPIRATION` | Expiration time for Access JWT tokens. *(e.g., `7d`)*. | `string` |
 
 &nbsp;
 

@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 export const api = axios.create({
-	baseURL: process.env.SERVER_URL,
+	baseURL: `http://localhost:3000`,
 });
 
 export function authHeaders(token?: string): AxiosRequestConfig {

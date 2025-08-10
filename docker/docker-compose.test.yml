@@ -10,7 +10,7 @@ services:
     env_file:
       - ../server/.env.test
     ports:
-      - "${SERVER_PORT:-3001}:3000"
+      - "${SERVER_LOCAL_PORT:-3000}:3000"
     depends_on:
       - db-test
     volumes:
