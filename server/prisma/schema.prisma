@@ -77,11 +77,17 @@ model Course {
   UserCoursePermission UserCoursePermission[]
 }
 
+enum ComponentType {
+  SUBJECT
+  ACTIVITY
+}
+
 model Component {
-  id       Int    @id @default(autoincrement())
+  id       Int           @id @default(autoincrement())
   code     String
   name     String
   hours    Int
+  type     ComponentType
   semester Int?
 
   courseId Int

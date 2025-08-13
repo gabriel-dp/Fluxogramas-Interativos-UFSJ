@@ -10,7 +10,6 @@ import { generateUniqueShift } from "../shift/__tests__/shift.repository.test";
 export async function generateUniqueCourse(): Promise<{
 	code: string;
 	name: string;
-	hours: number;
 	campusId: number;
 	shiftId: number;
 	typeId: number;
@@ -19,9 +18,8 @@ export async function generateUniqueCourse(): Promise<{
 	const campus = await CampusRepository.create(generateUniqueCampus());
 	const shift = await ShiftRepository.create(generateUniqueShift());
 	return {
-		code: String(process.hrtime.bigint()),
+		code: String(process.hrtime.bigint()).slice(-10),
 		name: "Teste",
-		hours: 0,
 		campusId: campus.id,
 		shiftId: shift.id,
 		typeId: type.id,

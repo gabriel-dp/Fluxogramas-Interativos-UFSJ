@@ -1,7 +1,7 @@
 import { Repository } from "@/modules";
 import prisma from "@/lib/prisma";
 
-import { CreateCourseData, ICourse, ICourseComplete, UpdateCourseData } from "./course.model";
+import { CreateCourseData, ICourse, ICourseComplete, ICourseComponents, UpdateCourseData } from "./course.model";
 
 const defaultSelectFields = {
 	id: true,
@@ -27,7 +27,11 @@ const defaultSelectFields = {
 	},
 };
 
-const CourseRepository: Repository<ICourse | ICourseComplete, CreateCourseData, UpdateCourseData> & {
+const CourseRepository: Repository<
+	ICourse | ICourseComplete | ICourseComponents,
+	CreateCourseData,
+	UpdateCourseData
+> & {
 	getOneByCode: (code: string) => Promise<ICourse | null>;
 } = {
 	async getAll() {
@@ -37,13 +41,18 @@ const CourseRepository: Repository<ICourse | ICourseComplete, CreateCourseData, 
 	},
 
 	async getOne(id) {
-		return prisma.course.findUnique({
+		const course = await prisma.course.findUnique({
 			where: { id },
 			select: {
 				...defaultSelectFields,
 				Component: true,
 			},
 		});
+		if (!course) return null;
+
+		// Rename Component property
+		const { Component, ...data } = course;
+		return { ...data, components: Component };
 	},
 
 	async create(data) {

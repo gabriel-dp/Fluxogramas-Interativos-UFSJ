@@ -33,3 +33,7 @@ export interface ICourseComplete extends ICourse {
 	shift: IShift;
 	campus: ICampus;
 }
+
+export interface ICourseComponents extends ICourseComplete {
+	components: object[];
+}
