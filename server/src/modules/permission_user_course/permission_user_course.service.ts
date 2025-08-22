@@ -22,6 +22,11 @@ const PermissionUserCouseService = {
 		await Promise.all(permissions.courseIds.map((courseId) => CourseService.getOne(courseId)));
 		return PermissionUserCourseRepository.setUserPermissions(permissions);
 	},
+
+	async isUserAllowed(userId: number, courseId: number) {
+		const courses = await this.getCoursesByUser(userId);
+		return courses.some((c) => c.id === courseId);
+	},
 };
 
 export default PermissionUserCouseService;
