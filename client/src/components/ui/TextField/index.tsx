@@ -2,8 +2,9 @@ import React, { useState, forwardRef } from "react";
 
 import { InputWrapper, StyledInput, StyledLabel, Wrapper } from "./styles";
 
-interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface TextFieldProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value"> {
 	label: string;
+	value: string | number | undefined | null;
 }
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, value, onFocus, onBlur, ...props }, ref) => {
@@ -21,12 +22,12 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({ label, value, 
 		onFocus?.(e);
 	};
 
-	const isFloating = focused || filled || !!value;
+	const isFloating = focused || filled || (!!value && value !== undefined && value !== null);
 
 	return (
 		<Wrapper>
 			<InputWrapper>
-				<StyledInput {...props} ref={ref} value={value} onFocus={handleFocus} onBlur={handleBlur} />
+				<StyledInput {...props} ref={ref} value={value ?? undefined} onFocus={handleFocus} onBlur={handleBlur} />
 				<StyledLabel isFloating={isFloating}>{label}</StyledLabel>
 			</InputWrapper>
 		</Wrapper>

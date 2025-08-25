@@ -51,5 +51,13 @@ export default function useCourseService() {
 		[api],
 	);
 
-	return { readAll, createOne, updateOne, deleteOne, readAllByUser, saveUserCourses };
+	const readByCode = useCallback(
+		async (code: string): Promise<ICourse> => {
+			const response = await api.get<ICourse>(`/course/code/${code}`);
+			return response.data;
+		},
+		[api],
+	);
+
+	return { readAll, createOne, updateOne, deleteOne, readAllByUser, saveUserCourses, readByCode };
 }

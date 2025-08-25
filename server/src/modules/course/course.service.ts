@@ -1,10 +1,12 @@
 import { Service } from "@/modules";
 import { ConflictException, NotFoundException } from "@/utils/exception.utils";
 
-import { CreateCourseData, ICourse, UpdateCourseData } from "./course.model";
+import { CreateCourseData, ICourseComplete, UpdateCourseData } from "./course.model";
 import CourseRepository from "./course.repository";
 
-const CourseService: Service<ICourse, CreateCourseData, UpdateCourseData> = {
+const CourseService: Service<ICourseComplete, CreateCourseData, UpdateCourseData> & {
+	getOneByCode: (code: string) => Promise<ICourseComplete>;
+} = {
 	async getAll() {
 		return CourseRepository.getAll();
 	},
@@ -32,6 +34,12 @@ const CourseService: Service<ICourse, CreateCourseData, UpdateCourseData> = {
 	async delete(id) {
 		await this.getOne(id);
 		return CourseRepository.delete(id);
+	},
+
+	async getOneByCode(code) {
+		const found = await CourseRepository.getOneByCode(code);
+		if (!found) throw new NotFoundException("Course");
+		return found;
 	},
 };
 

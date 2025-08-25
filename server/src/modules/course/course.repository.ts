@@ -1,38 +1,46 @@
+import { ComponentRequisite } from "@prisma/client";
+
 import { Repository } from "@/modules";
 import prisma from "@/lib/prisma";
 
-import { CreateCourseData, ICourse, ICourseComplete, ICourseComponents, UpdateCourseData } from "./course.model";
+import { IComponent } from "@/modules/component/component.model";
+import { CreateCourseData, ICourseComplete, ICourseComponents, UpdateCourseData } from "./course.model";
 
 const defaultSelectFields = {
 	id: true,
 	code: true,
 	name: true,
-	typeId: true,
 	type: {
 		select: {
+			id: true,
 			name: true,
 		},
 	},
-	shiftId: true,
 	shift: {
 		select: {
+			id: true,
 			name: true,
 		},
 	},
-	campusId: true,
 	campus: {
 		select: {
+			id: true,
 			name: true,
 		},
 	},
 };
 
-const CourseRepository: Repository<
-	ICourse | ICourseComplete | ICourseComponents,
-	CreateCourseData,
-	UpdateCourseData
-> & {
-	getOneByCode: (code: string) => Promise<ICourse | null>;
+function mapComponentRequisites(
+	component: Omit<IComponent, "requisites"> & { requisites: ComponentRequisite[] },
+): IComponent {
+	return {
+		...component,
+		requisites: component.requisites.map((r) => ({ id: r.requisiteId, corequisite: r.type === "COREQUISITE" })),
+	};
+}
+
+const CourseRepository: Repository<ICourseComplete, CreateCourseData, UpdateCourseData> & {
+	getOneByCode: (code: string) => Promise<ICourseComplete | null>;
 } = {
 	async getAll() {
 		return prisma.course.findMany({
@@ -40,19 +48,25 @@ const CourseRepository: Repository<
 		});
 	},
 
-	async getOne(id) {
+	async getOne(id): Promise<ICourseComponents | null> {
 		const course = await prisma.course.findUnique({
 			where: { id },
 			select: {
 				...defaultSelectFields,
-				Component: true,
+				Component: {
+					include: {
+						requisites: true,
+					},
+				},
 			},
 		});
 		if (!course) return null;
 
-		// Rename Component property
+		// fix Component property
 		const { Component, ...data } = course;
-		return { ...data, components: Component };
+		const components = Component.map((c) => mapComponentRequisites(c));
+
+		return { ...data, components };
 	},
 
 	async create(data) {
@@ -90,10 +104,12 @@ const CourseRepository: Repository<
 	},
 
 	async getOneByCode(code: string) {
-		return prisma.course.findUnique({
+		const found = await prisma.course.findUnique({
 			where: { code },
-			select: defaultSelectFields,
+			select: { id: true },
 		});
+		if (!found) return null;
+		return this.getOne(found.id);
 	},
 };
 

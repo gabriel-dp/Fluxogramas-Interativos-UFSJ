@@ -8,6 +8,7 @@ import shiftRouter from "@/modules/course/shift/shift.router";
 import campusRouter from "@/modules/course/campus/campus.router";
 import courseRouter from "@/modules/course/course.router";
 import permissionsUserCourseRouter from "@/modules/permission_user_course/permission_user_course.router";
+import componentRouter from "@/modules/component/component.router";
 
 const router = Router();
 
@@ -25,5 +26,6 @@ router.use("/course/shift", shiftRouter);
 router.use("/course/campus", campusRouter);
 router.use("/course", courseRouter);
 router.use("/permission_user_course", permissionsUserCourseRouter);
+router.use("/component", componentRouter);
 
 export default router;

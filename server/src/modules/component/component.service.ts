@@ -1,14 +1,15 @@
+import { BadRequestException, ConflictException, NotFoundException } from "@/utils/exception.utils";
 import { Service } from "@/modules";
-import { ConflictException, NotFoundException } from "@/utils/exception.utils";
 import CourseService from "@/modules/course/course.service";
+import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
 
 import ComponentRepository from "./component.repository";
-import { CreateComponentData, IComponent, SetComponentsData, UpdateComponentData } from "./component.model";
+import { CreateComponentData, IComponent, Requisite, UpdateComponentData } from "./component.model";
 
 const ComponentService: Service<IComponent, CreateComponentData, UpdateComponentData> & {
 	getAllFromCourse: (courseId: number) => Promise<IComponent[]>;
-	setAllComponents: (courseId: number, components: SetComponentsData) => Promise<IComponent[]>;
-	setRequisites: (id: number, courseId: number, requisites: string[]) => Promise<void>;
+	setRequisites: (id: number, requisites: Requisite[]) => Promise<IComponent>;
+	isUserAllowed: (userId: number, componentId: number) => Promise<boolean>;
 } = {
 	async getAll() {
 		return ComponentRepository.getAll();
@@ -31,7 +32,7 @@ const ComponentService: Service<IComponent, CreateComponentData, UpdateComponent
 		if (
 			data.code &&
 			data.courseId &&
-			(await ComponentRepository.getOneByCodeInCourse(data.code, data.courseId)) != null
+			(await ComponentRepository.getOneByCodeInCourse(data.code, data.courseId))?.id != id
 		)
 			throw new ConflictException("Component code");
 		return ComponentRepository.update(id, data);
@@ -55,33 +56,23 @@ const ComponentService: Service<IComponent, CreateComponentData, UpdateComponent
 		return components;
 	},
 
-	async setAllComponents(courseId, data) {
-		await CourseService.getOne(courseId);
+	async setRequisites(id, requisites) {
+		// Validate self-requisite and if requisite exists
+		await Promise.all(
+			requisites.map((r) => {
+				if (r.id === id) throw new BadRequestException("Self requisite is not allowed");
+				return this.getOne(r.id);
+			}),
+		);
 
-		// Delete all previous components
-		const previousComponents = await ComponentRepository.getAllFromCourse(courseId);
-		await Promise.all(previousComponents.map((c) => this.delete(c.id)));
+		await ComponentRepository.setRequisites(id, requisites);
 
-		// Create all new components
-		const newComponents: IComponent[] = [];
-		for (const c of data.components) {
-			newComponents.push(await this.create({ ...c, courseId }));
-		}
-
-		// Create all requisites
-		await Promise.all(data.components.map((c, i) => this.setRequisites(newComponents[i].id, courseId, c.requisites)));
-
-		return ComponentRepository.getAllFromCourse(courseId);
+		return this.getOne(id);
 	},
 
-	async setRequisites(id, courseId, requisites) {
-		// TODO: Avoid self-requisite + Validate requisite codes
-		const requisiteIds = (
-			await Promise.all(requisites.map((r) => ComponentRepository.getOneByCodeInCourse(r, courseId)))
-		)
-			.filter((r) => r != null)
-			.map((r) => r.id);
-		await ComponentRepository.setRequisites(id, requisiteIds);
+	async isUserAllowed(userId, componentId) {
+		const component = await this.getOne(componentId);
+		return PermissionUserCourseService.isUserAllowed(userId, component.courseId);
 	},
 };
 

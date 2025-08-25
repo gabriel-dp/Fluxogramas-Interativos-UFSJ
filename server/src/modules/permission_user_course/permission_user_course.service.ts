@@ -6,7 +6,7 @@ import { ICourse } from "@/modules/course/course.model";
 import { IPermissionsUserCourse } from "./permission_user_course.model";
 import PermissionUserCourseRepository from "./permission_user_course.repository";
 
-const PermissionUserCouseService = {
+const PermissionUserCourseService = {
 	async getCoursesByUser(userId: number): Promise<ICourse[]> {
 		await UserService.getOne(userId);
 		return PermissionUserCourseRepository.getCoursesByUser(userId);
@@ -29,4 +29,4 @@ const PermissionUserCouseService = {
 	},
 };
 
-export default PermissionUserCouseService;
+export default PermissionUserCourseService;

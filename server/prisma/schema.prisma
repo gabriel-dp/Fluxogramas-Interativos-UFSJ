@@ -102,11 +102,17 @@ model Component {
   @@unique([courseId, code])
 }
 
+enum RequisiteType {
+  PREREQUISITE
+  COREQUISITE
+}
+
 model ComponentRequisite {
   componentId Int
-  component   Component @relation("Component", fields: [componentId], references: [id])
+  component   Component     @relation("Component", fields: [componentId], references: [id])
   requisiteId Int
-  requisite   Component @relation("Requisite", fields: [requisiteId], references: [id])
+  requisite   Component     @relation("Requisite", fields: [requisiteId], references: [id])
+  type        RequisiteType @default(PREREQUISITE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

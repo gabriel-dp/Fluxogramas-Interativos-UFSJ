@@ -50,9 +50,9 @@ describe("POST /course", () => {
 			expect(response?.data).toHaveProperty("id");
 			expect(response?.data.code).toBe(courseData.code);
 			expect(response?.data.name).toBe(courseData.name);
-			expect(response?.data.typeId).toBe(courseData.typeId);
-			expect(response?.data.shiftId).toBe(courseData.shiftId);
-			expect(response?.data.campusId).toBe(courseData.campusId);
+			expect(response?.data.type.id).toBe(courseData.typeId);
+			expect(response?.data.shift.id).toBe(courseData.shiftId);
+			expect(response?.data.campus.id).toBe(courseData.campusId);
 		});
 
 		it("should not create a course with repeated code", async () => {
@@ -93,9 +93,9 @@ describe("PATCH /course/:id", () => {
 			expect(response?.data.id).toBe(course1.id);
 			expect(response?.data.code).toBe(course2Data.code);
 			expect(response?.data.name).toBe(course2Data.name);
-			expect(response?.data.typeId).toBe(course2Data.typeId);
-			expect(response?.data.shiftId).toBe(course2Data.shiftId);
-			expect(response?.data.campusId).toBe(course2Data.campusId);
+			expect(response?.data.type.id).toBe(course2Data.typeId);
+			expect(response?.data.shift.id).toBe(course2Data.shiftId);
+			expect(response?.data.campus.id).toBe(course2Data.campusId);
 		});
 
 		it("should not update an invalid couse (12345678)", async () => {

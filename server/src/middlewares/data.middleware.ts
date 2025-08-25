@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 
+import { log } from "@/utils/log.utils";
 import { getPossibleId } from "@/utils/request.utils";
 
 export function validateData(schema: AnyZodObject) {
@@ -10,6 +11,7 @@ export function validateData(schema: AnyZodObject) {
 			next();
 		} catch (error) {
 			if (error instanceof ZodError) {
+				log.debug(error.issues);
 				res.sendStatus(400);
 			} else {
 				res.sendStatus(500);

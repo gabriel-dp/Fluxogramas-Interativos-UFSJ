@@ -58,7 +58,10 @@ export default function Drawer() {
 							<h3 className="drawer-title">Cursos</h3>
 							<ul>
 								{courses.map((course) => (
-									<li key={course.id} onClick={() => handleNavigate(Routes.dashboard_courses_course(course.code))}>
+									<li
+										key={course.id}
+										onClick={() => handleNavigate(Routes.dashboard_courses_course(course.id.toString()))}
+									>
 										{course.name}
 									</li>
 								))}

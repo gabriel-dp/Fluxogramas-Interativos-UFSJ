@@ -3,10 +3,26 @@ import { Request, Response } from "express";
 import { getId } from "@/utils/request.utils";
 import { AuthRequest } from "@/utils/auth.utils";
 import { AuthException, handleError } from "@/utils/exception.utils";
-import PermissionUserCouseService from "@/modules/permission_user_course/permission_user_course.service";
+import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
 
 import ComponentService from "./component.service";
-import { CreateComponentData, UpdateComponentData, SetComponentsData } from "./component.model";
+import { CreateComponentData, UpdateComponentData, SetRequisitesData } from "./component.model";
+
+async function checkUserCoursePermission(req: AuthRequest, courseId: number) {
+	const userId = req.user?.id;
+	if (userId === undefined) throw new AuthException(req, "No auth");
+
+	const isAuthorized = await PermissionUserCourseService.isUserAllowed(userId, courseId);
+	if (!isAuthorized) throw new AuthException(req, "User Course not allowed");
+}
+
+async function checkUserComponentPermission(req: AuthRequest, componentId: number) {
+	const userId = req.user?.id;
+	if (userId === undefined) throw new AuthException(req, "No auth");
+
+	const isAuthorized = await ComponentService.isUserAllowed(userId, componentId);
+	if (!isAuthorized) throw new AuthException(req, "User Course not allowed");
+}
 
 async function readMany(req: Request, res: Response) {
 	try {
@@ -32,6 +48,8 @@ async function createOne(req: Request, res: Response) {
 	const data = req.body as CreateComponentData;
 
 	try {
+		await checkUserCoursePermission(req, data.courseId);
+
 		const component = await ComponentService.create(data);
 		return res.status(201).json(component);
 	} catch (error) {
@@ -44,6 +62,9 @@ async function updateOne(req: Request, res: Response) {
 	const data = req.body as UpdateComponentData;
 
 	try {
+		await checkUserComponentPermission(req, id);
+		if (data.courseId) await checkUserCoursePermission(req, data.courseId);
+
 		const component = await ComponentService.update(id, data);
 		return res.status(200).json(component);
 	} catch (error) {
@@ -55,6 +76,7 @@ async function deleteOne(req: Request, res: Response) {
 	const id = getId(req);
 
 	try {
+		await checkUserComponentPermission(req, id);
 		await ComponentService.delete(id);
 		return res.sendStatus(204);
 	} catch (error) {
@@ -73,18 +95,16 @@ async function getAllFromCourse(req: Request, res: Response) {
 	}
 }
 
-async function setAllComponents(req: AuthRequest, res: Response) {
+async function setRequisites(req: Request, res: Response) {
 	const id = getId(req);
-	const data = req.body as SetComponentsData;
+	const data = req.body as SetRequisitesData;
 
 	try {
-		if (req.user?.id) {
-			const isAuthorized = await PermissionUserCouseService.isUserAllowed(req.user.id, id);
-			if (!isAuthorized) throw new AuthException(req, "User Course not allowed");
-		}
+		await checkUserComponentPermission(req, id);
+		await Promise.all(data.requisites.map((r) => checkUserComponentPermission(req, r.id)));
 
-		const components = await ComponentService.setAllComponents(id, data);
-		return res.status(201).json(components);
+		const component = await ComponentService.setRequisites(id, data.requisites);
+		return res.status(201).json(component);
 	} catch (error) {
 		return handleError(res, error);
 	}
@@ -97,5 +117,5 @@ export default {
 	updateOne,
 	deleteOne,
 	getAllFromCourse,
-	setAllComponents,
+	setRequisites,
 };

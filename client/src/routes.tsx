@@ -17,7 +17,7 @@ export const Routes = {
 	dashboard: "/dashboard",
 	dashboard_users: "/dashboard/users",
 	dashboard_courses: "/dashboard/courses",
-	dashboard_courses_course: (code: string) => `/dashboard/courses/${code}`,
+	dashboard_courses_course: (id: string) => `/dashboard/courses/${id}`,
 	course: (code: string) => `/${code}`,
 };
 
@@ -51,7 +51,7 @@ export default function Router() {
 						<Route path={Routes.dashboard_users} element={<UsersList />} />
 						<Route path={Routes.dashboard_courses} element={<CoursesList />} />
 					</Route>
-					<Route path={Routes.dashboard_courses_course(":code")} element={<CourseEditor />} />
+					<Route path={Routes.dashboard_courses_course(":id")} element={<CourseEditor />} />
 				</Route>
 				<Route path={Routes.course(":code")} element={<CourseData />} />
 				<Route path="*" element={<Navigate to={Routes.home} />} />

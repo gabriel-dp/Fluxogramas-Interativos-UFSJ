@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { IComponent } from "@/modules/component/component.model";
+
 import { IType } from "./type/type.model";
 import { IShift } from "./shift/shift.model";
 import { ICampus } from "./campus/campus.model";
@@ -28,12 +30,12 @@ export interface ICourse {
 	campusId: number;
 }
 
-export interface ICourseComplete extends ICourse {
+export interface ICourseComplete extends Omit<ICourse, "typeId" | "shiftId" | "campusId"> {
 	type: IType;
 	shift: IShift;
 	campus: ICampus;
 }
 
 export interface ICourseComponents extends ICourseComplete {
-	components: object[];
+	components: IComponent[];
 }

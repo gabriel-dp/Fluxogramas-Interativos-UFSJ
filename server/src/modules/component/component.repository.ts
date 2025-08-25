@@ -1,8 +1,9 @@
+import { ComponentRequisite, RequisiteType } from "@prisma/client";
+
 import prisma from "@/lib/prisma";
 import { Repository } from "@/modules";
 
-import { CreateComponentData, IComponent, UpdateComponentData } from "./component.model";
-import { ComponentRequisite } from "@prisma/client";
+import { CreateComponentData, IComponent, Requisite, UpdateComponentData } from "./component.model";
 
 const defaultSelectFields = {
 	id: true,
@@ -18,14 +19,20 @@ const defaultSelectFields = {
 function mapComponentRequisites(
 	component: Omit<IComponent, "requisites"> & { requisites: ComponentRequisite[] },
 ): IComponent {
-	return { ...component, requisites: component.requisites.map((r) => r.requisiteId) };
+	return {
+		...component,
+		requisites: component.requisites.map((r) => ({
+			id: r.requisiteId,
+			corequisite: r.type === RequisiteType.COREQUISITE,
+		})),
+	};
 }
 
 const ComponentRepository: Repository<IComponent, CreateComponentData, UpdateComponentData> & {
 	getOneByCodeInCourse: (code: string, courseId: number) => Promise<IComponent | null>;
 	getAllFromCourse: (courseId: number) => Promise<IComponent[]>;
 	getRequisites: (id: number) => Promise<number[]>;
-	setRequisites: (id: number, requisites: number[]) => Promise<void>;
+	setRequisites: (id: number, requisites: Requisite[]) => Promise<void>;
 } = {
 	async getAll() {
 		const components = await prisma.component.findMany({
@@ -62,9 +69,7 @@ const ComponentRepository: Repository<IComponent, CreateComponentData, UpdateCom
 
 	async delete(id) {
 		// Delete all requisites
-		await prisma.componentRequisite.deleteMany({
-			where: { componentId: id },
-		});
+		await this.setRequisites(id, []);
 
 		const component = await prisma.component.delete({
 			where: { id },
@@ -107,7 +112,11 @@ const ComponentRepository: Repository<IComponent, CreateComponentData, UpdateCom
 		// Create requisites
 		if (requisites.length > 0) {
 			await prisma.componentRequisite.createMany({
-				data: requisites.map((r) => ({ componentId: id, requisiteId: r })),
+				data: requisites.map((r) => ({
+					componentId: id,
+					requisiteId: r.id,
+					type: r.corequisite ? RequisiteType.COREQUISITE : RequisiteType.PREREQUISITE,
+				})),
 			});
 		}
 	},
