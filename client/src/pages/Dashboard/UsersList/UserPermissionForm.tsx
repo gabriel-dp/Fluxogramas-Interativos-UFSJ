@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import useCourseService from "@/services/courseService";
-import { ICourse } from "@/types/course";
+import { ICourseComplete } from "@/types/course";
 import { IUser } from "@/types/user";
 import EntityForm from "@/components/EntityForm";
 import Checkbox from "@/components/ui/Checkbox";
@@ -14,7 +14,7 @@ interface UserPermissionFormProps {
 
 export default function UserPermissionForm(props: UserPermissionFormProps) {
 	const { readAll, readAllByUser, saveUserCourses } = useCourseService();
-	const [allCourses, setAllCourses] = useState<ICourse[]>([]);
+	const [allCourses, setAllCourses] = useState<ICourseComplete[]>([]);
 
 	const { handleSubmit, reset, control } = useForm<{ courseIds: number[] }>({
 		defaultValues: {
@@ -50,6 +50,7 @@ export default function UserPermissionForm(props: UserPermissionFormProps) {
 				void handleSubmit(onSubmit)();
 				e.preventDefault();
 			}}
+			hideEntityId
 		>
 			<Controller
 				name="courseIds"

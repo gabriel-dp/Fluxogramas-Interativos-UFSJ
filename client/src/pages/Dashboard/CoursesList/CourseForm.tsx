@@ -5,7 +5,7 @@ import useCourseService from "@/services/courseService";
 import useCourseTypeService from "@/services/courseTypeService";
 import useCourseShiftService from "@/services/courseShiftService";
 import useCourseCampusService from "@/services/courseCampusService";
-import { ICourse } from "@/types/course";
+import { ICourseComplete } from "@/types/course";
 import { IType } from "@/types/course-attributes/type";
 import { IShift } from "@/types/course-attributes/shift";
 import { ICampus } from "@/types/course-attributes/campus";
@@ -23,7 +23,7 @@ interface CourseFormFields {
 }
 
 interface CourseFormI {
-	selectedCourse: ICourse | null | undefined;
+	selectedCourse: ICourseComplete | null | undefined;
 	refresh: () => void;
 }
 
@@ -65,9 +65,9 @@ export default function CourseForm(props: CourseFormI) {
 			reset({
 				code: props.selectedCourse.code,
 				name: props.selectedCourse.name,
-				typeId: props.selectedCourse.typeId,
-				shiftId: props.selectedCourse.shiftId,
-				campusId: props.selectedCourse.campusId,
+				typeId: props.selectedCourse.type.id,
+				shiftId: props.selectedCourse.shift.id,
+				campusId: props.selectedCourse.campus.id,
 			});
 		} else if (props.selectedCourse === null) {
 			reset({

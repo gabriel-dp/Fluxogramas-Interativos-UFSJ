@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowRight as OpenIcon, MdClose as CloseIcon } from "react-icons/md";
 
 import { Routes } from "@/routes";
-import { ICourse } from "@/types/course";
+import { ICourseComplete } from "@/types/course";
 import useAuth from "@/contexts/auth/useAuth";
 import useCourseService from "@/services/courseService";
 import Button from "@/components/ui/Button";
@@ -16,7 +16,7 @@ export default function Drawer() {
 	const { readAllByUser } = useCourseService();
 
 	const [drawerOpen, setDrawerOpen] = useState(false);
-	const [courses, setCourses] = useState<ICourse[]>([]);
+	const [courses, setCourses] = useState<ICourseComplete[]>([]);
 
 	useEffect(() => {
 		async function getCourses() {
