@@ -35,7 +35,7 @@ export default function Curriculum(props: ICurriculum) {
 				(subject) =>
 					props.course &&
 					(!subjectsState[getSubjectIndex(subject.id)] ||
-						!subject.preRequisites.includes(props.course.curriculum[i].id))
+						!subject.preRequisites.includes(props.course.curriculum[i].id)),
 			);
 
 		const validCoRequisites = (i: number) =>
@@ -48,19 +48,36 @@ export default function Curriculum(props: ICurriculum) {
 		return notActivePreRequisites(index) && notActivePostRequistes(index) && validCoRequisites(index);
 	};
 
-	function handleChangeSubjectState(index: number) {
+	function handleChangeSubjectState(index: number, state?: boolean) {
 		if (!props.course || !canChange(index)) return;
 
-		const newState = [...subjectsState];
-		newState[index] = !newState[index];
-		setSubjectsState(newState);
+		setSubjectsState((prev) => {
+			const newState = [...prev];
+			newState[index] = state == undefined ? !newState[index] : state;
+			return newState;
+		});
+	}
+
+	function handleChangeSemesterState(semester: number) {
+		if (!props.course) return;
+
+		const state = props.course.curriculum.some((subject, i) => {
+			if (subject.semester != semester) return false;
+			if (subjectsState[i] == false && canChange(i)) return true;
+		});
+		props.course.curriculum.forEach((subject, i) => {
+			if (subject.semester != semester) return;
+			handleChangeSubjectState(i, state);
+		});
 	}
 
 	return (
 		<CurriculumList className="curriculum">
 			{Array.from({ length: props.course?.semesters ?? 0 }).map((_, i) => (
 				<Semester key={i}>
-					<p className="semester-title">Semestre {i + 1}</p>
+					<p className="semester-title" onClick={() => handleChangeSemesterState(i + 1)}>
+						Semestre {i + 1}
+					</p>
 					{props.course?.curriculum.map((subject, j) => {
 						if (subject.semester === i + 1)
 							return (

@@ -4,12 +4,12 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("PRISMA_DATABASE_URL")
 }
 
 model User {
   id       Int     @id @default(autoincrement())
-  login    String  @unique
+  username String  @unique
   password String
   isAdmin  Boolean @default(false)
 
@@ -17,6 +17,17 @@ model User {
   updatedAt DateTime @updatedAt
 
   UserCoursePermission UserCoursePermission[]
+  RefreshToken         RefreshToken?
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  tokenHash String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
 }
 
 model UserCoursePermission {
@@ -66,11 +77,17 @@ model Course {
   UserCoursePermission UserCoursePermission[]
 }
 
+enum ComponentType {
+  SUBJECT
+  ACTIVITY
+}
+
 model Component {
-  id       Int    @id @default(autoincrement())
+  id       Int           @id @default(autoincrement())
   code     String
   name     String
   hours    Int
+  type     ComponentType
   semester Int?
 
   courseId Int
@@ -79,17 +96,23 @@ model Component {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  requiredBy ComponentRequisite[] @relation("Component")
-  requisites ComponentRequisite[] @relation("Requisite")
+  requisites ComponentRequisite[] @relation("Component")
+  requiredBy ComponentRequisite[] @relation("Requisite")
 
   @@unique([courseId, code])
 }
 
+enum RequisiteType {
+  PREREQUISITE
+  COREQUISITE
+}
+
 model ComponentRequisite {
   componentId Int
-  component   Component @relation("Component", fields: [componentId], references: [id])
+  component   Component     @relation("Component", fields: [componentId], references: [id])
   requisiteId Int
-  requisite   Component @relation("Requisite", fields: [requisiteId], references: [id])
+  requisite   Component     @relation("Requisite", fields: [requisiteId], references: [id])
+  type        RequisiteType @default(PREREQUISITE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

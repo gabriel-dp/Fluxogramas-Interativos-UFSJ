@@ -51,7 +51,9 @@ export const CardContainer = styled.div<CardProps>`
 
 	p {
 		font-size: 0.75rem;
+		max-width: 100%;
 		white-space: break-spaces;
+		word-break: break-word;
 
 		&.name {
 			text-decoration: ${(props) => (props.state ? "line-through" : "none")};

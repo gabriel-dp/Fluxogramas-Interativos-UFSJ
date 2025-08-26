@@ -1,0 +1,4 @@
+server/**/*.test.ts
+server/**/*.router.ts
+client/**/styles.ts
+client/vite.config.ts

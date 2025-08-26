@@ -43,10 +43,15 @@ export const Semester = styled.div`
 	align-items: center;
 	gap: 1rem;
 	white-space: nowrap;
+	color: ${(props) => props.theme.text}AA;
 
 	.semester-title {
 		font-weight: bold;
 		user-select: none;
-		opacity: 0.66;
+		cursor: pointer;
+
+		:hover {
+			color: ${(props) => props.theme.primary};
+		}
 	}
 `;

@@ -48,11 +48,7 @@ export const Header = styled.div`
 	}
 `;
 
-interface CurriculumProps {
-	hasData: boolean;
-}
-
-export const CurriculumContainer = styled.div<CurriculumProps>`
+export const CurriculumContainer = styled.div`
 	max-width: 100%;
 	flex-grow: 1;
 	padding: 1rem 0;

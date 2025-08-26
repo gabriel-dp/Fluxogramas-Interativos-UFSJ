@@ -1,33 +1,33 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { requestAllCourses } from "@/services/course/requests";
-import { Course } from "@/services/course/types";
+import { Routes } from "@/routes";
+import useCourseService from "@/services/courseService";
+import { ICourseComplete } from "@/types/course";
 import SearchBar from "@/components/SearchBar";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
-import ThemeSwitch from "@/components/ThemeSwitch";
 import logo from "@/assets/logo.png";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
 
-interface HomeProps {
-	toggleTheme: () => void;
-}
+export default function Home() {
+	const location = useLocation();
+	const queryParams = new URLSearchParams(location.search);
 
-export default function Home(props: HomeProps) {
-	const [search, setSearch] = useState("");
+	const { readAll } = useCourseService();
+	const [search, setSearch] = useState(queryParams.get("search") ?? "");
 	const [loading, setLoading] = useState(true);
-	const [allCourses, setAllCourses] = useState<Course[]>([]);
-	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+	const [allCourses, setAllCourses] = useState<ICourseComplete[]>([]);
+	const [selectedCourses, setSelectedCourses] = useState<ICourseComplete[]>([]);
 
 	useEffect(() => {
 		async function asyncSetAllCourses() {
-			setAllCourses(await requestAllCourses());
+			setAllCourses(await readAll());
 			setLoading(false);
 		}
-		asyncSetAllCourses();
-	}, []);
+		void asyncSetAllCourses();
+	}, [readAll]);
 
 	useEffect(() => {
 		if (allCourses.length > 0) {
@@ -43,13 +43,12 @@ export default function Home(props: HomeProps) {
 
 	const navigate = useNavigate();
 	function handleCourseClick(code: string) {
-		navigate(code);
+		navigate(Routes.course(code));
 	}
 
 	return (
 		<Screen>
 			<HomeContainer>
-				<ThemeSwitch toggleTheme={props.toggleTheme} />
 				<LogoImage src={logo} alt="CurriculumUFSJ-logo" />
 				<SearchBar placeholder="Pesquisar curso..." search={search} setSearch={setSearch} />
 				<CoursesContainer>
@@ -62,9 +61,9 @@ export default function Home(props: HomeProps) {
 									<p>{course.name}</p>
 								</div>
 								<div className="course-data">
-									<span>{course.shift}</span>
-									<span>{course.type}</span>
-									<span>{course.campus}</span>
+									<span>{course.shift.name}</span>
+									<span>{course.type.name}</span>
+									<span>{course.campus.name}</span>
 								</div>
 							</CourseElement>
 						))
