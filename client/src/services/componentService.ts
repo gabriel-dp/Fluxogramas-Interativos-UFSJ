@@ -38,13 +38,13 @@ export default function useComponentService() {
 		[api],
 	);
 
-	const setComponents = useCallback(
-		async (courseId: number, data: object): Promise<IComponent[]> => {
-			const result = await api.put<IComponent[]>(`/component/course/${courseId}`, data);
+	const setRequisites = useCallback(
+		async (id: number, data: object): Promise<IComponent> => {
+			const result = await api.put<IComponent>(`/component/requisites/${id}`, data);
 			return result.data;
 		},
 		[api],
 	);
 
-	return { createOne, updateOne, deleteOne, readComponents, setComponents };
+	return { createOne, updateOne, deleteOne, readComponents, setRequisites };
 }

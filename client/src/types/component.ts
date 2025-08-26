@@ -6,7 +6,7 @@ export const componentSchema = z.object({
 	name: z.string().min(1).max(128),
 	hours: z.number().int().nonnegative(),
 	type: z.enum(["SUBJECT", "ACTIVITY"]),
-	semester: z.number().int().positive().optional(),
+	semester: z.number().int().positive().nullable(),
 	courseId: z.number().int().positive(),
 });
 
@@ -16,6 +16,11 @@ export type CreateComponentData = z.TypeOf<typeof createComponentSchema>;
 export const updateComponentSchema = createComponentSchema.partial();
 export type UpdateComponentData = z.TypeOf<typeof updateComponentSchema>;
 
+export interface Requisite {
+	id: number;
+	corequisite: boolean;
+}
+
 export interface IComponent {
 	id: number;
 	code: string;
@@ -24,12 +29,15 @@ export interface IComponent {
 	type: string;
 	semester: number | null;
 	courseId: number;
-	requisites: number[];
+	requisites: Requisite[];
 }
 
-export const setComponentsSchema = z.object({
-	components: z.array(
-		componentSchema.omit({ courseId: true }).extend({ requisites: z.array(z.string().min(1).min(32)) }),
+export const setRequisitesSchema = z.object({
+	requisites: z.array(
+		z.object({
+			id: z.number().int().positive(),
+			corequisite: z.boolean().optional().default(false),
+		}),
 	),
 });
-export type SetComponentsData = z.TypeOf<typeof setComponentsSchema>;
+export type SetRequisitesData = z.TypeOf<typeof setRequisitesSchema>;

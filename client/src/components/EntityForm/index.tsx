@@ -7,14 +7,15 @@ interface EntityFormProps<T extends { id: number }> extends React.PropsWithChild
 	selectedEntity: T | null | undefined;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
 	onDelete?: () => Promise<void>;
+	hideEntityId?: boolean;
 }
 
-export default function EntityForm<T extends { id: number }>(props: EntityFormProps<T>) {
+export default function EntityForm<T extends { id: number }>({ hideEntityId = false, ...props }: EntityFormProps<T>) {
 	return (
 		<DashboardForm onSubmit={props.onSubmit}>
 			{props.selectedEntity ? (
 				<h2>
-					Editar {props.entity} ({props.selectedEntity.id})
+					Editar {props.entity} {!hideEntityId && `(${props.selectedEntity.id})`}
 				</h2>
 			) : (
 				<h2>Criar {props.entity}</h2>

@@ -7,8 +7,8 @@ type CheckboxProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> &
 	checked?: boolean;
 };
 
-const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ label, checked = false, ...rest }, ref) => (
-	<Label>
+const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({ label, checked = false, style, ...rest }, ref) => (
+	<Label style={style}>
 		<HiddenCheckbox ref={ref} checked={checked} {...rest} />
 		<StyledCheckbox checked={checked} />
 		{label && <LabelText>{label}</LabelText>}

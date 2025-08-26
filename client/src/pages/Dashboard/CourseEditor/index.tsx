@@ -8,6 +8,7 @@ import DataTable from "@/components/DataTable";
 
 import ComponentForm from "./ComponentForm";
 import { DashboardContent } from "../styles";
+import RequisiteForm from "./RequisitesForm";
 
 const columns: TableColumn<IComponent>[] = [
 	{
@@ -45,8 +46,8 @@ export default function CourseEditor() {
 	const [selectedComponent, setSelectedComponent] = useState<IComponent | null | undefined>();
 	const requestComponents = useCallback(async () => {
 		setComponents(await readComponents(Number(id)));
-		setSelectedComponent(null);
 	}, [id, readComponents]);
+
 	useEffect(() => {
 		void requestComponents();
 	}, [requestComponents]);
@@ -57,8 +58,18 @@ export default function CourseEditor() {
 			<ComponentForm
 				courseId={Number(id)}
 				selectedComponent={selectedComponent}
-				refresh={() => void requestComponents()}
+				refresh={() => {
+					void requestComponents();
+					setSelectedComponent(null);
+				}}
 			/>
+			{selectedComponent && (
+				<RequisiteForm
+					components={components}
+					selectedComponent={selectedComponent}
+					refresh={() => void requestComponents()}
+				/>
+			)}
 		</DashboardContent>
 	);
 }

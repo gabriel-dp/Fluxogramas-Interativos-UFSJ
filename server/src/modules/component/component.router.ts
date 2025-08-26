@@ -14,7 +14,7 @@ router.get("/:id", validateId, ComponentController.readOne);
 
 router.post("/", requireAuth, validateData(createComponentSchema), ComponentController.createOne);
 router.put(
-	"/course/:id",
+	"/requisites/:id",
 	requireAuth,
 	validateId,
 	validateData(setRequisitesSchema),

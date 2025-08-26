@@ -96,8 +96,8 @@ model Component {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  requiredBy ComponentRequisite[] @relation("Component")
-  requisites ComponentRequisite[] @relation("Requisite")
+  requisites ComponentRequisite[] @relation("Component")
+  requiredBy ComponentRequisite[] @relation("Requisite")
 
   @@unique([courseId, code])
 }

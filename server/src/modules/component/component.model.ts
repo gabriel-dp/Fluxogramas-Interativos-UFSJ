@@ -34,7 +34,6 @@ export interface IComponent {
 }
 
 export const setRequisitesSchema = z.object({
-	id: z.number().int().positive(),
 	requisites: z.array(
 		z.object({
 			id: z.number().int().positive(),
