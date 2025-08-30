@@ -14,11 +14,11 @@ const categoryStyles = {
 	`,
 	secondary: css`
 		background-color: transparent;
-		color: ${(props) => props.theme.primary};
-		border: 1px solid ${(props) => props.theme.primary};
+		color: ${(props) => props.theme.text};
+		border: 1px solid ${(props) => props.theme.text}77;
 
 		&:hover {
-			background-color: ${(props) => props.theme.primaryText}AA;
+			background-color: ${(props) => props.theme.primary}44;
 		}
 	`,
 };

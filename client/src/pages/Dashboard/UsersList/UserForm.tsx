@@ -91,6 +91,7 @@ export default function UserForm(props: UserFormI) {
 					render={({ field }) => (
 						<Checkbox
 							label="Administrador?"
+							style={{ alignSelf: "flex-end" }}
 							checked={!!field.value}
 							onChange={(e) => field.onChange(e.target.checked)}
 							ref={field.ref}

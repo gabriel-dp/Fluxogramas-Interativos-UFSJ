@@ -23,6 +23,7 @@ export const StyledCheckbox = styled.div<{ checked: boolean }>`
 	font-size: 1rem;
 	font-weight: bold;
 	color: ${(props) => props.theme.primaryText};
+	border: 1px solid ${(props) => props.theme.text}44;
 
 	&::after {
 		content: ${({ checked }) => (checked ? '"✓"' : '""')};

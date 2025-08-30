@@ -1,11 +1,16 @@
 import { z } from "zod";
 
+export enum ComponentType {
+	SUBJECT = "SUBJECT",
+	ACTIVITY = "ACTIVITY",
+}
+
 export const componentSchema = z.object({
 	id: z.number().int().positive(),
 	code: z.string().min(1).max(32),
 	name: z.string().min(1).max(128),
 	hours: z.number().int().nonnegative(),
-	type: z.enum(["SUBJECT", "ACTIVITY"]),
+	type: z.nativeEnum(ComponentType),
 	semester: z.number().int().positive().nullable(),
 	courseId: z.number().int().positive(),
 });

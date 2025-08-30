@@ -31,3 +31,7 @@ export const DataTableComponent = styled(DataTable)<any>`
 		}
 	}
 `;
+
+export const NoDataComponent = styled.div`
+	color: ${(props) => props.theme.text}77;
+`;

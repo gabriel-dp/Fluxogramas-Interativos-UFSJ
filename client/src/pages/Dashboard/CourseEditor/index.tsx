@@ -3,12 +3,13 @@ import { useParams } from "react-router-dom";
 import { TableColumn } from "react-data-table-component";
 
 import useComponentService from "@/services/componentService";
-import { IComponent } from "@/types/component";
+import { ComponentType, IComponent } from "@/types/component";
 import DataTable from "@/components/DataTable";
+import Button from "@/components/ui/Button";
 
 import ComponentForm from "./ComponentForm";
-import { DashboardContent } from "../styles";
 import RequisiteForm from "./RequisitesForm";
+import { DashboardContent } from "../styles";
 
 const columns: TableColumn<IComponent>[] = [
 	{
@@ -33,7 +34,7 @@ const columns: TableColumn<IComponent>[] = [
 	},
 	{
 		name: "Tipo",
-		selector: (row) => row.type,
+		selector: (row) => (row.type == ComponentType.SUBJECT ? "Disciplina" : "Atividade"),
 		sortable: true,
 	},
 ];
@@ -50,10 +51,20 @@ export default function CourseEditor() {
 
 	useEffect(() => {
 		void requestComponents();
+		setSelectedComponent(undefined);
 	}, [requestComponents]);
 
 	return (
 		<DashboardContent>
+			<div className="title-bar">
+				<h1>Listagem de Componentes</h1>
+				<div className="actions">
+					<Button onClick={() => void 0} category="secondary">
+						Visualizar grade
+					</Button>
+					<Button onClick={() => setSelectedComponent(null)}>Criar</Button>
+				</div>
+			</div>
 			<DataTable columns={columns} data={components} onRowClicked={(e) => setSelectedComponent({ ...e })} />
 			<ComponentForm
 				courseId={Number(id)}

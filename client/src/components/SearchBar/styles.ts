@@ -32,7 +32,8 @@ export const SearchInput = styled.input.attrs({
 	padding: 1rem 1rem 1rem 2.5rem;
 	background-color: ${(props) => props.theme.secondary};
 	color: ${(props) => props.theme.text};
-	border: none;
+	border: 1px solid ${(props) => props.theme.text}33;
+	border-radius: 0.5rem;
 	outline: none;
 	text-overflow: ellipsis;
 	transition: all 0.25s ease;

@@ -18,7 +18,7 @@ export const LightTheme: ThemeType = {
 	primaryHighlight: "#CC4549",
 	primaryText: "#FFFFFF",
 	secondary: "#FEFEFE",
-	background: "#BBBBBB",
+	background: "#EEEEEE",
 	background2: "#505050",
 	text: "#333333",
 	white: "#FFFFFF",

@@ -38,6 +38,7 @@ export const CourseElement = styled.div`
 	padding: 1rem 1.5rem;
 	border-radius: 0.5rem;
 	background: ${(props) => props.theme.secondary};
+	border: 1px solid ${(props) => props.theme.text}33;
 	overflow: hidden;
 	user-select: none;
 	cursor: pointer;

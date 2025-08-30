@@ -14,6 +14,8 @@ export const DrawerContainer = styled.div<DrawerProps>`
 	width: ${DRAWER_CONTENT_WIDTH_REM}rem;
 	transition: all 0.3s ease-in-out;
 	z-index: 1000;
+	position: sticky;
+	top: 0;
 
 	@media (max-width: 1080px) {
 		transform: translateX(${(props) => (props.open ? 0 : "-100%")});

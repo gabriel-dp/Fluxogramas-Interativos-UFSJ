@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { FaTrashAlt as DeleteIcon } from "react-icons/fa";
 
 import { IComponent, Requisite } from "@/types/component";
 import useComponentService from "@/services/componentService";
@@ -7,6 +8,8 @@ import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
 import Checkbox from "@/components/ui/Checkbox";
 import Button from "@/components/ui/Button";
+
+import { AddRequisiteRow, RequisitesList } from "./styles";
 
 interface RequisiteFormFields {
 	id: number;
@@ -58,13 +61,14 @@ export default function RequisiteForm(props: RequisiteFormI) {
 			}}
 			hideEntityId
 		>
-			<div className="row">
+			<AddRequisiteRow className="row">
 				<Controller
 					name="id"
 					control={control}
 					render={({ field }) => (
 						<OptionSelector
 							label="Componente"
+							className="selector"
 							options={props.components
 								.filter((c) => c.id !== props.selectedComponent.id && !selectedRequisites.find((r) => r.id === c.id))
 								.map((c) => ({ label: c.name, value: c.id }))}
@@ -78,30 +82,33 @@ export default function RequisiteForm(props: RequisiteFormI) {
 					render={({ field }) => (
 						<Checkbox
 							label="Co-requisito?"
-							style={{ width: "50%", marginTop: "1.5rem" }}
 							checked={!!field.value}
 							onChange={(e) => field.onChange(e.target.checked)}
 							ref={field.ref}
 						/>
 					)}
 				/>
-				<Button onClick={onAdd} style={{ width: "50%" }}>
-					Adicionar
-				</Button>
-			</div>
+				<Button onClick={onAdd}>Adicionar</Button>
+			</AddRequisiteRow>
 			<hr />
-			<div className="row">
-				{selectedRequisites.map((r) => {
-					const component = props.components.find((c) => c.id === r.id);
-					return (
-						<Button key={r.id} onClick={() => onDelete(r.id)} category="secondary">
-							<span>
-								{component?.code} ({component?.name})&nbsp;&nbsp;X
-							</span>
-						</Button>
-					);
-				})}
-			</div>
+			<RequisitesList>
+				{selectedRequisites.length === 0 && <p className="empty">Não há requisitos</p>}
+				{selectedRequisites
+					.sort((a, b) => a.id - b.id)
+					.map((r) => {
+						const component = props.components.find((c) => c.id === r.id);
+						return (
+							<li key={r.id}>
+								<Button onClick={() => onDelete(r.id)} category="secondary">
+									<DeleteIcon className="icon" />
+								</Button>
+								<p>
+									{component?.code} ({component?.name})
+								</p>
+							</li>
+						);
+					})}
+			</RequisitesList>
 			<hr />
 		</EntityForm>
 	);
