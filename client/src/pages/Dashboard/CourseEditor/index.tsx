@@ -71,14 +71,16 @@ export default function CourseEditor() {
 				selectedComponent={selectedComponent}
 				refresh={() => {
 					void requestComponents();
-					setSelectedComponent(null);
+					setSelectedComponent(undefined);
 				}}
 			/>
 			{selectedComponent && (
 				<RequisiteForm
 					components={components}
 					selectedComponent={selectedComponent}
-					refresh={() => void requestComponents()}
+					refresh={() => {
+						void requestComponents();
+					}}
 				/>
 			)}
 		</DashboardContent>
