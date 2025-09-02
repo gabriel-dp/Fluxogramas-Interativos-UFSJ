@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import { IComponent } from "@/types/component";
+import useNotifications from "@/contexts/notifications/useNotifications";
 import useComponentService from "@/services/componentService";
 import TextField from "@/components/ui/TextField";
 import OptionSelector from "@/components/ui/OptionSelector";
@@ -23,6 +24,7 @@ interface ComponentFormI {
 
 export default function ComponentForm(props: ComponentFormI) {
 	const { createOne, updateOne, deleteOne } = useComponentService();
+	const { add: addNotification } = useNotifications();
 
 	const { control, reset, handleSubmit } = useForm<ComponentFormFields>({
 		defaultValues: {
@@ -66,6 +68,11 @@ export default function ComponentForm(props: ComponentFormI) {
 		} else {
 			await createOne({ ...data, courseId: props.courseId });
 		}
+		for (let i = 0; i < 5; i++) {
+			setTimeout(() => {
+				addNotification({ type: "success", message: "Componente salvo com sucesso" });
+			}, i * 500);
+		}
 		props.refresh();
 	}
 
@@ -73,6 +80,7 @@ export default function ComponentForm(props: ComponentFormI) {
 		if (props.selectedComponent) {
 			await deleteOne(props.selectedComponent.id);
 		}
+		addNotification({ type: "success", message: "Componente deletado" });
 		props.refresh();
 	}
 

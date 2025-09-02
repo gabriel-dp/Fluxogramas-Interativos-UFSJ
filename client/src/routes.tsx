@@ -3,6 +3,7 @@ import { BrowserRouter, Routes as RouteGroup, Route, Outlet, Navigate } from "re
 import useAuth from "@/contexts/auth/useAuth";
 import ActionButtons from "@/components/ActionButtons";
 import Drawer from "@/components/Drawer";
+import Notifications from "@/components/Notification";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import CourseData from "@/pages/CourseData";
@@ -42,6 +43,7 @@ export default function Router() {
 	return (
 		<BrowserRouter>
 			<ActionButtons />
+			<Notifications />
 			<RouteGroup>
 				<Route path={Routes.home} element={<Home />} />
 				<Route path={Routes.signIn} element={<SignIn />} />
