@@ -29,7 +29,7 @@ export const StyledInput = styled.input`
 export const StyledLabel = styled.label<{ isFloating: boolean }>`
 	position: absolute;
 	left: 0.75rem;
-	top: 1.875rem;
+	top: 2rem;
 	color: #aaa;
 	font-size: 1rem;
 	transition: all 0.2s ease-out;
