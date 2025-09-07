@@ -18,6 +18,7 @@ export const DataTableComponent = styled(DataTable)<any>`
 
 	.rdt_TableHeadRow {
 		border-bottom: 1px solid ${(props) => props.theme.text}33;
+		color: blue;
 	}
 
 	.rdt_TableRow {
@@ -28,6 +29,14 @@ export const DataTableComponent = styled(DataTable)<any>`
 
 		&:not(:last-of-type) {
 			border-bottom: 1px solid ${(props) => props.theme.text}33;
+		}
+	}
+
+	.rdt_TableCell {
+		&:last-of-type {
+			* {
+				pointer-events: none;
+			}
 		}
 	}
 `;

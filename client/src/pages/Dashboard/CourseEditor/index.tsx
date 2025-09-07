@@ -65,7 +65,12 @@ export default function CourseEditor() {
 					<Button onClick={() => setSelectedComponent(null)}>Criar</Button>
 				</div>
 			</div>
-			<DataTable columns={columns} data={components} onRowClicked={(e) => setSelectedComponent({ ...e })} />
+			<DataTable
+				columns={columns}
+				data={components}
+				onRowClicked={(e) => setSelectedComponent({ ...e })}
+				defaultSortFieldId={1}
+			/>
 			<ComponentForm
 				courseId={Number(id)}
 				selectedComponent={selectedComponent}

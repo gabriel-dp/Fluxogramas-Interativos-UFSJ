@@ -66,7 +66,12 @@ export default function Course() {
 				<h1>Listagem de Cursos</h1>
 				<Button onClick={() => setSelectedCourse(null)}>Criar</Button>
 			</div>
-			<DataTable columns={columns} data={courses} onRowClicked={(e) => setSelectedCourse({ ...e })} />
+			<DataTable
+				columns={columns}
+				data={courses}
+				onRowClicked={(e) => setSelectedCourse({ ...e })}
+				defaultSortFieldId={1}
+			/>
 			<CourseForm selectedCourse={selectedCourse} refresh={() => void requestCourses()} />
 		</DashboardContent>
 	);
