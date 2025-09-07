@@ -3,6 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FaTrashAlt as DeleteIcon } from "react-icons/fa";
 
 import { IComponent, Requisite } from "@/types/component";
+import useNotifications from "@/contexts/notifications/useNotifications";
 import useComponentService from "@/services/componentService";
 import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
@@ -23,12 +24,16 @@ interface RequisiteFormI {
 }
 
 export default function RequisiteForm(props: RequisiteFormI) {
-	const { handleSubmit, watch, control, reset } = useForm<RequisiteFormFields>();
+	const { addNotification } = useNotifications();
 	const { setRequisites } = useComponentService();
+
+	const { handleSubmit, watch, control, reset } = useForm<RequisiteFormFields>();
 	const [selectedRequisites, setSelectedRequisites] = useState<Requisite[]>([]);
+	const [changed, setChanged] = useState<boolean>(false);
 
 	useEffect(() => {
 		setSelectedRequisites(props.selectedComponent.requisites);
+		setChanged(false);
 		reset({
 			id: 0,
 			corequisite: false,
@@ -39,16 +44,25 @@ export default function RequisiteForm(props: RequisiteFormI) {
 
 	async function onSubmit() {
 		await setRequisites(props.selectedComponent.id, { requisites: selectedRequisites });
+		addNotification({ type: "success", message: "Requisitos definidos" });
+		setChanged(false);
 		props.refresh();
 	}
 
 	function onAdd() {
 		if (Number(watch("id")) === 0) return;
-		setSelectedRequisites((prev) => [...prev, { id: Number(watch("id")), corequisite: watch("corequisite") }]);
+		const newRequisite = { id: Number(watch("id")), corequisite: watch("corequisite") };
+		setSelectedRequisites((prev) => [...prev, newRequisite]);
+
+		reset({ id: 0, corequisite: false });
+		addNotification({ type: "success", message: "Requisito adicionado (Não se esqueça de salvar)" });
+		setChanged(true);
 	}
 
 	function onDelete(id: number) {
 		setSelectedRequisites((prev) => prev.filter((r) => r.id !== id));
+		addNotification({ type: "success", message: "Requisito removido (Não se esqueça de salvar)" });
+		setChanged(true);
 	}
 
 	return (
@@ -60,6 +74,7 @@ export default function RequisiteForm(props: RequisiteFormI) {
 				e.preventDefault();
 			}}
 			hideEntityId
+			hasError={!changed}
 		>
 			<AddRequisiteRow className="row">
 				<Controller

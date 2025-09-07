@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import useNotifications from "@/contexts/notifications/useNotifications";
 import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
 import { IUser } from "@/types/user";
@@ -13,6 +14,7 @@ interface UserPermissionFormProps {
 }
 
 export default function UserPermissionForm(props: UserPermissionFormProps) {
+	const { addNotification } = useNotifications();
 	const { readAll, readAllByUser, saveUserCourses } = useCourseService();
 	const [allCourses, setAllCourses] = useState<ICourseComplete[]>([]);
 
@@ -39,6 +41,7 @@ export default function UserPermissionForm(props: UserPermissionFormProps) {
 	async function onSubmit(data: object) {
 		if (props.selectedUser) {
 			await saveUserCourses(props.selectedUser.id, data);
+			addNotification({ type: "success", message: `Permissões atualizadas (Usuário ${props.selectedUser.id})` });
 		}
 	}
 

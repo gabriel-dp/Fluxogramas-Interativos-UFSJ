@@ -14,7 +14,7 @@ interface NotificationInstance extends Notification {
 
 interface NotificationsContextI {
 	notifications: NotificationInstance[];
-	add: (newNotification: Notification) => void;
+	addNotification: (newNotification: Notification) => void;
 }
 
 export const NotificationsContext = createContext<NotificationsContextI>({} as NotificationsContextI);
@@ -22,7 +22,7 @@ export const NotificationsContext = createContext<NotificationsContextI>({} as N
 export function NotificationsProvider(props: PropsWithChildren) {
 	const [notifications, setNotifications] = useState<NotificationInstance[]>([]);
 
-	const add = (newNotification: Notification) => {
+	const addNotification = (newNotification: Notification) => {
 		const id = uuid();
 		setNotifications((prev) => [...prev, { ...newNotification, id }]);
 		setTimeout(() => {
@@ -30,5 +30,9 @@ export function NotificationsProvider(props: PropsWithChildren) {
 		}, NOTIFICATION_TIMEOUT_MS);
 	};
 
-	return <NotificationsContext.Provider value={{ notifications, add }}>{props.children}</NotificationsContext.Provider>;
+	return (
+		<NotificationsContext.Provider value={{ notifications, addNotification }}>
+			{props.children}
+		</NotificationsContext.Provider>
+	);
 }

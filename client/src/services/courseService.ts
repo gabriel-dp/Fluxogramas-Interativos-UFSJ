@@ -1,10 +1,13 @@
 import { useCallback } from "react";
+import { AxiosError } from "axios";
 
 import useApi from "@/hooks/useApi";
 import { ICourseComplete } from "@/types/course";
+import { ConflictException } from "@/utils/exceptionUtils";
 
 export default function useCourseService() {
 	const api = useApi();
+	const ENTITY = "Curso";
 
 	const readAll = useCallback(async (): Promise<ICourseComplete[]> => {
 		const response = await api.get<ICourseComplete[]>("/course");
@@ -13,16 +16,34 @@ export default function useCourseService() {
 
 	const createOne = useCallback(
 		async (data: object): Promise<ICourseComplete> => {
-			const response = await api.post<ICourseComplete>("/course", data);
-			return response.data;
+			try {
+				const response = await api.post<ICourseComplete>("/course", data);
+				return response.data;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					if (error.status === 409) {
+						throw new ConflictException(ENTITY, "Código");
+					}
+				}
+				throw error;
+			}
 		},
 		[api],
 	);
 
 	const updateOne = useCallback(
 		async (id: number, data: object): Promise<ICourseComplete> => {
-			const response = await api.patch<ICourseComplete>(`/course/${id}`, data);
-			return response.data;
+			try {
+				const response = await api.patch<ICourseComplete>(`/course/${id}`, data);
+				return response.data;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					if (error.status === 409) {
+						throw new ConflictException(ENTITY, "Código");
+					}
+				}
+				throw error;
+			}
 		},
 		[api],
 	);

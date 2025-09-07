@@ -1,19 +1,21 @@
 import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-import { IComponent } from "@/types/component";
+import { ComponentType, createComponentSchema, IComponent } from "@/types/component";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import useComponentService from "@/services/componentService";
 import TextField from "@/components/ui/TextField";
 import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
+import { ConflictException } from "@/utils/exceptionUtils";
 
 interface ComponentFormFields {
 	code: string;
 	name: string;
-	hours: number | string;
-	semester: number | string | null;
-	type: string;
+	hours: number;
+	semester: number | null;
+	type: "SUBJECT" | "ACTIVITY";
 }
 
 interface ComponentFormI {
@@ -24,16 +26,23 @@ interface ComponentFormI {
 
 export default function ComponentForm(props: ComponentFormI) {
 	const { createOne, updateOne, deleteOne } = useComponentService();
-	const { add: addNotification } = useNotifications();
+	const { addNotification } = useNotifications();
 
-	const { control, reset, handleSubmit } = useForm<ComponentFormFields>({
+	const {
+		control,
+		reset,
+		handleSubmit,
+		setError,
+		formState: { errors, isValid },
+	} = useForm<ComponentFormFields>({
 		defaultValues: {
 			code: "",
 			name: "",
-			hours: "0",
-			semester: "1",
-			type: "SUBJECT",
+			hours: 0,
+			semester: 1,
+			type: ComponentType.SUBJECT,
 		},
+		resolver: zodResolver(createComponentSchema),
 	});
 
 	useEffect(() => {
@@ -42,15 +51,15 @@ export default function ComponentForm(props: ComponentFormI) {
 				code: props.selectedComponent.code,
 				name: props.selectedComponent.name,
 				hours: props.selectedComponent.hours,
-				semester: props.selectedComponent.semester,
+				semester: props.selectedComponent.semester ?? null,
 				type: props.selectedComponent.type,
 			});
 		} else if (props.selectedComponent === null) {
 			reset({
 				code: "",
 				name: "",
-				hours: "0",
-				semester: "1",
+				hours: 0,
+				semester: 1,
 				type: "SUBJECT",
 			});
 		}
@@ -63,24 +72,32 @@ export default function ComponentForm(props: ComponentFormI) {
 		data.hours = Number(data.hours);
 		data.semester = data.semester ? Number(data.semester) : null;
 
-		if (props.selectedComponent) {
-			await updateOne(props.selectedComponent.id, { ...data, courseId: props.courseId });
-		} else {
-			await createOne({ ...data, courseId: props.courseId });
+		try {
+			if (props.selectedComponent) {
+				await updateOne(props.selectedComponent.id, { ...data, courseId: props.courseId });
+				addNotification({
+					type: "success",
+					message: `Componente '${props.selectedComponent.code}' atualizado com sucesso`,
+				});
+			} else {
+				const { code } = await createOne({ ...data, courseId: props.courseId });
+				addNotification({ type: "success", message: `Componente '${code}' criado com sucesso` });
+			}
+		} catch (error) {
+			if (error instanceof ConflictException) {
+				setError("code", { message: "Código em uso" });
+			}
+			throw error;
 		}
-		for (let i = 0; i < 5; i++) {
-			setTimeout(() => {
-				addNotification({ type: "success", message: "Componente salvo com sucesso" });
-			}, i * 500);
-		}
+
 		props.refresh();
 	}
 
 	async function onDelete() {
 		if (props.selectedComponent) {
 			await deleteOne(props.selectedComponent.id);
+			addNotification({ type: "success", message: `Componente '${props.selectedComponent.code}' deletado` });
 		}
-		addNotification({ type: "success", message: "Componente deletado" });
 		props.refresh();
 	}
 
@@ -93,29 +110,34 @@ export default function ComponentForm(props: ComponentFormI) {
 				e.preventDefault();
 			}}
 			onDelete={onDelete}
+			hasError={!isValid}
 		>
 			<div className="row">
 				<Controller
 					name="code"
 					control={control}
-					render={({ field }) => <TextField label="Código*" {...field} required />}
+					render={({ field }) => <TextField label="Código*" {...field} required error={errors.code?.message} />}
 				/>
 				<Controller
 					name="name"
 					control={control}
-					render={({ field }) => <TextField label="Nome*" {...field} required />}
+					render={({ field }) => <TextField label="Nome*" {...field} required error={errors.name?.message} />}
 				/>
 			</div>
 			<div className="row">
 				<Controller
 					name="hours"
 					control={control}
-					render={({ field }) => <TextField label="Carga Horária*" type="number" {...field} required min={0} />}
+					render={({ field }) => (
+						<TextField label="Carga Horária*" type="number" {...field} error={errors.hours?.message} />
+					)}
 				/>
 				<Controller
 					name="semester"
 					control={control}
-					render={({ field }) => <TextField label="Semestre" type="number" {...field} min={1} max={20} />}
+					render={({ field }) => (
+						<TextField label="Semestre" type="number" {...field} error={errors.semester?.message} />
+					)}
 				/>
 				<Controller
 					name="type"

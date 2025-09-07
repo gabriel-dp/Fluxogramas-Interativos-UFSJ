@@ -37,4 +37,9 @@ export const StyledButton = styled.button<{ $category: ButtonCategory }>`
 	text-overflow: ellipsis;
 
 	${({ $category }) => categoryStyles[$category]}
+
+	&:disabled {
+		cursor: not-allowed;
+		opacity: 0.7;
+	}
 `;

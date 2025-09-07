@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import useCourseService from "@/services/courseService";
 import useCourseTypeService from "@/services/courseTypeService";
 import useCourseShiftService from "@/services/courseShiftService";
 import useCourseCampusService from "@/services/courseCampusService";
-import { ICourseComplete } from "@/types/course";
+import { createCourseSchema, ICourseComplete } from "@/types/course";
 import { IType } from "@/types/course-attributes/type";
 import { IShift } from "@/types/course-attributes/shift";
 import { ICampus } from "@/types/course-attributes/campus";
 import TextField from "@/components/ui/TextField";
-
 import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
+import useNotifications from "@/contexts/notifications/useNotifications";
+import { ConflictException } from "@/utils/exceptionUtils";
 
 interface CourseFormFields {
 	code: string;
@@ -28,12 +30,19 @@ interface CourseFormI {
 }
 
 export default function CourseForm(props: CourseFormI) {
+	const { addNotification } = useNotifications();
 	const { createOne, updateOne, deleteOne } = useCourseService();
 	const { readAll: readAllTypes } = useCourseTypeService();
 	const { readAll: readAllShifts } = useCourseShiftService();
 	const { readAll: readAllCampus } = useCourseCampusService();
 
-	const { control, reset, handleSubmit } = useForm<CourseFormFields>({
+	const {
+		control,
+		reset,
+		handleSubmit,
+		setError,
+		formState: { errors, isValid },
+	} = useForm<CourseFormFields>({
 		defaultValues: {
 			code: "",
 			name: "",
@@ -41,6 +50,7 @@ export default function CourseForm(props: CourseFormI) {
 			shiftId: -1,
 			campusId: 1,
 		},
+		resolver: zodResolver(createCourseSchema),
 	});
 
 	// Get course attributes
@@ -84,17 +94,29 @@ export default function CourseForm(props: CourseFormI) {
 
 	async function onSubmit(data: CourseFormFields) {
 		data = { ...data, campusId: Number(data.campusId), shiftId: Number(data.shiftId), typeId: Number(data.typeId) }; // Fix selector value types
-		if (props.selectedCourse) {
-			await updateOne(props.selectedCourse.id, data);
-		} else {
-			await createOne(data);
+
+		try {
+			if (props.selectedCourse) {
+				await updateOne(props.selectedCourse.id, data);
+				addNotification({ type: "success", message: `Curso #${props.selectedCourse.id} atualizado com sucesso` });
+			} else {
+				const { id } = await createOne(data);
+				addNotification({ type: "success", message: `Curso #${id} criado com sucesso` });
+			}
+		} catch (error) {
+			if (error instanceof ConflictException) {
+				setError("code", { message: "Código em uso" });
+			}
+			throw error;
 		}
+
 		props.refresh();
 	}
 
 	async function onDelete() {
 		if (props.selectedCourse) {
 			await deleteOne(props.selectedCourse.id);
+			addNotification({ type: "success", message: `Curso #${props.selectedCourse.id} deletado` });
 		}
 		props.refresh();
 	}
@@ -108,17 +130,18 @@ export default function CourseForm(props: CourseFormI) {
 				e.preventDefault();
 			}}
 			onDelete={onDelete}
+			hasError={!isValid}
 		>
 			<div className="row">
 				<Controller
 					name="code"
 					control={control}
-					render={({ field }) => <TextField label="Código*" {...field} required />}
+					render={({ field }) => <TextField label="Código*" {...field} required error={errors.code?.message} />}
 				/>
 				<Controller
 					name="name"
 					control={control}
-					render={({ field }) => <TextField label="Nome*" {...field} required />}
+					render={({ field }) => <TextField label="Nome*" {...field} required error={errors.name?.message} />}
 				/>
 			</div>
 			<div className="row">

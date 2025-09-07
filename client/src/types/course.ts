@@ -7,18 +7,15 @@ import { IComponent } from "./component";
 
 export const courseSchema = z.object({
 	id: z.number().int().positive(),
-	code: z.string().min(3).max(10),
-	name: z.string().min(1).max(128),
-	campusId: z.number().int().positive(),
-	shiftId: z.number().int().positive(),
-	typeId: z.number().int().positive(),
+	code: z.string().min(3, "Mínimo de 3 caracteres").max(10, "Máximo de 10 caracteres"),
+	name: z.string().min(1, "Preencha o campo").max(128, "Máximo de 128 caracteres"),
+	campusId: z.coerce.number().int().positive(),
+	shiftId: z.coerce.number().int().positive(),
+	typeId: z.coerce.number().int().positive(),
 });
 
 export const createCourseSchema = courseSchema.omit({ id: true });
 export type CreateCourseData = z.TypeOf<typeof createCourseSchema>;
-
-export const updateCourseSchema = createCourseSchema.partial();
-export type UpdateCourseData = z.TypeOf<typeof updateCourseSchema>;
 
 export interface ICourse {
 	id: number;
