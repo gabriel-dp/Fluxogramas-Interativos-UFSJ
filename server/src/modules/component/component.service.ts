@@ -28,13 +28,11 @@ const ComponentService: Service<IComponent, CreateComponentData, UpdateComponent
 	},
 
 	async update(id, data) {
-		await this.getOne(id);
-		if (
-			data.code &&
-			data.courseId &&
-			(await ComponentRepository.getOneByCodeInCourse(data.code, data.courseId))?.id != id
-		)
-			throw new ConflictException("Component code");
+		const component = await this.getOne(id);
+		if (data.code) {
+			const sameCode = await ComponentRepository.getOneByCodeInCourse(data.code, data.courseId ?? component.courseId);
+			if (sameCode && sameCode.id !== id) throw new ConflictException("Component code");
+		}
 		return ComponentRepository.update(id, data);
 	},
 

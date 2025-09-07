@@ -1,6 +1,7 @@
 import { Service } from "@/modules";
 import { encryptPassword } from "@/utils/auth.utils";
 import { ConflictException, NotFoundException } from "@/utils/exception.utils";
+import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
 
 import UserRepository from "./user.repository";
 import { CreateUserData, IUser, UpdateUserData } from "./user.model";
@@ -42,6 +43,7 @@ const UserService: Service<IUser, CreateUserData, UpdateUserData> & {
 
 	async delete(id) {
 		await this.getOne(id);
+		await PermissionUserCourseService.setUserPermissions({ userId: id, courseIds: [] }); // Clear permissions
 		return UserRepository.delete(id);
 	},
 

@@ -74,10 +74,10 @@ export default function ComponentForm(props: ComponentFormI) {
 
 		try {
 			if (props.selectedComponent) {
-				await updateOne(props.selectedComponent.id, { ...data, courseId: props.courseId });
+				const { code } = await updateOne(props.selectedComponent.id, { ...data, courseId: props.courseId });
 				addNotification({
 					type: "success",
-					message: `Componente '${props.selectedComponent.code}' atualizado com sucesso`,
+					message: `Componente '${code}' atualizado com sucesso`,
 				});
 			} else {
 				const { code } = await createOne({ ...data, courseId: props.courseId });

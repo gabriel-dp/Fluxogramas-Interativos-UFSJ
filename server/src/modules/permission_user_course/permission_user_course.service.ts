@@ -17,13 +17,18 @@ const PermissionUserCourseService = {
 		return PermissionUserCourseRepository.getUsersByCourse(courseId);
 	},
 
-	async setUserPermissions(permissions: IPermissionsUserCourse) {
+	async setUserPermissions(permissions: IPermissionsUserCourse): Promise<IPermissionsUserCourse> {
 		await UserService.getOne(permissions.userId);
 		await Promise.all(permissions.courseIds.map((courseId) => CourseService.getOne(courseId)));
 		return PermissionUserCourseRepository.setUserPermissions(permissions);
 	},
 
-	async isUserAllowed(userId: number, courseId: number) {
+	async removeCoursePermissions(courseId: number): Promise<void> {
+		await CourseService.getOne(courseId);
+		return PermissionUserCourseRepository.removeCoursePermissions(courseId);
+	},
+
+	async isUserAllowed(userId: number, courseId: number): Promise<boolean> {
 		const courses = await this.getCoursesByUser(userId);
 		return courses.some((c) => c.id === courseId);
 	},

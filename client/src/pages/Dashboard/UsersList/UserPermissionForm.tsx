@@ -41,7 +41,7 @@ export default function UserPermissionForm(props: UserPermissionFormProps) {
 	async function onSubmit(data: object) {
 		if (props.selectedUser) {
 			await saveUserCourses(props.selectedUser.id, data);
-			addNotification({ type: "success", message: `Permissões atualizadas (Usuário ${props.selectedUser.id})` });
+			addNotification({ type: "success", message: `Permissões atualizadas (Usuário #${props.selectedUser.id})` });
 		}
 	}
 

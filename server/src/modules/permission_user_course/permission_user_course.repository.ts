@@ -48,6 +48,12 @@ const PermissionUserCourseRepository = {
 
 		return convertToPermissionsObject(permissions.userId, newPermissions);
 	},
+
+	async removeCoursePermissions(courseId: number): Promise<void> {
+		await prisma.userCoursePermission.deleteMany({
+			where: { courseId },
+		});
+	},
 };
 
 export default PermissionUserCourseRepository;

@@ -1,5 +1,6 @@
 import { Service } from "@/modules";
 import { ConflictException, NotFoundException } from "@/utils/exception.utils";
+import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
 
 import { CreateCourseData, ICourseComplete, UpdateCourseData } from "./course.model";
 import CourseRepository from "./course.repository";
@@ -33,6 +34,7 @@ const CourseService: Service<ICourseComplete, CreateCourseData, UpdateCourseData
 
 	async delete(id) {
 		await this.getOne(id);
+		await PermissionUserCourseService.removeCoursePermissions(id);
 		return CourseRepository.delete(id);
 	},
 
