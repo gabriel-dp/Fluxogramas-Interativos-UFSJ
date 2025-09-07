@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { TableProps } from "react-data-table-component";
 import { FaPencilAlt as EditIcon } from "react-icons/fa";
 
@@ -9,15 +9,18 @@ interface DataTableProps<T> extends TableProps<T> {
 }
 
 export default function DataTable<T>({ hideEditIcon, ...props }: DataTableProps<T>): JSX.Element {
-	useEffect(() => {
-		if (!hideEditIcon) {
-			props.columns.push({
+	const columns = useMemo(() => {
+		if (hideEditIcon) return props.columns;
+
+		return [
+			...props.columns,
+			{
 				name: "",
 				selector: () => "",
 				cell: () => <EditIcon />,
-				width: "4rem",
-			});
-		}
+				width: "3rem",
+			},
+		];
 	}, [hideEditIcon, props.columns]);
 
 	return (
@@ -27,6 +30,7 @@ export default function DataTable<T>({ hideEditIcon, ...props }: DataTableProps<
 			noDataComponent={<NoDataComponent>Não há registros</NoDataComponent>}
 			$hideEditIcon={hideEditIcon ? "true" : ""}
 			{...props}
+			columns={columns}
 		/>
 	);
 }
