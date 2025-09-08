@@ -2,7 +2,7 @@
 	"name": "server-ufsj-curriculum",
 	"version": "1.0.0",
 	"scripts": {
-		"start": "nodemon -r tsconfig-paths/registersrc/index.ts --quiet",
+		"start": "nodemon -r tsconfig-paths/register src/index.ts --quiet",
 		"build": "tsc",
 		"prepare": "ts-patch install -s",
 		"db:setup": "npm run db:generate && npm run db:push",
