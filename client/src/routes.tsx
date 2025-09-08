@@ -11,6 +11,10 @@ import SignIn from "@/pages/SignIn";
 import UsersList from "@/pages/Dashboard/UsersList";
 import CoursesList from "@/pages/Dashboard/CoursesList";
 import CourseEditor from "@/pages/Dashboard/CourseEditor";
+import AttributesList from "@/pages/Dashboard/CourseAttribute";
+import useCourseTypeService from "@/services/courseTypeService";
+import useCourseShiftService from "@/services/courseShiftService";
+import useCourseCampusService from "@/services/courseCampusService";
 
 export const Routes = {
 	home: "/",
@@ -18,6 +22,9 @@ export const Routes = {
 	dashboard: "/dashboard",
 	dashboard_users: "/dashboard/users",
 	dashboard_courses: "/dashboard/courses",
+	dashboard_courses_type: "/dashboard/courses/type",
+	dashboard_courses_shift: "/dashboard/courses/shift",
+	dashboard_courses_campus: "/dashboard/courses/campus",
 	dashboard_courses_course: (id: string) => `/dashboard/courses/${id}`,
 	course: (code: string) => `/${code}`,
 };
@@ -52,6 +59,18 @@ export default function Router() {
 					<Route element={<DashboardAdminRoute />}>
 						<Route path={Routes.dashboard_users} element={<UsersList />} />
 						<Route path={Routes.dashboard_courses} element={<CoursesList />} />
+						<Route
+							path={Routes.dashboard_courses_type}
+							element={<AttributesList entity="Tipo" service={useCourseTypeService()} />}
+						/>
+						<Route
+							path={Routes.dashboard_courses_shift}
+							element={<AttributesList entity="Turno" service={useCourseShiftService()} />}
+						/>
+						<Route
+							path={Routes.dashboard_courses_campus}
+							element={<AttributesList entity="Campus" service={useCourseCampusService()} />}
+						/>
 					</Route>
 					<Route path={Routes.dashboard_courses_course(":id")} element={<CourseEditor />} />
 				</Route>

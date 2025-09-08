@@ -37,22 +37,40 @@ export default function Drawer() {
 		{ route: Routes.dashboard_courses, title: "Cursos" },
 	];
 
+	const PARAM_ROUTES = [
+		{ route: Routes.dashboard_courses_type, title: "Tipos" },
+		{ route: Routes.dashboard_courses_shift, title: "Turnos" },
+		{ route: Routes.dashboard_courses_campus, title: "Campus" },
+	];
+
 	return (
 		<>
 			<DrawerContainer open={drawerOpen}>
 				<DrawerContent>
 					<Button onClick={() => handleNavigate(Routes.dashboard)}>Menu</Button>
 					{user?.isAdmin ? (
-						<div className="drawer-group">
-							<h3 className="drawer-title">Administração</h3>
-							<ul>
-								{ADMIN_ROUTES.map((route) => (
-									<li onClick={() => handleNavigate(route.route)} key={route.route}>
-										{route.title}
-									</li>
-								))}
-							</ul>
-						</div>
+						<>
+							<div className="drawer-group">
+								<h3 className="drawer-title">Administração</h3>
+								<ul>
+									{ADMIN_ROUTES.map((route) => (
+										<li onClick={() => handleNavigate(route.route)} key={route.route}>
+											{route.title}
+										</li>
+									))}
+								</ul>
+							</div>
+							<div className="drawer-group">
+								<h3 className="drawer-title">Parametrização</h3>
+								<ul>
+									{PARAM_ROUTES.map((route) => (
+										<li onClick={() => handleNavigate(route.route)} key={route.route}>
+											{route.title}
+										</li>
+									))}
+								</ul>
+							</div>
+						</>
 					) : (
 						<div className="drawer-group">
 							<h3 className="drawer-title">Cursos</h3>
