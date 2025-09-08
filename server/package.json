@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"start": "nodemon src/index.ts --quiet",
-		"build": "tsc && tsc-alias",
+		"build": "npm run db:generate && tsc && tsc-alias",
 		"prepare": "ts-patch install -s",
 		"db:setup": "npm run db:generate && npm run db:push",
 		"db:generate": "prisma generate --no-hints",
