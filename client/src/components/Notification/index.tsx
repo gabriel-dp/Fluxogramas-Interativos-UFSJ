@@ -1,4 +1,4 @@
-import { FaCheck as SuccessIcon, FaExclamationTriangle as WarningIcon, FaCross as ErrorIcon } from "react-icons/fa";
+import { FaCheck as SuccessIcon, FaExclamationTriangle as WarningIcon, FaTimes as ErrorIcon } from "react-icons/fa";
 
 import useNotifications from "@/contexts/notifications/useNotifications";
 

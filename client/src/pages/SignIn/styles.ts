@@ -29,6 +29,20 @@ export const SignInFormContainer = styled.form`
 			width: clamp(2rem, 75%, 100%);
 		}
 	}
+
+	.error {
+		background: ${(props) => props.theme.white}EE;
+		color: ${(props) => props.theme.primary};
+		border: 1px solid #00000033;
+		padding: 0.75rem 1rem;
+		border-radius: 0.5rem;
+		user-select: none;
+
+		.icon {
+			margin-right: 0.5rem;
+			transform: translateY(0.125rem);
+		}
+	}
 `;
 
 export const SignInFormTitle = styled.h1`

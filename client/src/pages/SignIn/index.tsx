@@ -1,42 +1,87 @@
-import { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { FaExclamationTriangle as AttentionIcon } from "react-icons/fa";
 
 import { Routes } from "@/routes";
 import useAuth from "@/contexts/auth/useAuth";
+import useNotifications from "@/contexts/notifications/useNotifications";
 import TextField from "@/components/ui/TextField";
 import Button from "@/components/ui/Button";
 
 import { SignInFormContainer, SignInFormTitle } from "./styles";
 
+interface LoginFields {
+	username: string;
+	password: string;
+}
+
 export default function SignIn() {
 	const { login } = useAuth();
+	const { addNotification } = useNotifications();
 	const navigate = useNavigate();
 
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
-	const [error, setError] = useState<string | null>(null);
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+		setError,
+		clearErrors,
+		watch,
+	} = useForm<LoginFields>({
+		defaultValues: {
+			username: "",
+			password: "",
+		},
+	});
 
-	async function handleSubmit() {
-		if (await login({ username, password })) {
+	watch(() => {
+		if (Object.keys(errors).length > 0) {
+			clearErrors(); // clears all errors whenever any field changes
+		}
+	});
+
+	async function onSubmit(data: LoginFields) {
+		if (await login({ username: data.username, password: data.password })) {
 			navigate(Routes.dashboard, { replace: true });
 		} else {
-			setError("Invalid credentials. Please try again.");
+			setError("username", { message: "Credenciais inválidas" });
+			addNotification({ type: "error", message: "Falha ao tentar fazer login" });
 		}
 	}
 
 	return (
-		<SignInFormContainer onSubmit={(e: React.FormEvent<HTMLFormElement>) => e.preventDefault()}>
+		<SignInFormContainer
+			onSubmit={(e) => {
+				void handleSubmit(onSubmit)();
+				e.preventDefault();
+			}}
+		>
 			<SignInFormTitle>Gestão</SignInFormTitle>
 			<div className="fields">
-				<TextField label="Usuário" value={username} onChange={(e) => setUsername(e.target.value)} />
-				<TextField label="Senha" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+				<Controller
+					name="username"
+					control={control}
+					render={({ field }) => <TextField label="Usuário" {...field} required />}
+				/>
+				<Controller
+					name="password"
+					control={control}
+					render={({ field }) => <TextField label="Senha" type="password" {...field} required />}
+				/>
 			</div>
+			{errors.username && (
+				<div className="actions">
+					<p className="error">
+						<AttentionIcon className="icon" />
+						{errors.username.message}
+					</p>
+				</div>
+			)}
 			<div className="actions">
-				<Button category="primary" onClick={() => void handleSubmit()}>
+				<Button category="primary" type="submit">
 					Entrar
 				</Button>
 			</div>
-			{error && <p style={{ color: "red" }}>{error}</p>}
 		</SignInFormContainer>
 	);
 }
