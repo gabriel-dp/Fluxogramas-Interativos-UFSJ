@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"scripts": {
 		"start": "nodemon src/index.ts --quiet",
-		"build": "tsc",
+		"build": "tsc && tsc-alias",
 		"prepare": "ts-patch install -s",
 		"db:setup": "npm run db:generate && npm run db:push",
 		"db:generate": "prisma generate --no-hints",
@@ -37,6 +37,7 @@
 		"ts-jest": "^29.2.6",
 		"ts-node": "^10.9.1",
 		"ts-patch": "^2.1.0",
+		"tsc-alias": "^1.8.16",
 		"tsconfig-paths": "^4.2.0",
 		"typescript": "^5.0.3",
 		"wait-on": "^8.0.2"
