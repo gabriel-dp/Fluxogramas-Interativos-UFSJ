@@ -50,4 +50,4 @@ class Log {
 	}
 }
 
-export const log = new Log(process.env.LOG_LEVEL as LogType | undefined);
+export const log = new Log(process.env.SERVER_LOG_LEVEL as LogType | undefined);
