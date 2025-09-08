@@ -2,12 +2,6 @@
 	"name": "api-curriculum-ufsj",
 	"version": 2,
 	"public": true,
-	"builds": [
-		{
-			"src": "src/index.ts",
-			"use": "@vercel/node"
-		}
-	],
 	"routes": [
 		{
 			"src": "/(.*)",
