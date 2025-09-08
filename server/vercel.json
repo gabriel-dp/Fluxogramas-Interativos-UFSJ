@@ -2,10 +2,5 @@
 	"name": "api-curriculum-ufsj",
 	"version": 2,
 	"public": true,
-	"routes": [
-		{
-			"src": "/(.*)",
-			"dest": "/index.js"
-		}
-	]
+	"rewrites": [{ "source": "/(.*)", "destination": "/index.js" }]
 }
