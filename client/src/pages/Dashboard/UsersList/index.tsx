@@ -45,7 +45,7 @@ export default function UsersList() {
 
 	return (
 		<DashboardContent>
-			<div className="tile-bar">
+			<div className="title-bar">
 				<h1>Listagem de Usuários</h1>
 				<div className="actions">
 					<Button onClick={() => setSelectedUser(null)}>Criar</Button>
