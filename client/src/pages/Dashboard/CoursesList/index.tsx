@@ -62,9 +62,11 @@ export default function Course() {
 
 	return (
 		<DashboardContent>
-			<div style={{ display: "flex", justifyContent: "space-between" }}>
+			<div className="title-bar">
 				<h1>Listagem de Cursos</h1>
-				<Button onClick={() => setSelectedCourse(null)}>Criar</Button>
+				<div className="actions">
+					<Button onClick={() => setSelectedCourse(null)}>Criar</Button>
+				</div>
 			</div>
 			<DataTable
 				columns={columns}

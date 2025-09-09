@@ -44,9 +44,11 @@ export default function AttributesList(props: AttributesListProps) {
 
 	return (
 		<DashboardContent>
-			<div style={{ display: "flex", justifyContent: "space-between" }}>
+			<div className="title-bar">
 				<h1>Listagem de {props.entity}</h1>
-				<Button onClick={() => setSelectedAttribute(null)}>Criar</Button>
+				<div className="actions">
+					<Button onClick={() => setSelectedAttribute(null)}>Criar</Button>
+				</div>
 			</div>
 			<DataTable
 				columns={columns}

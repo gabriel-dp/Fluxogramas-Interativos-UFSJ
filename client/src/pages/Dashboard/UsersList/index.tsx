@@ -45,9 +45,11 @@ export default function UsersList() {
 
 	return (
 		<DashboardContent>
-			<div style={{ display: "flex", justifyContent: "space-between" }}>
+			<div className="tile-bar">
 				<h1>Listagem de Usuários</h1>
-				<Button onClick={() => setSelectedUser(null)}>Criar</Button>
+				<div className="actions">
+					<Button onClick={() => setSelectedUser(null)}>Criar</Button>
+				</div>
 			</div>
 			<DataTable
 				columns={columns}
