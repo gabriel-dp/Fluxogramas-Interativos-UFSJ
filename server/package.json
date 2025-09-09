@@ -4,7 +4,7 @@
 	"scripts": {
 		"start": "nodemon src/index.ts --quiet",
 		"build": "npm run db:generate && tsc",
-		"prepare": "ts-patch install -s",
+		"prepare": "ts-patch install -s && npm run db:generate",
 		"db:setup": "npm run db:generate && npm run db:push",
 		"db:generate": "prisma generate --no-hints",
 		"db:push": "prisma db push --skip-generate",
