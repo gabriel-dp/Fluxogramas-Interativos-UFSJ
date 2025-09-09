@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import { log } from "@/utils/log.utils";
+import { log } from "#src/utils/log.utils";
 
 const PROTECTED_FIELDS = ["password", "token"];
 

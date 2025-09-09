@@ -1,7 +1,7 @@
-import { BadRequestException, ConflictException, NotFoundException } from "@/utils/exception.utils";
-import { Service } from "@/modules";
-import CourseService from "@/modules/course/course.service";
-import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
+import { BadRequestException, ConflictException, NotFoundException } from "#src/utils/exception.utils";
+import { Service } from "#src/modules/index";
+import CourseService from "#src/modules/course/course.service";
+import PermissionUserCourseService from "#src/modules/permission_user_course/permission_user_course.service";
 
 import ComponentRepository from "./component.repository";
 import { CreateComponentData, IComponent, Requisite, UpdateComponentData } from "./component.model";

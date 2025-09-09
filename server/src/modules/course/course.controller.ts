@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
-import { getId } from "@/utils/request.utils";
-import { handleError } from "@/utils/exception.utils";
+import { getId } from "#src/utils/request.utils";
+import { handleError } from "#src/utils/exception.utils";
 
 import CourseService from "./course.service";
 import { CreateCourseData, UpdateCourseData } from "./course.model";

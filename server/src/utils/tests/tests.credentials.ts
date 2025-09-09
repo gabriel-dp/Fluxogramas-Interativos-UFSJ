@@ -1,5 +1,5 @@
-import AuthService from "@/modules/auth/auth.service";
-import { IUser } from "@/modules/user/user.model";
+import AuthService from "#src/modules/auth/auth.service";
+import { IUser } from "#src/modules/user/user.model";
 
 export type Credentials = {
 	username: string;

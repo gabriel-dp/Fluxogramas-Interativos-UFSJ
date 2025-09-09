@@ -1,5 +1,5 @@
-import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "@/utils/tests/tests.credentials";
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "#src/utils/tests/tests.credentials";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
 
 import ShiftService from "../shift.service";
 
@@ -24,7 +24,9 @@ describe("POST /course/shift", () => {
 			const shiftsData = Array.from({ length: 10 }, () => generateUniqueShift());
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await Promise.all(
-				shiftsData.map((shift) => expectRequestSuccess(201, () => api.post("/course/shift", shift, authHeaders(token))))
+				shiftsData.map((shift) =>
+					expectRequestSuccess(201, () => api.post("/course/shift", shift, authHeaders(token))),
+				),
 			);
 
 			const shifts = await ShiftService.getAll();
@@ -91,7 +93,7 @@ describe("PATCH /course/shift/:id", () => {
 
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			const response = await expectRequestSuccess(200, () =>
-				api.patch(`/course/shift/${shift.id}`, data2, authHeaders(token))
+				api.patch(`/course/shift/${shift.id}`, data2, authHeaders(token)),
 			);
 
 			expect(response?.data).toBeDefined();

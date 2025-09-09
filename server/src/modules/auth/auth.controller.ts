@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import ms from "ms";
 
-import { handleError } from "@/utils/exception.utils";
-import { generateAccessToken, getDataFromRefreshToken } from "@/utils/auth.utils";
+import { handleError } from "#src/utils/exception.utils";
+import { generateAccessToken, getDataFromRefreshToken } from "#src/utils/auth.utils";
 
 import AuthService from "./auth.service";
 import { RegisterData, SignInSchema } from "./auth.model";

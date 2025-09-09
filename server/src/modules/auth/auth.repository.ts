@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { IUser } from "@/modules/user/user.model";
+import prisma from "#src/lib/prisma";
+import { IUser } from "#src/modules/user/user.model";
 
 import { RefreshToken } from "./auth.model";
 

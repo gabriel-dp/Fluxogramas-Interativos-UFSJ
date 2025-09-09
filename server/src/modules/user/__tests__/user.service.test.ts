@@ -1,4 +1,4 @@
-import { generateNewUserData } from "@/utils/tests/tests.credentials";
+import { generateNewUserData } from "#src/utils/tests/tests.credentials";
 
 import UserService from "../user.service";
 

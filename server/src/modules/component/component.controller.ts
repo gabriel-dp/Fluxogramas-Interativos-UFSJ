@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 
-import { getId } from "@/utils/request.utils";
-import { AuthRequest } from "@/utils/auth.utils";
-import { AuthException, handleError } from "@/utils/exception.utils";
-import PermissionUserCourseService from "@/modules/permission_user_course/permission_user_course.service";
+import { getId } from "#src/utils/request.utils";
+import { AuthRequest } from "#src/utils/auth.utils";
+import { AuthException, handleError } from "#src/utils/exception.utils";
+import PermissionUserCourseService from "#src/modules/permission_user_course/permission_user_course.service";
 
 import ComponentService from "./component.service";
 import { CreateComponentData, UpdateComponentData, SetRequisitesData } from "./component.model";

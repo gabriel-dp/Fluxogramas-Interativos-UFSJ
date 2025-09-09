@@ -1,11 +1,11 @@
 import express from "express";
 
 // Enable enviroment variables
-import dotenv from "@/lib/dotenv";
+import dotenv from "#src/lib/dotenv";
 dotenv.config();
 
-import configApp from "@/configs";
-import { log } from "@/utils/log.utils";
+import configApp from "#src/configs/index";
+import { log } from "#src/utils/log.utils";
 
 // Starts server after config
 log.info(`Starting server...`);

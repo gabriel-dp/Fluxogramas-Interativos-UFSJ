@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { validateData, validateId } from "@/middlewares/data.middleware";
-import { requireAdmin, requireAuth } from "@/middlewares/security.middleware";
+import { validateData, validateId } from "#src/middlewares/data.middleware";
+import { requireAdmin, requireAuth } from "#src/middlewares/security.middleware";
 
 import UserController, { adminFieldsCheck, sameUserOrAdmin } from "./user.controller";
 import { createUserSchema, updateUserSchema } from "./user.model";
@@ -19,7 +19,7 @@ router.patch(
 	sameUserOrAdmin,
 	validateData(updateUserSchema),
 	adminFieldsCheck,
-	UserController.updateOne
+	UserController.updateOne,
 );
 router.delete("/:id", requireAdmin, validateId, UserController.deleteOne);
 

@@ -1,5 +1,5 @@
-import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "@/utils/tests/tests.credentials";
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "#src/utils/tests/tests.credentials";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
 
 import TypeService from "../type.service";
 
@@ -24,7 +24,7 @@ describe("POST /course/type", () => {
 			const typesData = Array.from({ length: 10 }, () => generateUniqueType());
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await Promise.all(
-				typesData.map((type) => expectRequestSuccess(201, () => api.post("/course/type", type, authHeaders(token))))
+				typesData.map((type) => expectRequestSuccess(201, () => api.post("/course/type", type, authHeaders(token)))),
 			);
 
 			const types = await TypeService.getAll();
@@ -91,7 +91,7 @@ describe("PATCH /course/type/:id", () => {
 
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			const response = await expectRequestSuccess(200, () =>
-				api.patch(`/course/type/${type.id}`, data2, authHeaders(token))
+				api.patch(`/course/type/${type.id}`, data2, authHeaders(token)),
 			);
 
 			expect(response?.data).toBeDefined();

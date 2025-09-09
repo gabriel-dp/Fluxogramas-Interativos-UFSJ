@@ -1,9 +1,9 @@
 import { ComponentRequisite } from "@prisma/client";
 
-import { Repository } from "@/modules";
-import prisma from "@/lib/prisma";
+import { Repository } from "#src/modules/index";
+import prisma from "#src/lib/prisma";
 
-import { IComponent } from "@/modules/component/component.model";
+import { IComponent } from "#src/modules/component/component.model";
 import { CreateCourseData, ICourseComplete, ICourseComponents, UpdateCourseData } from "./course.model";
 
 const defaultSelectFields = {

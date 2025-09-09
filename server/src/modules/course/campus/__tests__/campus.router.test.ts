@@ -1,5 +1,5 @@
-import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "@/utils/tests/tests.credentials";
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "#src/utils/tests/tests.credentials";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
 
 import CampusService from "../campus.service";
 
@@ -25,8 +25,8 @@ describe("POST /course/campus", () => {
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await Promise.all(
 				campusesData.map((campus) =>
-					expectRequestSuccess(201, () => api.post("/course/campus", campus, authHeaders(token)))
-				)
+					expectRequestSuccess(201, () => api.post("/course/campus", campus, authHeaders(token))),
+				),
 			);
 
 			const campuses = await CampusService.getAll();
@@ -93,7 +93,7 @@ describe("PATCH /course/campus/:id", () => {
 
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			const response = await expectRequestSuccess(200, () =>
-				api.patch(`/course/campus/${campus.id}`, data2, authHeaders(token))
+				api.patch(`/course/campus/${campus.id}`, data2, authHeaders(token)),
 			);
 
 			expect(response?.data).toBeDefined();

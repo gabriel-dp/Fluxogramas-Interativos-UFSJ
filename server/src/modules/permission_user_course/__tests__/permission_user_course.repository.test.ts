@@ -1,7 +1,7 @@
-import UserService from "@/modules/user/user.service";
-import CourseService from "@/modules/course/course.service";
-import { generateNewUserData } from "@/utils/tests/tests.credentials";
-import { generateUniqueCourse } from "@/modules/course/__tests__/course.repository.test";
+import UserService from "#src/modules/user/user.service";
+import CourseService from "#src/modules/course/course.service";
+import { generateNewUserData } from "#src/utils/tests/tests.credentials";
+import { generateUniqueCourse } from "#src/modules/course/__tests__/course.repository.test";
 
 import PermissionUserCourseRepository from "../permission_user_course.repository";
 
@@ -28,7 +28,7 @@ describe("PermissionUserCourseRepository", () => {
 				const users = await PermissionUserCourseRepository.getUsersByCourse(course.id);
 				expect(users.length).toBe(1);
 				expect(users[0].id).toBe(user.id);
-			})
+			}),
 		);
 
 		expect(permissions.userId).toBe(user.id);

@@ -6,10 +6,10 @@ import {
 	encryptToken,
 	validatePassword,
 	validateToken,
-} from "@/utils/auth.utils";
-import { BadRequestException } from "@/utils/exception.utils";
-import UserService from "@/modules/user/user.service";
-import { IUser } from "@/modules/user/user.model";
+} from "#src/utils/auth.utils";
+import { BadRequestException } from "#src/utils/exception.utils";
+import UserService from "#src/modules/user/user.service";
+import { IUser } from "#src/modules/user/user.model";
 
 import AuthRepository from "./auth.repository";
 import { RegisterData, SignInSchema, RefreshToken } from "./auth.model";

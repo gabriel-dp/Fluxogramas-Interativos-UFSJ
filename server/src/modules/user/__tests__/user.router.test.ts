@@ -1,11 +1,11 @@
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
 import {
 	ADMIN_CREDENTIALS,
 	NORMAL_CREDENTIALS,
 	generateNewUserData,
 	generateUniqueUsername,
 	signIn,
-} from "@/utils/tests/tests.credentials";
+} from "#src/utils/tests/tests.credentials";
 
 import UserService from "../user.service";
 
@@ -173,8 +173,8 @@ describe("PATCH /user/:id", () => {
 						...usernameUpdate,
 						isAdmin: true,
 					},
-					authHeaders(tokenAdmin)
-				)
+					authHeaders(tokenAdmin),
+				),
 			);
 		});
 
@@ -187,7 +187,7 @@ describe("PATCH /user/:id", () => {
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
 			const { id: idNormal } = await signIn(usernameUpdate);
 			await expectRequestSuccess(200, () =>
-				api.patch(`/user/${idNormal}`, { ...usernameOriginal, isAdmin: false }, authHeaders(tokenAdmin))
+				api.patch(`/user/${idNormal}`, { ...usernameOriginal, isAdmin: false }, authHeaders(tokenAdmin)),
 			);
 		});
 
@@ -199,7 +199,7 @@ describe("PATCH /user/:id", () => {
 		it("should not update an invalid user (12345678)", async () => {
 			const { token } = await signIn(ADMIN_CREDENTIALS);
 			await expectRequestFail(404, () =>
-				api.patch(`/user/${12345678}`, { username: generateUniqueUsername() }, authHeaders(token))
+				api.patch(`/user/${12345678}`, { username: generateUniqueUsername() }, authHeaders(token)),
 			);
 		});
 
@@ -207,7 +207,7 @@ describe("PATCH /user/:id", () => {
 			const { token: tokenAdmin } = await signIn(ADMIN_CREDENTIALS);
 			const { id: idNormal } = await signIn(NORMAL_CREDENTIALS);
 			await expectRequestFail(409, () =>
-				api.patch(`/user/${idNormal}`, { username: ADMIN_CREDENTIALS.username }, authHeaders(tokenAdmin))
+				api.patch(`/user/${idNormal}`, { username: ADMIN_CREDENTIALS.username }, authHeaders(tokenAdmin)),
 			);
 		});
 	});

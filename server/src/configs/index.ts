@@ -2,10 +2,10 @@ import express, { Express } from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import { requestLog } from "@/middlewares/logs.middleware";
+import { requestLog } from "#src/middlewares/logs.middleware";
 
-import router from "./routes.config";
-import databaseConfig from "./database.config";
+import router from "./routes.config.ts";
+import databaseConfig from "./database.config.ts";
 
 export default async function configApp(app: Express): Promise<void> {
 	app.use(express.json());

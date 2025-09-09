@@ -1,5 +1,5 @@
-import prisma from "@/lib/prisma";
-import { Repository } from "@/modules";
+import prisma from "#src/lib/prisma";
+import { Repository } from "#src/modules/index";
 
 import { CreateCampusData, ICampus, UpdateCampusData } from "./campus.model";
 

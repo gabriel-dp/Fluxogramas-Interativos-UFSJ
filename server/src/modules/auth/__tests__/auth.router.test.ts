@@ -1,10 +1,10 @@
-import { api, expectRequestFail, expectRequestSuccess } from "@/utils/tests/tests.requests";
+import { api, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
 import {
 	Credentials,
 	generateString,
 	generateUniqueUsername,
 	generateValidPassword,
-} from "@/utils/tests/tests.credentials";
+} from "#src/utils/tests/tests.credentials";
 
 async function register(credentials: Partial<Credentials>) {
 	const response = await api.post("auth/register", credentials);
@@ -25,7 +25,7 @@ describe("POST /auth/register", () => {
 				username: repeatUsername,
 				password: generateValidPassword(),
 				isAdmin: false,
-			})
+			}),
 		);
 		expect(response?.data).toHaveProperty("id");
 		expect(response?.data.username).toBe(repeatUsername);
@@ -36,7 +36,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: repeatUsername.toUpperCase(),
 				password: generateValidPassword(),
-			})
+			}),
 		);
 		expect(response?.data).toHaveProperty("id");
 		expect(response?.data.username).toBe(repeatUsername.toUpperCase());
@@ -47,7 +47,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: repeatUsername,
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -56,7 +56,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: repeatUsername,
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -65,7 +65,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: generateString(3),
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -74,7 +74,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: generateString(65),
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -83,7 +83,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: generateUniqueUsername(),
 				password: generateString(7),
-			})
+			}),
 		);
 	});
 
@@ -92,7 +92,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: generateUniqueUsername(),
 				password: generateString(65),
-			})
+			}),
 		);
 	});
 
@@ -101,7 +101,7 @@ describe("POST /auth/register", () => {
 			register({
 				username: generateString(10, " "),
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -109,7 +109,7 @@ describe("POST /auth/register", () => {
 		await expectRequestFail(400, () =>
 			register({
 				username: generateUniqueUsername(),
-			})
+			}),
 		);
 	});
 
@@ -117,7 +117,7 @@ describe("POST /auth/register", () => {
 		await expectRequestFail(400, () =>
 			register({
 				password: generateValidPassword(),
-			})
+			}),
 		);
 	});
 
@@ -127,7 +127,7 @@ describe("POST /auth/register", () => {
 				username: generateUniqueUsername(),
 				password: generateValidPassword(),
 				isAdmin: true,
-			})
+			}),
 		);
 		expect(response?.data).toHaveProperty("isAdmin");
 		expect(response?.data.isAdmin).toBe(false);
@@ -155,7 +155,7 @@ describe("POST /auth/sign-in", () => {
 			signIn({
 				username: credentials.username,
 				password: generateString(10, "2"),
-			})
+			}),
 		);
 	});
 
@@ -169,7 +169,7 @@ describe("POST /auth/sign-in", () => {
 			signIn({
 				username: generateUniqueUsername(),
 				password: credentials.password,
-			})
+			}),
 		);
 	});
 });

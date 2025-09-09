@@ -1,5 +1,5 @@
-import { Service } from "@/modules";
-import { ConflictException, NotFoundException } from "@/utils/exception.utils";
+import { Service } from "#src/modules/index";
+import { ConflictException, NotFoundException } from "#src/utils/exception.utils";
 
 import { CreateCampusData, ICampus, UpdateCampusData } from "./campus.model";
 import CampusRepository from "./campus.repository";

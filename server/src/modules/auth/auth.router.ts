@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { validateData } from "@/middlewares/data.middleware";
-import { createUserSchema } from "@/modules/user/user.model";
+import { validateData } from "#src/middlewares/data.middleware";
+import { createUserSchema } from "#src/modules/user/user.model";
 
 import AuthController from "./auth.controller";
 import { signInSchema } from "./auth.model";

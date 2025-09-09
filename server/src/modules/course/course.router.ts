@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { validateData, validateId } from "@/middlewares/data.middleware";
-import { requireAdmin } from "@/middlewares/security.middleware";
+import { validateData, validateId } from "#src/middlewares/data.middleware";
+import { requireAdmin } from "#src/middlewares/security.middleware";
 
 import CourseController from "./course.controller";
 import { createCourseSchema, updateCourseSchema } from "./course.model";

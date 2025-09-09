@@ -1,6 +1,6 @@
-import prisma from "@/lib/prisma";
+import prisma from "#src/lib/prisma";
 
-import { Repository } from "@/modules";
+import { Repository } from "#src/modules/index";
 
 import { CreateUserData, IUser, UpdateUserData } from "./user.model";
 
