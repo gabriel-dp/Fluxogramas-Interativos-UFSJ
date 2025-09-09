@@ -1,8 +1,7 @@
 import { Router } from "express";
 
-import { validateData, validateId } from "#src/middlewares/data.middleware";
-import { requireAdmin, requireAuth } from "#src/middlewares/security.middleware";
-
+import { validateData, validateId } from "../../middlewares/data.middleware";
+import { requireAuth } from "../../middlewares/security.middleware";
 import ComponentController from "./component.controller";
 import { createComponentSchema, setRequisitesSchema, updateComponentSchema } from "./component.model";
 

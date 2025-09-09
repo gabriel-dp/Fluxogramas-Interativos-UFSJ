@@ -1,8 +1,6 @@
-import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "#src/utils/tests/tests.credentials";
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
-
+import { ADMIN_CREDENTIALS, NORMAL_CREDENTIALS, signIn } from "../../../../utils/tests/tests.credentials";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "../../../../utils/tests/tests.requests";
 import CampusService from "../campus.service";
-
 import { generateUniqueCampus } from "./campus.repository.test";
 
 describe("POST /course/campus", () => {

@@ -1,7 +1,6 @@
-import { Service } from "#src/modules/index";
-import { ConflictException, NotFoundException } from "#src/utils/exception.utils";
-import PermissionUserCourseService from "#src/modules/permission_user_course/permission_user_course.service";
-
+import { Service } from "../../modules/index";
+import { ConflictException, NotFoundException } from "../../utils/exception.utils";
+import PermissionUserCourseService from "../../modules/permission_user_course/permission_user_course.service";
 import { CreateCourseData, ICourseComplete, UpdateCourseData } from "./course.model";
 import CourseRepository from "./course.repository";
 

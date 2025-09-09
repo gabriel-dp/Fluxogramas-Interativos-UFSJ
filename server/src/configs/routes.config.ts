@@ -1,14 +1,14 @@
 import { Router } from "express";
 
-import defaultRouter from "#src/modules/default/default.router";
-import userRouter from "#src/modules/user/user.router";
-import authRouter from "#src/modules/auth/auth.router";
-import typeRouter from "#src/modules/course/type/type.router";
-import shiftRouter from "#src/modules/course/shift/shift.router";
-import campusRouter from "#src/modules/course/campus/campus.router";
-import courseRouter from "#src/modules/course/course.router";
-import permissionsUserCourseRouter from "#src/modules/permission_user_course/permission_user_course.router";
-import componentRouter from "#src/modules/component/component.router";
+import defaultRouter from "../modules/default/default.router";
+import userRouter from "../modules/user/user.router";
+import authRouter from "../modules/auth/auth.router";
+import typeRouter from "../modules/course/type/type.router";
+import shiftRouter from "../modules/course/shift/shift.router";
+import campusRouter from "../modules/course/campus/campus.router";
+import courseRouter from "../modules/course/course.router";
+import permissionsUserCourseRouter from "../modules/permission_user_course/permission_user_course.router";
+import componentRouter from "../modules/component/component.router";
 
 const router = Router();
 

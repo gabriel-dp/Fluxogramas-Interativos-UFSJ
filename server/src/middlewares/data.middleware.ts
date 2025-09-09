@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { AnyZodObject, ZodError } from "zod";
 
-import { log } from "#src/utils/log.utils";
-import { getPossibleId } from "#src/utils/request.utils";
+import { log } from "../utils/log.utils";
+import { getPossibleId } from "../utils/request.utils";
 
 export function validateData(schema: AnyZodObject) {
 	return (req: Request, res: Response, next: NextFunction) => {

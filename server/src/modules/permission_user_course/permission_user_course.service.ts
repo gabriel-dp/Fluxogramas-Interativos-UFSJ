@@ -1,8 +1,7 @@
-import UserService from "#src/modules/user/user.service";
-import CourseService from "#src/modules/course/course.service";
-import { IUser } from "#src/modules/user/user.model";
-import { ICourse } from "#src/modules/course/course.model";
-
+import UserService from "../../modules/user/user.service";
+import CourseService from "../../modules/course/course.service";
+import { IUser } from "../../modules/user/user.model";
+import { ICourse } from "../../modules/course/course.model";
 import { IPermissionsUserCourse } from "./permission_user_course.model";
 import PermissionUserCourseRepository from "./permission_user_course.repository";
 

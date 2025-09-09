@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 
-import { getId } from "#src/utils/request.utils";
-import { handleError } from "#src/utils/exception.utils";
-
+import { getId } from "../../..//utils/request.utils";
+import { handleError } from "../../..//utils/exception.utils";
 import ShiftService from "./shift.service";
 import { CreateShiftData, UpdateShiftData } from "./shift.model";
 

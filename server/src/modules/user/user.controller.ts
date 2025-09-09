@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
-import { getId } from "#src/utils/request.utils";
-import { AuthRequest, isAdministrator } from "#src/utils/auth.utils";
-import { AuthException, handleError } from "#src/utils/exception.utils";
-
+import { getId } from "../../utils/request.utils";
+import { AuthRequest, isAdministrator } from "../../utils/auth.utils";
+import { AuthException, handleError } from "../../utils/exception.utils";
 import UserService from "./user.service";
 import { CreateUserData, UpdateUserData } from "./user.model";
 

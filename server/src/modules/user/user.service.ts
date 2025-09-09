@@ -1,8 +1,7 @@
-import { Service } from "#src/modules/index";
-import { encryptPassword } from "#src/utils/auth.utils";
-import { ConflictException, NotFoundException } from "#src/utils/exception.utils";
-import PermissionUserCourseService from "#src/modules/permission_user_course/permission_user_course.service";
-
+import { Service } from "../../modules/index";
+import { encryptPassword } from "../../utils/auth.utils";
+import { ConflictException, NotFoundException } from "../../utils/exception.utils";
+import PermissionUserCourseService from "../../modules/permission_user_course/permission_user_course.service";
 import UserRepository from "./user.repository";
 import { CreateUserData, IUser, UpdateUserData } from "./user.model";
 

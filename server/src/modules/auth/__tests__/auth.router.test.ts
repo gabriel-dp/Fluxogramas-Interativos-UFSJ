@@ -1,10 +1,10 @@
-import { api, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
+import { api, expectRequestFail, expectRequestSuccess } from "../../../utils/tests/tests.requests";
 import {
 	Credentials,
 	generateString,
 	generateUniqueUsername,
 	generateValidPassword,
-} from "#src/utils/tests/tests.credentials";
+} from "../../../utils/tests/tests.credentials";
 
 async function register(credentials: Partial<Credentials>) {
 	const response = await api.post("auth/register", credentials);

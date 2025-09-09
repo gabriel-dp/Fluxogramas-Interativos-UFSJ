@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-import { IComponent } from "#src/modules/component/component.model";
-
+import { IComponent } from "../../modules/component/component.model";
 import { IType } from "./type/type.model";
 import { IShift } from "./shift/shift.model";
 import { ICampus } from "./campus/campus.model";

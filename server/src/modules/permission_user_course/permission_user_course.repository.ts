@@ -1,13 +1,12 @@
-import prisma from "#src/lib/prisma";
+import prisma from "../../lib/prisma";
+import { ICourse } from "../../modules/course/course.model";
+import { IUser } from "../../modules/user/user.model";
 import {
 	convertToPermissionsObject,
 	convertToSinglePermissions,
 	IPermissionsUserCourse,
 	ISinglePermissionUserCourse,
 } from "./permission_user_course.model";
-
-import { ICourse } from "#src/modules/course/course.model";
-import { IUser } from "#src/modules/user/user.model";
 
 const PermissionUserCourseRepository = {
 	async getCoursesByUser(userId: number): Promise<ICourse[]> {

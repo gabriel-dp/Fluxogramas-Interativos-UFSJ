@@ -1,5 +1,5 @@
-import { log } from "#src/utils/log.utils";
-import UserService from "#src/modules/user/user.service";
+import { log } from "../utils/log.utils";
+import UserService from "../modules/user/user.service";
 
 const INITIAL_ADMIN = {
 	username: "admin",

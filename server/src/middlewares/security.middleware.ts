@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 
-import { AuthRequest, getDataFromAccessToken, getToken, isAdministrator, isAuthenticated } from "#src/utils/auth.utils";
+import { AuthRequest, getDataFromAccessToken, getToken, isAdministrator, isAuthenticated } from "../utils/auth.utils";
 
 export const getAuth = (req: AuthRequest, res: Response, next: NextFunction) => {
 	req.user = undefined; // Clear any user data on request

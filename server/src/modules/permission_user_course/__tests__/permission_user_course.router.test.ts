@@ -1,8 +1,13 @@
-import { generateUniqueCourse } from "#src/modules/course/__tests__/course.repository.test";
-import CourseService from "#src/modules/course/course.service";
-import UserService from "#src/modules/user/user.service";
-import { ADMIN_CREDENTIALS, generateNewUserData, NORMAL_CREDENTIALS, signIn } from "#src/utils/tests/tests.credentials";
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
+import { generateUniqueCourse } from "../../../modules/course/__tests__/course.repository.test";
+import CourseService from "../../../modules/course/course.service";
+import UserService from "../../../modules/user/user.service";
+import {
+	ADMIN_CREDENTIALS,
+	generateNewUserData,
+	NORMAL_CREDENTIALS,
+	signIn,
+} from "../../../utils/tests/tests.credentials";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "../../../utils/tests/tests.requests";
 
 describe("GET /permission_user_course/user/:id", () => {
 	describe("No auth", () => {

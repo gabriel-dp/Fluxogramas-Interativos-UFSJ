@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 
-import { getId } from "#src/utils/request.utils";
-import { handleError } from "#src/utils/exception.utils";
-
+import { getId } from "../../../utils/request.utils";
+import { handleError } from "../../../utils/exception.utils";
 import TypeService from "./type.service";
 import { CreateTypeData, UpdateTypeData } from "./type.model";
 

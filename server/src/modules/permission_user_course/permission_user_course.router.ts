@@ -1,9 +1,8 @@
 import { Router } from "express";
 
-import { requireAdmin, requireAuth } from "#src/middlewares/security.middleware";
-import { validateData, validateId } from "#src/middlewares/data.middleware";
-import { sameUserOrAdmin } from "#src/modules/user/user.controller";
-
+import { requireAdmin, requireAuth } from "../../middlewares/security.middleware";
+import { validateData, validateId } from "../../middlewares/data.middleware";
+import { sameUserOrAdmin } from "../../modules/user/user.controller";
 import PermissionUserCourseController from "./permission_user_course.controller";
 import { createPermissionUserCourseSchema } from "./permission_user_course.model";
 

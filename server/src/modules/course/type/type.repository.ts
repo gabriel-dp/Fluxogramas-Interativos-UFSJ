@@ -1,6 +1,5 @@
-import prisma from "#src/lib/prisma";
-import { Repository } from "#src/modules/index";
-
+import prisma from "../../../lib/prisma";
+import { Repository } from "../../../modules/index";
 import { CreateTypeData, IType, UpdateTypeData } from "./type.model";
 
 const defaultSelectFields = {

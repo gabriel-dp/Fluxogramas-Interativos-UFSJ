@@ -1,12 +1,11 @@
-import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "#src/utils/tests/tests.requests";
+import { api, authHeaders, expectRequestFail, expectRequestSuccess } from "../../../utils/tests/tests.requests";
 import {
 	ADMIN_CREDENTIALS,
 	NORMAL_CREDENTIALS,
 	generateNewUserData,
 	generateUniqueUsername,
 	signIn,
-} from "#src/utils/tests/tests.credentials";
-
+} from "../../../utils/tests/tests.credentials";
 import UserService from "../user.service";
 
 describe("GET /user", () => {
