@@ -4,8 +4,8 @@ import cors from "cors";
 
 import { requestLog } from "#src/middlewares/logs.middleware";
 
-import router from "./routes.config.ts";
-import databaseConfig from "./database.config.ts";
+import router from "./routes.config";
+import databaseConfig from "./database.config";
 
 export default async function configApp(app: Express): Promise<void> {
 	app.use(express.json());
