@@ -9,7 +9,7 @@ const DRAWER_CONTENT_WIDTH_REM = 20;
 export const DrawerContainer = styled.div<DrawerProps>`
 	height: 100dvh;
 	background-color: ${(props) => props.theme.background2};
-	color: ${(props) => props.theme.white};
+	color: ${(props) => props.theme.text};
 
 	width: ${DRAWER_CONTENT_WIDTH_REM}rem;
 	transition: all 0.3s ease-in-out;
@@ -44,19 +44,20 @@ export const DrawerContainer = styled.div<DrawerProps>`
 export const DrawerContent = styled.div`
 	display: flex;
 	flex-direction: column;
-	gap: 0.75rem;
-	padding: min(2rem, 50%);
+	padding: min(2rem, 50%) 0;
 
 	box-sizing: border-box;
 	overflow: hidden;
 
 	.drawer-group {
 		.drawer-title {
+			margin: 1rem 1.25rem;
 			margin-bottom: 0.5rem;
 			max-width: 100%;
 			text-overflow: ellipsis;
 			white-space: nowrap;
 			overflow: hidden;
+			user-select: none;
 		}
 
 		ul {
@@ -67,26 +68,34 @@ export const DrawerContent = styled.div`
 				text-overflow: ellipsis;
 				white-space: nowrap;
 				overflow: hidden;
-				padding: 0.5rem;
-				border-radius: 0.5rem;
+				padding: 0.75rem 1.75rem;
 				cursor: pointer;
+				transition: all 0.125s ease-in-out;
 
 				:hover {
-					background-color: ${(props) => props.theme.gray}AA;
+					background-color: ${(props) => props.theme.primary}44;
+				}
+
+				.icon {
+					margin-right: 0.5rem;
+					transform: translateY(0.125rem);
 				}
 			}
 		}
 	}
 
-	hr {
-		width: 100%;
-		border-top: none;
-		border-bottom: 1px solid ${(props) => props.theme.gray};
-		margin: 0.5rem 0;
+	img {
+		margin: 1.5rem;
+		margin-top: 0;
+		max-width: 20rem;
+		cursor: pointer;
 	}
 
-	button {
-		margin-bottom: 1rem;
+	hr {
+		width: calc(100% - 2.5rem);
+		border: none;
+		border-bottom: 1px solid ${(props) => props.theme.text}33;
+		margin: 0.5rem auto;
 	}
 `;
 

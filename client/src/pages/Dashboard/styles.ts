@@ -8,7 +8,7 @@ export const DashboardContainer = styled.div`
 `;
 
 export const DashboardContent = styled.div`
-	padding: 3rem;
+	padding: 3rem clamp(2rem, 5%, 3rem);
 	width: 100%;
 	flex: 1;
 

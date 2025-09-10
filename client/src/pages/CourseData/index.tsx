@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { FaClock, FaGraduationCap, FaMapMarkerAlt } from "react-icons/fa";
+import { FaClock as TimeIcon, FaBook as BookIcon, FaMapMarkerAlt as LocationIcon } from "react-icons/fa";
 
 import { Course } from "@/services/course/types";
 import { requestCourse } from "@/services/course/requests";
@@ -31,13 +31,13 @@ export default function CourseData() {
 				<p>{course ? course.name : "-"}</p>
 				<div>
 					<span>
-						<FaClock className="icon" /> {course ? course.shift : "-"}
+						<TimeIcon className="icon" /> {course ? course.shift : "-"}
 					</span>
 					<span>
-						<FaGraduationCap className="icon" /> {course ? course.type : "-"}
+						<BookIcon className="icon" /> {course ? course.type : "-"}
 					</span>
 					<span>
-						<FaMapMarkerAlt className="icon" /> {course ? course.campus : "-"}
+						<LocationIcon className="icon" /> {course ? course.campus : "-"}
 					</span>
 				</div>
 			</Header>

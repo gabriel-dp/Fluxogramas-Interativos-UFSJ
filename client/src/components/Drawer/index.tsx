@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { MdKeyboardArrowRight as OpenIcon, MdClose as CloseIcon } from "react-icons/md";
+import {
+	FaUsers as UsersIcon,
+	FaMapMarkerAlt as LocalIcon,
+	FaClock as TimeIcon,
+	FaBook as BookIcon,
+	FaGraduationCap as GraduationIcon,
+} from "react-icons/fa";
 
 import { Routes } from "@/routes";
 import { ICourseComplete } from "@/types/course";
 import useAuth from "@/contexts/auth/useAuth";
 import useCourseService from "@/services/courseService";
-import Button from "@/components/ui/Button";
+import logo from "@/assets/logo.png";
 
 import { DrawerContainer, DrawerContent, ToggleButton } from "./styles";
 
@@ -32,55 +39,53 @@ export default function Drawer() {
 		setDrawerOpen(false);
 	}
 
-	const ADMIN_ROUTES = [
-		{ route: Routes.dashboard_users, title: "Usuários" },
-		{ route: Routes.dashboard_courses, title: "Cursos" },
-	];
-
-	const PARAM_ROUTES = [
-		{ route: Routes.dashboard_courses_type, title: "Tipos" },
-		{ route: Routes.dashboard_courses_shift, title: "Turnos" },
-		{ route: Routes.dashboard_courses_campus, title: "Campus" },
+	const ADMIN_DRAWER_ROUTES = [
+		{
+			group: "Administração",
+			routes: [
+				{ route: Routes.dashboard_users, title: "Usuários", icon: UsersIcon },
+				{ route: Routes.dashboard_courses, title: "Cursos", icon: GraduationIcon },
+			],
+		},
+		{
+			group: "Parametrização",
+			routes: [
+				{ route: Routes.dashboard_courses_type, title: "Tipos", icon: BookIcon },
+				{ route: Routes.dashboard_courses_shift, title: "Turnos", icon: TimeIcon },
+				{ route: Routes.dashboard_courses_campus, title: "Campus", icon: LocalIcon },
+			],
+		},
 	];
 
 	return (
 		<>
 			<DrawerContainer open={drawerOpen}>
 				<DrawerContent>
-					<Button onClick={() => handleNavigate(Routes.dashboard)}>Menu</Button>
+					<img src={logo} alt={"menu"} onClick={() => handleNavigate(Routes.dashboard)} />
 					{user?.isAdmin ? (
-						<>
-							<div className="drawer-group">
-								<h3 className="drawer-title">Administração</h3>
+						ADMIN_DRAWER_ROUTES.map(({ group, routes }) => (
+							<div className="drawer-group" key={group}>
+								<hr />
+								<h3 className="drawer-title">{group}</h3>
 								<ul>
-									{ADMIN_ROUTES.map((route) => (
-										<li onClick={() => handleNavigate(route.route)} key={route.route}>
-											{route.title}
+									{routes.map(({ title, icon: Icon, route }) => (
+										<li key={route} onClick={() => handleNavigate(route)}>
+											<Icon className="icon" />
+											<span>{title}</span>
 										</li>
 									))}
 								</ul>
 							</div>
-							<div className="drawer-group">
-								<h3 className="drawer-title">Parametrização</h3>
-								<ul>
-									{PARAM_ROUTES.map((route) => (
-										<li onClick={() => handleNavigate(route.route)} key={route.route}>
-											{route.title}
-										</li>
-									))}
-								</ul>
-							</div>
-						</>
+						))
 					) : (
 						<div className="drawer-group">
+							<hr />
 							<h3 className="drawer-title">Cursos</h3>
 							<ul>
-								{courses.map((course) => (
-									<li
-										key={course.id}
-										onClick={() => handleNavigate(Routes.dashboard_courses_course(course.id.toString()))}
-									>
-										{course.name}
+								{courses.map(({ id, name }) => (
+									<li key={id} onClick={() => handleNavigate(Routes.dashboard_courses_course(id.toString()))}>
+										<GraduationIcon className="icon" />
+										<span>{name}</span>
 									</li>
 								))}
 							</ul>

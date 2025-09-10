@@ -19,7 +19,7 @@ export const LightTheme: ThemeType = {
 	primaryText: "#FFFFFF",
 	secondary: "#FEFEFE",
 	background: "#EEEEEE",
-	background2: "#505050",
+	background2: "#CCCCCC",
 	text: "#333333",
 	white: "#FFFFFF",
 	gray: "#727376",
