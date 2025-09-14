@@ -1,6 +1,7 @@
 import { ConfigsProvider } from "./configs/ConfigsContext";
 import { AuthProvider } from "./auth/AuthContext";
 import { ThemeProvider } from "./theme/ThemeContext";
+import { ModalProvider } from "./modal/ModalContext";
 import { NotificationsProvider } from "./notifications/NotificationsContext";
 
 export default function AppProvider(props: React.PropsWithChildren) {
@@ -8,7 +9,9 @@ export default function AppProvider(props: React.PropsWithChildren) {
 		<ConfigsProvider>
 			<ThemeProvider>
 				<AuthProvider>
-					<NotificationsProvider>{props.children}</NotificationsProvider>
+					<ModalProvider>
+						<NotificationsProvider>{props.children}</NotificationsProvider>
+					</ModalProvider>
 				</AuthProvider>
 			</ThemeProvider>
 		</ConfigsProvider>

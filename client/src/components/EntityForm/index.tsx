@@ -6,7 +6,7 @@ interface EntityFormProps<T extends { id: number }> extends React.PropsWithChild
 	entity: string;
 	selectedEntity: T | null | undefined;
 	onSubmit: React.FormEventHandler<HTMLFormElement>;
-	onDelete?: () => Promise<void>;
+	onDelete?: () => Promise<void> | void;
 	hideEntityId?: boolean;
 	hasError?: boolean;
 }

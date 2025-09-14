@@ -15,6 +15,8 @@ import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import { ConflictException } from "@/utils/exceptionUtils";
+import useModal from "@/contexts/modal/useModal";
+import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
 
 interface CourseFormFields {
 	code: string;
@@ -31,6 +33,7 @@ interface CourseFormI {
 
 export default function CourseForm(props: CourseFormI) {
 	const { addNotification } = useNotifications();
+	const { openModal, closeModal } = useModal();
 	const { createOne, updateOne, deleteOne } = useCourseService();
 	const { readAll: readAllTypes } = useCourseTypeService();
 	const { readAll: readAllShifts } = useCourseShiftService();
@@ -113,12 +116,23 @@ export default function CourseForm(props: CourseFormI) {
 		props.refresh();
 	}
 
-	async function onDelete() {
-		if (props.selectedCourse) {
-			await deleteOne(props.selectedCourse.id);
-			addNotification({ type: "success", message: `Curso #${props.selectedCourse.id} deletado` });
+	function onDelete() {
+		async function onConfirm() {
+			if (props.selectedCourse) {
+				await deleteOne(props.selectedCourse.id);
+				addNotification({ type: "success", message: `Curso #${props.selectedCourse.id} deletado` });
+			}
+			props.refresh();
 		}
-		props.refresh();
+		const modalId = openModal({
+			content: (
+				<AreYouSureToDelete
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
+		});
 	}
 
 	return (

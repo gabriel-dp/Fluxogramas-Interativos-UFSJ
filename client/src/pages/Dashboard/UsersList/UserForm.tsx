@@ -9,6 +9,8 @@ import EntityForm from "@/components/EntityForm";
 import TextField from "@/components/ui/TextField";
 import Checkbox from "@/components/ui/Checkbox";
 import { ConflictException } from "@/utils/exceptionUtils";
+import useModal from "@/contexts/modal/useModal";
+import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
 
 interface UserFormFields {
 	username: string;
@@ -23,6 +25,7 @@ interface UserFormI {
 
 export default function UserForm(props: UserFormI) {
 	const { addNotification } = useNotifications();
+	const { openModal, closeModal } = useModal();
 	const { createOne, updateOne, deleteOne } = useUserService();
 	const {
 		control,
@@ -75,12 +78,23 @@ export default function UserForm(props: UserFormI) {
 		props.refresh();
 	}
 
-	async function onDelete() {
-		if (props.selectedUser) {
-			await deleteOne(props.selectedUser.id);
-			addNotification({ type: "success", message: `Usuário #${props.selectedUser.id} deletado` });
+	function onDelete() {
+		async function onConfirm() {
+			if (props.selectedUser) {
+				await deleteOne(props.selectedUser.id);
+				addNotification({ type: "success", message: `Usuário #${props.selectedUser.id} deletado` });
+			}
+			props.refresh();
 		}
-		props.refresh();
+		const modalId = openModal({
+			content: (
+				<AreYouSureToDelete
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
+		});
 	}
 
 	return (

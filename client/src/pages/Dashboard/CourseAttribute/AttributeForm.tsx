@@ -7,7 +7,9 @@ import EntityForm from "@/components/EntityForm";
 import TextField from "@/components/ui/TextField";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useNotifications from "@/contexts/notifications/useNotifications";
+import useModal from "@/contexts/modal/useModal";
 import useCourseTypeService from "@/services/courseTypeService";
+import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
 
 interface UserFormFields {
 	name: string;
@@ -22,6 +24,7 @@ interface UserFormI {
 
 export default function UserForm(props: UserFormI) {
 	const { addNotification } = useNotifications();
+	const { openModal, closeModal } = useModal();
 	const { createOne, updateOne, deleteOne } = props.service;
 	const {
 		control,
@@ -71,22 +74,33 @@ export default function UserForm(props: UserFormI) {
 		props.refresh();
 	}
 
-	async function onDelete() {
-		try {
-			if (props.selectedAttribute) {
-				await deleteOne(props.selectedAttribute.id);
-				addNotification({ type: "success", message: `${props.entity} #${props.selectedAttribute.id} deletado` });
+	function onDelete() {
+		async function onConfirm() {
+			try {
+				if (props.selectedAttribute) {
+					await deleteOne(props.selectedAttribute.id);
+					addNotification({ type: "success", message: `${props.entity} #${props.selectedAttribute.id} deletado` });
+				}
+			} catch (error) {
+				if (error instanceof ConflictException && props.selectedAttribute) {
+					addNotification({
+						type: "error",
+						message: `Não é possível deletar #${props.selectedAttribute.id}. Verifique cursos associados.`,
+					});
+				}
+				throw error;
 			}
-		} catch (error) {
-			if (error instanceof ConflictException && props.selectedAttribute) {
-				addNotification({
-					type: "error",
-					message: `Não é possível deletar #${props.selectedAttribute.id}. Verifique cursos associados.`,
-				});
-			}
-			throw error;
+			props.refresh();
 		}
-		props.refresh();
+		const modalId = openModal({
+			content: (
+				<AreYouSureToDelete
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
+		});
 	}
 
 	return (

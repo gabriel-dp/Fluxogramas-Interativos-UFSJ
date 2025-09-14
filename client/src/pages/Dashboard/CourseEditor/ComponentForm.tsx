@@ -9,6 +9,8 @@ import TextField from "@/components/ui/TextField";
 import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/EntityForm";
 import { ConflictException } from "@/utils/exceptionUtils";
+import useModal from "@/contexts/modal/useModal";
+import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
 
 interface ComponentFormFields {
 	code: string;
@@ -27,6 +29,7 @@ interface ComponentFormI {
 export default function ComponentForm(props: ComponentFormI) {
 	const { createOne, updateOne, deleteOne } = useComponentService();
 	const { addNotification } = useNotifications();
+	const { openModal, closeModal } = useModal();
 
 	const {
 		control,
@@ -93,12 +96,23 @@ export default function ComponentForm(props: ComponentFormI) {
 		props.refresh();
 	}
 
-	async function onDelete() {
-		if (props.selectedComponent) {
-			await deleteOne(props.selectedComponent.id);
-			addNotification({ type: "success", message: `Componente '${props.selectedComponent.code}' deletado` });
+	function onDelete() {
+		async function onConfirm() {
+			if (props.selectedComponent) {
+				await deleteOne(props.selectedComponent.id);
+				addNotification({ type: "success", message: `Componente '${props.selectedComponent.code}' deletado` });
+			}
+			props.refresh();
 		}
-		props.refresh();
+		const modalId = openModal({
+			content: (
+				<AreYouSureToDelete
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
+		});
 	}
 
 	return (
