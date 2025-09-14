@@ -30,6 +30,7 @@ const CampusService: Service<ICampus, CreateCampusData, UpdateCampusData> = {
 
 	async delete(id) {
 		await this.getOne(id);
+		if (await CampusRepository.hasUsage(id)) throw new ConflictException("Campus course");
 		return CampusRepository.delete(id);
 	},
 };

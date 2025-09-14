@@ -1,6 +1,7 @@
 import { Service } from "../../modules/index";
 import { ConflictException, NotFoundException } from "../../utils/exception.utils";
 import PermissionUserCourseService from "../../modules/permission_user_course/permission_user_course.service";
+import ComponentService from "../component/component.service";
 import { CreateCourseData, ICourseComplete, UpdateCourseData } from "./course.model";
 import CourseRepository from "./course.repository";
 
@@ -26,14 +27,29 @@ const CourseService: Service<ICourseComplete, CreateCourseData, UpdateCourseData
 		await this.getOne(id);
 		if (data.code) {
 			const sameCode = await CourseRepository.getOneByCode(data.code);
-			if (sameCode && sameCode.id != id) throw new ConflictException("Cousre code");
+			if (sameCode && sameCode.id != id) throw new ConflictException("Course code");
 		}
 		return CourseRepository.update(id, data);
 	},
 
 	async delete(id) {
 		await this.getOne(id);
+
+		// Delete Permissions
 		await PermissionUserCourseService.removeCoursePermissions(id);
+
+		// Delete Components
+		const components = await ComponentService.getAllFromCourse(id);
+		await Promise.all(
+			components.map(
+				(c) =>
+					async function () {
+						await ComponentService.setRequisites(c.id, []);
+						await ComponentService.delete(c.id);
+					},
+			),
+		);
+
 		return CourseRepository.delete(id);
 	},
 

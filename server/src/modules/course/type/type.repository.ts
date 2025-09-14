@@ -9,6 +9,7 @@ const defaultSelectFields = {
 
 const TypeRepository: Repository<IType, CreateTypeData, UpdateTypeData> & {
 	getOneByName: (name: string) => Promise<IType | null>;
+	hasUsage: (id: number) => Promise<boolean>;
 } = {
 	async getAll() {
 		return prisma.type.findMany({
@@ -54,6 +55,11 @@ const TypeRepository: Repository<IType, CreateTypeData, UpdateTypeData> & {
 			where: { name },
 			select: defaultSelectFields,
 		});
+	},
+
+	async hasUsage(id) {
+		const type = await prisma.type.findUnique({ where: { id }, select: { Course: true } });
+		return !!type && type.Course.length > 0;
 	},
 };
 

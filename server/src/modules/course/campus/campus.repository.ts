@@ -9,6 +9,7 @@ const defaultSelectFields = {
 
 const CampusRepository: Repository<ICampus, CreateCampusData, UpdateCampusData> & {
 	getOneByName: (name: string) => Promise<ICampus | null>;
+	hasUsage: (id: number) => Promise<boolean>;
 } = {
 	async getAll() {
 		return prisma.campus.findMany({
@@ -54,6 +55,11 @@ const CampusRepository: Repository<ICampus, CreateCampusData, UpdateCampusData> 
 			where: { name },
 			select: defaultSelectFields,
 		});
+	},
+
+	async hasUsage(id) {
+		const campus = await prisma.campus.findUnique({ where: { id }, select: { Course: true } });
+		return !!campus && campus.Course.length > 0;
 	},
 };
 

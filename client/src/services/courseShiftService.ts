@@ -50,8 +50,17 @@ export default function useCourseShiftService() {
 
 	const deleteOne = useCallback(
 		async (id: number): Promise<boolean> => {
-			const result = await api.delete<void>(`/course/shift/${id}`);
-			return result.status == 204;
+			try {
+				const result = await api.delete<void>(`/course/shift/${id}`);
+				return result.status == 204;
+			} catch (error) {
+				if (error instanceof AxiosError) {
+					if (error.status === 409) {
+						throw new ConflictException(ENTITY);
+					}
+				}
+				throw error;
+			}
 		},
 		[api],
 	);

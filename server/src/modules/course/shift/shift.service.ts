@@ -30,6 +30,7 @@ const ShiftService: Service<IShift, CreateShiftData, UpdateShiftData> = {
 
 	async delete(id) {
 		await this.getOne(id);
+		if (await ShiftRepository.hasUsage(id)) throw new ConflictException("Shift course");
 		return ShiftRepository.delete(id);
 	},
 };

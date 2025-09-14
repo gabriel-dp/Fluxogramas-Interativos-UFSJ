@@ -9,6 +9,7 @@ const defaultSelectFields = {
 
 const ShiftRepository: Repository<IShift, CreateShiftData, UpdateShiftData> & {
 	getOneByName: (name: string) => Promise<IShift | null>;
+	hasUsage: (id: number) => Promise<boolean>;
 } = {
 	async getAll() {
 		return prisma.shift.findMany({
@@ -54,6 +55,11 @@ const ShiftRepository: Repository<IShift, CreateShiftData, UpdateShiftData> & {
 			where: { name },
 			select: defaultSelectFields,
 		});
+	},
+
+	async hasUsage(id) {
+		const shift = await prisma.shift.findUnique({ where: { id }, select: { Course: true } });
+		return !!shift && shift.Course.length > 0;
 	},
 };
 

@@ -30,6 +30,7 @@ const TypeService: Service<IType, CreateTypeData, UpdateTypeData> = {
 
 	async delete(id) {
 		await this.getOne(id);
+		if (await TypeRepository.hasUsage(id)) throw new ConflictException("Type course");
 		return TypeRepository.delete(id);
 	},
 };

@@ -72,9 +72,19 @@ export default function UserForm(props: UserFormI) {
 	}
 
 	async function onDelete() {
-		if (props.selectedAttribute) {
-			await deleteOne(props.selectedAttribute.id);
-			addNotification({ type: "success", message: `${props.entity} #${props.selectedAttribute.id} deletado` });
+		try {
+			if (props.selectedAttribute) {
+				await deleteOne(props.selectedAttribute.id);
+				addNotification({ type: "success", message: `${props.entity} #${props.selectedAttribute.id} deletado` });
+			}
+		} catch (error) {
+			if (error instanceof ConflictException && props.selectedAttribute) {
+				addNotification({
+					type: "error",
+					message: `Não é possível deletar #${props.selectedAttribute.id}. Verifique cursos associados.`,
+				});
+			}
+			throw error;
 		}
 		props.refresh();
 	}
