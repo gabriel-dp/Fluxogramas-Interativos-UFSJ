@@ -5,10 +5,12 @@ import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
+import useAuth from "@/contexts/auth/useAuth";
+import SearchBar from "@/components/SearchBar";
+import { normalizeString } from "@/utils/stringUtils";
 
 import CourseForm from "./CourseForm";
 import { DashboardContent } from "../styles";
-import useAuth from "@/contexts/auth/useAuth";
 
 const columns: TableColumn<ICourseComplete>[] = [
 	{
@@ -46,6 +48,7 @@ const columns: TableColumn<ICourseComplete>[] = [
 export default function Course() {
 	const { user } = useAuth();
 	const { readAll } = useCourseService();
+	const [search, setSearch] = useState("");
 	const [courses, setCourses] = useState<ICourseComplete[]>([]);
 	const [selectedCourse, setSelectedCourse] = useState<ICourseComplete | null | undefined>();
 
@@ -68,12 +71,14 @@ export default function Course() {
 					<Button onClick={() => setSelectedCourse(null)}>Criar</Button>
 				</div>
 			</div>
+			<SearchBar search={search} setSearch={setSearch} placeholder="Pesquise por um Curso..." />
 			<DataTable
 				columns={columns}
-				data={courses}
+				data={courses.filter((c) => normalizeString(c.name).includes(normalizeString(search)))}
 				onRowClicked={(e) => setSelectedCourse({ ...e })}
 				defaultSortFieldId={1}
 			/>
+			<hr />
 			<CourseForm selectedCourse={selectedCourse} refresh={() => void requestCourses()} />
 		</DashboardContent>
 	);

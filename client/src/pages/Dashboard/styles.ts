@@ -39,4 +39,9 @@ export const DashboardContent = styled.div`
 			gap: 1rem;
 		}
 	}
+
+	hr {
+		border: none;
+		border-top: 1px solid ${(props) => props.theme.text}33;
+	}
 `;

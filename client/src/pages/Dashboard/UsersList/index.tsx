@@ -5,6 +5,8 @@ import useUserService from "@/services/userService";
 import { IUser } from "@/types/user";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
+import SearchBar from "@/components/SearchBar";
+import { normalizeString } from "@/utils/stringUtils";
 
 import UserForm from "./UserForm";
 import UserPermissionForm from "./UserPermissionForm";
@@ -29,6 +31,7 @@ const columns: TableColumn<IUser>[] = [
 ];
 
 export default function UsersList() {
+	const [search, setSearch] = useState("");
 	const [users, setUsers] = useState<IUser[]>([]);
 	const [selectedUser, setSelectedUser] = useState<IUser | null | undefined>();
 
@@ -51,12 +54,14 @@ export default function UsersList() {
 					<Button onClick={() => setSelectedUser(null)}>Criar</Button>
 				</div>
 			</div>
+			<SearchBar search={search} setSearch={setSearch} placeholder="Pesquise por um Usuário..." />
 			<DataTable
 				columns={columns}
-				data={users}
+				data={users.filter((u) => normalizeString(u.username).includes(normalizeString(search)))}
 				onRowClicked={(e) => setSelectedUser({ ...e })}
 				defaultSortFieldId={1}
 			/>
+			<hr />
 			<UserForm selectedUser={selectedUser} refresh={() => void requestUsers()} />
 			<UserPermissionForm selectedUser={selectedUser} />
 		</DashboardContent>

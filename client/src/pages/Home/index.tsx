@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import logo from "@/assets/logo.png";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
+import { normalizeString } from "@/utils/stringUtils";
 
 export default function Home() {
 	const location = useLocation();
@@ -31,12 +32,6 @@ export default function Home() {
 
 	useEffect(() => {
 		if (allCourses.length > 0) {
-			const normalizeString = (str: string) =>
-				str
-					.toLowerCase()
-					.normalize("NFD")
-					.replace(/\p{Diacritic}/gu, "");
-
 			setSelectedCourses(allCourses.filter((course) => normalizeString(course.name).includes(normalizeString(search))));
 		}
 	}, [allCourses, search]);

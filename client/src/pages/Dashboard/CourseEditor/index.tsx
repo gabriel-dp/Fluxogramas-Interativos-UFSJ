@@ -6,6 +6,8 @@ import useComponentService from "@/services/componentService";
 import { ComponentType, IComponent } from "@/types/component";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
+import SearchBar from "@/components/SearchBar";
+import { normalizeString } from "@/utils/stringUtils";
 
 import ComponentForm from "./ComponentForm";
 import RequisiteForm from "./RequisitesForm";
@@ -43,6 +45,7 @@ export default function CourseEditor() {
 	const { id } = useParams();
 	const { readComponents } = useComponentService();
 
+	const [search, setSearch] = useState("");
 	const [components, setComponents] = useState<IComponent[]>([]);
 	const [selectedComponent, setSelectedComponent] = useState<IComponent | null | undefined>();
 	const requestComponents = useCallback(async () => {
@@ -65,12 +68,14 @@ export default function CourseEditor() {
 					<Button onClick={() => setSelectedComponent(null)}>Criar</Button>
 				</div>
 			</div>
+			<SearchBar search={search} setSearch={setSearch} placeholder="Pesquise por um Componente..." />
 			<DataTable
 				columns={columns}
-				data={components}
+				data={components.filter((c) => normalizeString(c.name).includes(normalizeString(search)))}
 				onRowClicked={(e) => setSelectedComponent({ ...e })}
 				defaultSortFieldId={1}
 			/>
+			<hr />
 			<ComponentForm
 				courseId={Number(id)}
 				selectedComponent={selectedComponent}

@@ -27,7 +27,7 @@ export default function DataTable<T>({ hideEditIcon, ...props }: DataTableProps<
 		<DataTableComponent
 			dense
 			responsive
-			noDataComponent={<NoDataComponent>Não há registros</NoDataComponent>}
+			noDataComponent={<NoDataComponent>Não há registros correspondentes</NoDataComponent>}
 			$hideEditIcon={hideEditIcon ? "true" : ""}
 			{...props}
 			columns={columns}

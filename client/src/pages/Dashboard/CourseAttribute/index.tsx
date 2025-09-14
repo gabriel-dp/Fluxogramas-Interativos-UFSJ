@@ -5,6 +5,8 @@ import { IAttribute } from "@/types/course-attributes";
 import DataTable from "@/components/DataTable";
 import Button from "@/components/ui/Button";
 import useCourseTypeService from "@/services/courseTypeService";
+import SearchBar from "@/components/SearchBar";
+import { normalizeString } from "@/utils/stringUtils";
 
 import AttributeForm from "./AttributeForm";
 import { DashboardContent } from "../styles";
@@ -28,6 +30,7 @@ interface AttributesListProps {
 }
 
 export default function AttributesList(props: AttributesListProps) {
+	const [search, setSearch] = useState("");
 	const [attributes, setAttributes] = useState<IAttribute[]>([]);
 	const [selectedAttribute, setSelectedAttribute] = useState<IAttribute | null | undefined>();
 
@@ -50,12 +53,14 @@ export default function AttributesList(props: AttributesListProps) {
 					<Button onClick={() => setSelectedAttribute(null)}>Criar</Button>
 				</div>
 			</div>
+			<SearchBar search={search} setSearch={setSearch} placeholder={`Pesquise por um ${props.entity}...`} />
 			<DataTable
 				columns={columns}
-				data={attributes}
+				data={attributes.filter((a) => normalizeString(a.name).includes(normalizeString(search)))}
 				onRowClicked={(e) => setSelectedAttribute({ ...e })}
 				defaultSortFieldId={1}
 			/>
+			<hr />
 			<AttributeForm
 				entity={props.entity}
 				service={props.service}
