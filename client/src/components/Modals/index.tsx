@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import useModal from "@/contexts/modal/useModal";
 
-import { Backdrop, ModalContainer, ModalsContainer } from "./styles";
-
-export const MODAL_VISIBLE_TRANSITION_MS = 300;
+import { Backdrop, ModalContainer, ModalsContainer, MODAL_VISIBLE_TRANSITION_MS } from "./styles";
 
 export default function Modals() {
 	const { modals, closeModal } = useModal();

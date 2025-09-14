@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 
-import { MODAL_VISIBLE_TRANSITION_MS } from ".";
+export const MODAL_VISIBLE_TRANSITION_MS: number = 300;
 
 export const ModalsContainer = styled.div<{ $visible: string }>`
 	position: fixed;
