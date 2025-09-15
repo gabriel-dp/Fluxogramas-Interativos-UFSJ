@@ -37,12 +37,6 @@ const ComponentService: Service<IComponent, CreateComponentData, UpdateComponent
 
 	async delete(id) {
 		await this.getOne(id);
-
-		const requisites = await ComponentRepository.getRequisites(id);
-		if (requisites.length > 0) {
-			throw new ConflictException("Is Requisite");
-		}
-
 		return ComponentRepository.delete(id);
 	},
 

@@ -67,8 +67,10 @@ const ComponentRepository: Repository<IComponent, CreateComponentData, UpdateCom
 	},
 
 	async delete(id) {
-		// Delete all requisites
-		await this.setRequisites(id, []);
+		// Delete all requisites and dependencies
+		await prisma.componentRequisite.deleteMany({
+			where: { OR: [{ componentId: id }, { requisiteId: id }] },
+		});
 
 		const component = await prisma.component.delete({
 			where: { id },
