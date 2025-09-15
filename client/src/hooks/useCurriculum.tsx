@@ -15,11 +15,14 @@ function buildSemesters(components: IComponent[]) {
 	if (max === -1) return semesters;
 	for (let i = 1; i <= max; i++) semesters.set(i, []);
 
-	components.forEach((c) => {
-		if (c.semester !== null) {
-			semesters.get(c.semester)?.push(c);
-		}
-	});
+	components
+		.sort((a, b) => a.name.localeCompare(b.name))
+		.forEach((c) => {
+			if (c.semester !== null) {
+				semesters.get(c.semester)?.push(c);
+			}
+		});
+
 	return semesters;
 }
 
