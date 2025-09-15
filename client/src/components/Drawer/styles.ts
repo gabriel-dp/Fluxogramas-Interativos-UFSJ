@@ -47,7 +47,9 @@ export const DrawerContent = styled.div`
 	padding: min(2rem, 50%) 0;
 
 	box-sizing: border-box;
-	overflow: hidden;
+	max-height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
 
 	.drawer-group {
 		.drawer-title {

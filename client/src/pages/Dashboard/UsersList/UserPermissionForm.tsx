@@ -53,6 +53,7 @@ export default function UserPermissionForm(props: UserPermissionFormProps) {
 				void handleSubmit(onSubmit)();
 				e.preventDefault();
 			}}
+			hasError={allCourses.length === 0}
 			hideEntityId
 		>
 			<Controller
@@ -77,6 +78,7 @@ export default function UserPermissionForm(props: UserPermissionFormProps) {
 					</CheckboxList>
 				)}
 			/>
+			{allCourses.length === 0 && <p style={{ marginBottom: "1rem", opacity: 0.75 }}>Não há cursos disponíveis</p>}
 		</EntityForm>
 	);
 }
