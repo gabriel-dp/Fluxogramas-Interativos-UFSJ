@@ -1,95 +1,42 @@
-import { Course } from "@/services/course/types";
-import SubjectCard from "@/components/SubjectCard";
+import ComponentCard from "@/components/ComponentCard";
+import { ICourseComponents } from "@/types/course";
 
 import { Semester, CurriculumList } from "./styles";
-import { useEffect, useState } from "react";
+import useCurriculum from "@/hooks/useCurriculum";
 
 interface ICurriculum {
-	course: Course | null;
+	course: ICourseComponents;
 }
 
-export default function Curriculum(props: ICurriculum) {
-	const [subjectsState, setSubjectsState] = useState<boolean[]>([]);
+export default function Curriculum({ course }: ICurriculum) {
+	const { semesters, canChange, states, change, get } = useCurriculum(course.components);
 
-	useEffect(() => {
-		if (props.course) {
-			setSubjectsState(new Array<boolean>(props.course.curriculum.length).fill(false));
-		}
-	}, [props.course]);
-
-	function getSubjectIndex(subjectId: string) {
-		if (!props.course) return -1;
-		return props.course.curriculum.findIndex((subject) => subject.id === subjectId);
-	}
-
-	const canChange: (index: number) => boolean = (index: number) => {
-		if (!props.course) return false;
-
-		const notActivePreRequisites = (i: number) =>
-			props.course !== null &&
-			props.course.curriculum[i].preRequisites.every((subjectId) => subjectsState[getSubjectIndex(subjectId)]);
-
-		const notActivePostRequistes = (i: number) =>
-			props.course !== null &&
-			props.course.curriculum.every(
-				(subject) =>
-					props.course &&
-					(!subjectsState[getSubjectIndex(subject.id)] ||
-						!subject.preRequisites.includes(props.course.curriculum[i].id)),
-			);
-
-		const validCoRequisites = (i: number) =>
-			props.course !== null &&
-			props.course.curriculum[i].coRequisites.every((coRequisiteId) => {
-				const coRequisiteIndex = getSubjectIndex(coRequisiteId);
-				return subjectsState[coRequisiteIndex] || canChange(coRequisiteIndex);
-			});
-
-		return notActivePreRequisites(index) && notActivePostRequistes(index) && validCoRequisites(index);
-	};
-
-	function handleChangeSubjectState(index: number, state?: boolean) {
-		if (!props.course || !canChange(index)) return;
-
-		setSubjectsState((prev) => {
-			const newState = [...prev];
-			newState[index] = state == undefined ? !newState[index] : state;
-			return newState;
-		});
-	}
-
-	function handleChangeSemesterState(semester: number) {
-		if (!props.course) return;
-
-		const state = props.course.curriculum.some((subject, i) => {
-			if (subject.semester != semester) return false;
-			if (subjectsState[i] == false && canChange(i)) return true;
-		});
-		props.course.curriculum.forEach((subject, i) => {
-			if (subject.semester != semester) return;
-			handleChangeSubjectState(i, state);
+	function handleChangeSemesterState(i: number) {
+		const semester = get(semesters, i);
+		const state = semester.some(({ id }) => !states[id] && canChange(id));
+		semester.forEach(({ id }) => {
+			if (states[id] !== state) {
+				change(id);
+			}
 		});
 	}
 
 	return (
 		<CurriculumList className="curriculum">
-			{Array.from({ length: props.course?.semesters ?? 0 }).map((_, i) => (
+			{[...semesters.entries()].map(([i, components]) => (
 				<Semester key={i}>
-					<p className="semester-title" onClick={() => handleChangeSemesterState(i + 1)}>
-						Semestre {i + 1}
+					<p className="semester-title" onClick={() => handleChangeSemesterState(i)}>
+						Semestre {i}
 					</p>
-					{props.course?.curriculum.map((subject, j) => {
-						if (subject.semester === i + 1)
-							return (
-								<SubjectCard
-									key={`${subject.id}-${j}`}
-									subject={subject}
-									state={subjectsState[j]}
-									canChange={canChange(j)}
-									onClick={() => handleChangeSubjectState(j)}
-								/>
-							);
-					})}
+					{components.map((component) => (
+						<ComponentCard
+							key={component.id}
+							subject={component}
+							state={states[component.id]}
+							canChange={canChange(component.id)}
+							onClick={() => change(component.id)}
+						/>
+					))}
 				</Semester>
 			))}
 		</CurriculumList>

@@ -59,10 +59,22 @@ async function deleteOne(req: Request, res: Response) {
 	}
 }
 
+async function getOneByCode(req: Request, res: Response) {
+	const { code } = req.params;
+
+	try {
+		const course = await CourseService.getOneByCode(code);
+		return res.status(200).json(course);
+	} catch (error) {
+		return handleError(res, error);
+	}
+}
+
 export default {
 	readMany,
 	readOne,
 	createOne,
 	updateOne,
 	deleteOne,
+	getOneByCode,
 };

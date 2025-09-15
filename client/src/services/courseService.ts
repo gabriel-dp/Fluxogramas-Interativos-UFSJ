@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { AxiosError } from "axios";
 
 import useApi from "@/hooks/useApi";
-import { ICourseComplete } from "@/types/course";
+import { ICourseComplete, ICourseComponents } from "@/types/course";
 import { ConflictException } from "@/utils/exceptionUtils";
 
 export default function useCourseService() {
@@ -73,8 +73,8 @@ export default function useCourseService() {
 	);
 
 	const readByCode = useCallback(
-		async (code: string): Promise<ICourseComplete> => {
-			const response = await api.get<ICourseComplete>(`/course/code/${code}`);
+		async (code: string): Promise<ICourseComponents> => {
+			const response = await api.get<ICourseComponents>(`/course/code/${code}`);
 			return response.data;
 		},
 		[api],

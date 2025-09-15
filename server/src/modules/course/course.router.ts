@@ -9,6 +9,7 @@ const router = Router();
 
 router.get("/", CourseController.readMany);
 router.get("/:id", validateId, CourseController.readOne);
+router.get("/code/:code", CourseController.getOneByCode);
 
 router.post("/", requireAdmin, validateData(createCourseSchema), CourseController.createOne);
 router.patch("/:id", requireAdmin, validateId, validateData(updateCourseSchema), CourseController.updateOne);

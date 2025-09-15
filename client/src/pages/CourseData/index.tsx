@@ -2,27 +2,30 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaClock as TimeIcon, FaBook as BookIcon, FaMapMarkerAlt as LocationIcon } from "react-icons/fa";
 
-import { Course } from "@/services/course/types";
-import { requestCourse } from "@/services/course/requests";
 import Curriculum from "@/components/Curriculum";
 import Loading from "@/components/Loading";
 import Footer from "@/components/Footer";
 import FormEvaluationCard from "@/components/FormEvaluationCard";
+import useCourseService from "@/services/courseService";
+import { ICourseComponents } from "@/types/course";
 
 import { Screen, Header, CurriculumContainer } from "./styles";
 
 export default function CourseData() {
 	const { code } = useParams();
+	const { readByCode } = useCourseService();
 	const [loading, setLoading] = useState(true);
-	const [course, setCourse] = useState<Course | null>(null);
+	const [course, setCourse] = useState<ICourseComponents | null>(null);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
-			setCourse(await requestCourse(code ?? ""));
-			setLoading(false);
+			if (code) {
+				setCourse(await readByCode(code));
+				setLoading(false);
+			}
 		}
 		void asyncSetCourse();
-	}, [code]);
+	}, [readByCode, code]);
 
 	return (
 		<Screen>
@@ -31,13 +34,13 @@ export default function CourseData() {
 				<p>{course ? course.name : "-"}</p>
 				<div>
 					<span>
-						<TimeIcon className="icon" /> {course ? course.shift : "-"}
+						<TimeIcon className="icon" /> {course ? course.shift.name : "-"}
 					</span>
 					<span>
-						<BookIcon className="icon" /> {course ? course.type : "-"}
+						<BookIcon className="icon" /> {course ? course.type.name : "-"}
 					</span>
 					<span>
-						<LocationIcon className="icon" /> {course ? course.campus : "-"}
+						<LocationIcon className="icon" /> {course ? course.campus.name : "-"}
 					</span>
 				</div>
 			</Header>
