@@ -11,6 +11,10 @@ export const RequisitesList = styled.ul`
 		display: flex;
 		align-items: center;
 		gap: 0.5em;
+
+		.corequisite {
+			font-weight: bold;
+		}
 	}
 
 	button {
@@ -37,17 +41,19 @@ export const AddRequisiteRow = styled.div`
 	display: flex;
 	row-gap: 2rem;
 	align-items: flex-end !important;
+	width: 100%;
 
 	> div {
-		width: min(40rem, 100%);
+		min-width: min(100%, 15rem);
+		flex: 1;
 	}
 
 	label {
-		flex: 1;
 		white-space: nowrap;
 	}
 
 	button {
-		min-width: 25%;
+		width: min(100%, 10rem);
+		min-width: min(100%, 10rem);
 	}
 `;

@@ -54,6 +54,7 @@ export default function CourseForm(props: CourseFormI) {
 			campusId: 1,
 		},
 		resolver: zodResolver(createCourseSchema),
+		mode: "onChange",
 	});
 
 	// Get course attributes
@@ -163,7 +164,12 @@ export default function CourseForm(props: CourseFormI) {
 					name="typeId"
 					control={control}
 					render={({ field }) => (
-						<OptionSelector label="Tipo*" options={allTypes.map((t) => ({ value: t.id, label: t.name }))} {...field} />
+						<OptionSelector
+							label="Tipo*"
+							options={allTypes.map((t) => ({ value: t.id, label: t.name }))}
+							error={errors.typeId?.message}
+							{...field}
+						/>
 					)}
 				/>
 				<Controller
@@ -173,6 +179,7 @@ export default function CourseForm(props: CourseFormI) {
 						<OptionSelector
 							label="Turno*"
 							options={allShifts.map((s) => ({ value: s.id, label: s.name }))}
+							error={errors.shiftId?.message}
 							{...field}
 						/>
 					)}
@@ -184,6 +191,7 @@ export default function CourseForm(props: CourseFormI) {
 						<OptionSelector
 							label="Campus*"
 							options={allCampus.map((c) => ({ value: c.id, label: c.name }))}
+							error={errors.campusId?.message}
 							{...field}
 						/>
 					)}

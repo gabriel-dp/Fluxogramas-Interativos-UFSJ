@@ -37,6 +37,7 @@ export default function UserForm(props: UserFormI) {
 			name: "",
 		},
 		resolver: zodResolver(createAttributeSchema),
+		mode: "onChange",
 	});
 
 	useEffect(() => {

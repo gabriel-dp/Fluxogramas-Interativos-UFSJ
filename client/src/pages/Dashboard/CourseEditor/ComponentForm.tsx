@@ -45,8 +45,13 @@ export default function ComponentForm(props: ComponentFormI) {
 			semester: 1,
 			type: ComponentType.SUBJECT,
 		},
+		mode: "onChange",
 		resolver: zodResolver(createComponentSchema),
 	});
+
+	useEffect(() => {
+		console.log(errors.type);
+	}, [errors.type]);
 
 	useEffect(() => {
 		if (props.selectedComponent) {
@@ -150,7 +155,17 @@ export default function ComponentForm(props: ComponentFormI) {
 					name="semester"
 					control={control}
 					render={({ field }) => (
-						<TextField label="Semestre" type="number" {...field} error={errors.semester?.message} />
+						<OptionSelector
+							label="Semestre"
+							options={[
+								...Array.from({ length: 12 }, (_, i) => ({
+									label: String(i + 1),
+									value: String(i + 1),
+								})),
+							]}
+							error={errors.semester?.message}
+							{...field}
+						/>
 					)}
 				/>
 				<Controller
@@ -163,6 +178,7 @@ export default function ComponentForm(props: ComponentFormI) {
 								{ label: "Disciplina", value: "SUBJECT" },
 								{ label: "Atividade", value: "ACTIVITY" },
 							]}
+							error={errors.type?.message}
 							{...field}
 						/>
 					)}

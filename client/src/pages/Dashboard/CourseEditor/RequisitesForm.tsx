@@ -85,6 +85,7 @@ export default function RequisiteForm(props: RequisiteFormI) {
 							label="Componente"
 							className="selector"
 							options={props.components
+								.sort((a, b) => a.name.localeCompare(b.name))
 								.filter((c) => c.id !== props.selectedComponent.id && !selectedRequisites.find((r) => r.id === c.id))
 								.map((c) => ({ label: c.name, value: c.id }))}
 							{...field}
@@ -103,7 +104,9 @@ export default function RequisiteForm(props: RequisiteFormI) {
 						/>
 					)}
 				/>
-				<Button onClick={onAdd}>Adicionar</Button>
+				<Button onClick={onAdd} disabled={!watch("id")}>
+					Adicionar
+				</Button>
 			</AddRequisiteRow>
 			<hr />
 			<RequisitesList>
@@ -118,7 +121,8 @@ export default function RequisiteForm(props: RequisiteFormI) {
 									<DeleteIcon className="icon" />
 								</Button>
 								<p>
-									{component?.code} ({component?.name})
+									{component?.code} ({component?.name}){" "}
+									{r.corequisite && <span className="corequisite">Co-requisito</span>}
 								</p>
 							</li>
 						);

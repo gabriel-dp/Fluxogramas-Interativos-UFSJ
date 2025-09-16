@@ -9,12 +9,15 @@ export const componentSchema = z.object({
 	id: z.number().int().positive(),
 	code: z.string().min(1, "Preencha o campo").max(32, "Máximo de 32 caracteres"),
 	name: z.string().min(1, "Preencha o campo").max(128, "Máximo de 128 caracteres"),
-	hours: z.preprocess((val) => {
-		if (val === "" || val === null || val === undefined) return undefined;
-		const n = Number(val);
-		return isNaN(n) ? undefined : n;
-	}, z.number().int().nonnegative("Apenas valores positivos")) as ZodEffects<ZodNumber, number, number>,
-	type: z.enum(["SUBJECT", "ACTIVITY"]).transform((val) => val as ComponentType),
+	hours: z.preprocess(
+		(val) => {
+			if (val === "" || val === null || val === undefined) return undefined;
+			const n = Number(val);
+			return isNaN(n) ? undefined : n;
+		},
+		z.number({ required_error: "Preencha o campo" }).int().nonnegative("Apenas valores positivos"),
+	) as ZodEffects<ZodNumber, number, number>,
+	type: z.enum(["SUBJECT", "ACTIVITY"], { message: "Preencha o campo" }).transform((val) => val as ComponentType),
 	semester: z.preprocess((val) => {
 		if (val === "" || val === null || val === undefined) return undefined;
 		const n = Number(val);

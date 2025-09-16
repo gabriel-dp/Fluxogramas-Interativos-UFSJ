@@ -6,6 +6,7 @@ export const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	gap: 0.375rem !important;
+	position: relative;
 `;
 
 export const StyledSelect = styled.select<{ $default: boolean }>`

@@ -13,6 +13,7 @@ export const DashboardForm = styled.form`
 	}
 
 	.row {
+		max-width: 100%;
 		flex-direction: row;
 		align-items: center;
 

@@ -9,9 +9,9 @@ export const courseSchema = z.object({
 	id: z.number().int().positive(),
 	code: z.string().min(3, "Mínimo de 3 caracteres").max(10, "Máximo de 10 caracteres"),
 	name: z.string().min(1, "Preencha o campo").max(128, "Máximo de 128 caracteres"),
-	campusId: z.coerce.number().int().positive(),
-	shiftId: z.coerce.number().int().positive(),
-	typeId: z.coerce.number().int().positive(),
+	typeId: z.coerce.number().int().positive("Preencha o campo"),
+	shiftId: z.coerce.number().int().positive("Preencha o campo"),
+	campusId: z.coerce.number().int().positive("Preencha o campo"),
 });
 
 export const createCourseSchema = courseSchema.omit({ id: true });

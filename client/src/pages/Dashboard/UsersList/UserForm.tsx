@@ -40,6 +40,7 @@ export default function UserForm(props: UserFormI) {
 			isAdmin: false,
 		},
 		resolver: zodResolver(props.selectedUser ? updateUserSchema : createUserSchema),
+		mode: "onChange",
 	});
 
 	useEffect(() => {
