@@ -41,13 +41,10 @@ const CourseService: Service<ICourseComplete, CreateCourseData, UpdateCourseData
 		// Delete Components
 		const components = await ComponentService.getAllFromCourse(id);
 		await Promise.all(
-			components.map(
-				(c) =>
-					async function () {
-						await ComponentService.setRequisites(c.id, []);
-						await ComponentService.delete(c.id);
-					},
-			),
+			components.map(async (c) => {
+				await ComponentService.setRequisites(c.id, []);
+				await ComponentService.delete(c.id);
+			}),
 		);
 
 		return CourseRepository.delete(id);
