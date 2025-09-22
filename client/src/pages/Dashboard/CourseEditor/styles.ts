@@ -57,3 +57,7 @@ export const AddRequisiteRow = styled.div`
 		min-width: min(100%, 10rem);
 	}
 `;
+
+export const CurriculumModal = styled.div`
+	max-width: min(calc(100dvw - 6rem), 100rem);
+`;

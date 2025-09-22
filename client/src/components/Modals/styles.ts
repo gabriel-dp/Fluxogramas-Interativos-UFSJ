@@ -33,7 +33,7 @@ export const Backdrop = styled.div<{ $visible: string }>`
 
 export const ModalContainer = styled.div`
 	max-height: calc(100% - 3rem);
-	width: min(calc(100% - 2rem), 30rem);
+
 	border-radius: 0.5rem;
 	padding: 2rem 1.5rem;
 	background-color: ${(props) => props.theme.background};

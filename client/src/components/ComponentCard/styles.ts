@@ -3,32 +3,14 @@ import { FaCheck, FaLock, FaLockOpen } from "react-icons/fa";
 
 export const LockIcon = styled(FaLock)`
 	color: ${(props) => props.theme.white}55;
-	font-size: 0.85rem;
-
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	transform: translate(-50%, -50%);
 `;
 
 export const OpenIcon = styled(FaLockOpen)`
 	color: ${(props) => props.theme.black}55;
-	font-size: 0.85rem;
-
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	transform: translate(-50%, -50%);
 `;
 
 export const CheckIcon = styled(FaCheck)`
 	color: ${(props) => props.theme.white}55;
-	font-size: 0.85rem;
-
-	position: absolute;
-	bottom: 0;
-	right: 0;
-	transform: translate(-50%, -50%);
 `;
 
 interface CardProps {
@@ -38,11 +20,12 @@ interface CardProps {
 
 export const CardContainer = styled.div<CardProps>`
 	width: 8rem;
-	aspect-ratio: 1.5;
+	height: 6.125rem;
 	border-radius: 0.5rem;
 	padding: 0.75rem;
 	user-select: none;
 	position: relative;
+	text-align: left;
 
 	background-color: ${(props) =>
 		props.state ? props.theme.primary : props.canChange ? props.theme.white : props.theme.gray};
@@ -52,8 +35,15 @@ export const CardContainer = styled.div<CardProps>`
 	p {
 		font-size: 0.75rem;
 		max-width: 100%;
+		max-height: 100%;
 		white-space: break-spaces;
 		word-break: break-word;
+
+		display: -webkit-box;
+		overflow: hidden;
+		-webkit-line-clamp: 4;
+		-webkit-box-orient: vertical;
+		text-overflow: ellipsis;
 
 		&.name {
 			text-decoration: ${(props) => (props.state ? "line-through" : "none")};
@@ -65,5 +55,22 @@ export const CardContainer = styled.div<CardProps>`
 		filter: drop-shadow(
 			0 0 0.25rem ${(props) => (props.state || props.canChange ? props.theme.primary : "transparent")}
 		);
+	}
+
+	.icon {
+		font-size: 0.75rem;
+
+		position: absolute;
+		bottom: 0.5rem;
+		right: 0.5rem;
+	}
+
+	.hours {
+		font-size: 0.75rem;
+		opacity: 0.4;
+
+		position: absolute;
+		bottom: 0.5rem;
+		left: 0.75rem;
 	}
 `;

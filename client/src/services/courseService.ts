@@ -14,6 +14,14 @@ export default function useCourseService() {
 		return response.data;
 	}, [api]);
 
+	const readOne = useCallback(
+		async (id: number): Promise<ICourseComponents> => {
+			const response = await api.get<ICourseComponents>(`/course/${id}`);
+			return response.data;
+		},
+		[api],
+	);
+
 	const createOne = useCallback(
 		async (data: object): Promise<ICourseComplete> => {
 			try {
@@ -80,5 +88,5 @@ export default function useCourseService() {
 		[api],
 	);
 
-	return { readAll, createOne, updateOne, deleteOne, readAllByUser, saveUserCourses, readByCode };
+	return { readAll, readOne, createOne, updateOne, deleteOne, readAllByUser, saveUserCourses, readByCode };
 }
