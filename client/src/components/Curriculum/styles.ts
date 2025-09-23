@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-export const CurriculumList = styled.div`
+export const CurriculumWrapper = styled.div`
+	display: flex;
+	flex-direction: column;
+	max-width: 100%;
+`;
+
+export const SemestersList = styled.div`
 	display: flex;
 	flex-direction: row;
 	gap: 1rem;
@@ -53,5 +59,37 @@ export const Semester = styled.div`
 		:hover {
 			color: ${(props) => props.theme.primary};
 		}
+	}
+`;
+
+export const ActivitiesList = styled.div`
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1rem;
+	padding: 1rem;
+
+	.card {
+		width: min(100%, 11rem) !important;
+	}
+`;
+
+export const ProgressBarContainer = styled.div`
+	padding: 1rem;
+	padding-top: 1.5rem;
+	background: linear-gradient(to top, ${(props) => props.theme.background} 35%, transparent 100%);
+	position: sticky;
+	bottom: 0;
+
+	display: flex;
+	flex-direction: row;
+	gap: 1rem;
+	align-items: center;
+
+	.percentage {
+		width: 3rem;
+		text-align: right;
+		font-size: 0.875rem;
 	}
 `;

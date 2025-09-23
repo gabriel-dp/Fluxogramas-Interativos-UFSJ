@@ -18,7 +18,9 @@ interface CardProps {
 	canChange: boolean;
 }
 
-export const CardContainer = styled.div<CardProps>`
+export const CardContainer = styled.div.attrs({
+	className: "card",
+})<CardProps>`
 	width: 8rem;
 	height: 6.125rem;
 	border-radius: 0.5rem;

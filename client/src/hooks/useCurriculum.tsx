@@ -11,15 +11,16 @@ function buildMap(components: IComponent[]) {
 function buildSemesters(components: IComponent[]) {
 	const semesters = new Map<number, IComponent[]>();
 
-	const max = Math.max(...components.map((c) => c.semester ?? -1));
-	if (max === -1) return semesters;
-	for (let i = 1; i <= max; i++) semesters.set(i, []);
+	const max = Math.max(...components.map((c) => c.semester ?? 0)); // 0 when there are no components
+	for (let i = 0; i <= max; i++) semesters.set(i, []);
 
 	components
 		.sort((a, b) => a.name.localeCompare(b.name))
 		.forEach((c) => {
 			if (c.semester !== null) {
 				semesters.get(c.semester)?.push(c);
+			} else {
+				semesters.get(0)?.push(c);
 			}
 		});
 
