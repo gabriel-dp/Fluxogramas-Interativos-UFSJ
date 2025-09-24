@@ -13,7 +13,7 @@ interface ActivityProgressProps {
 }
 
 export default function ActivityProgress({ component, ...props }: ActivityProgressProps) {
-	const [value, setValue] = useState<number>(props.defaultValue);
+	const [value, setValue] = useState<number>(props.defaultValue > 0 ? props.defaultValue : component.hours);
 
 	async function handleConfirm() {
 		try {
@@ -30,19 +30,25 @@ export default function ActivityProgress({ component, ...props }: ActivityProgre
 	}
 
 	return (
-		<div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", padding: "0 0.5rem" }}>
+		<form
+			style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem", padding: "0 0.5rem" }}
+			onSubmit={(e) => {
+				e.preventDefault();
+				void handleConfirm();
+			}}
+		>
 			<h2>{component.name}</h2>
 			<p>Insira suas horas integralizadas da atividade</p>
-			<div style={{ display: "flex", alignItems: "center", gap: "0.5rem", maxWidth: "12rem" }}>
+			<div style={{ display: "flex", alignItems: "center", gap: "0.5rem", maxWidth: "10rem" }}>
 				<TextField
 					label="Horas"
 					value={value}
 					onChange={(e) => setValue(Number(e.target.value))}
 					max={component.hours}
 				/>
-				<span style={{ whiteSpace: "nowrap" }}>/ {component.hours}h</span>
+				<span style={{ whiteSpace: "nowrap", marginTop: "1rem" }}>&nbsp;/ {component.hours}h</span>
 			</div>
-			<div style={{ display: "flex", justifyContent: "center", gap: "1.5rem" }}>
+			<div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
 				<Button onClick={() => void handleCancel()} category="secondary">
 					Cancelar
 				</Button>
@@ -50,6 +56,6 @@ export default function ActivityProgress({ component, ...props }: ActivityProgre
 					Confirmar
 				</Button>
 			</div>
-		</div>
+		</form>
 	);
 }
