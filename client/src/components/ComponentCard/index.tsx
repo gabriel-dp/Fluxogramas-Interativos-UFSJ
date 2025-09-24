@@ -7,6 +7,7 @@ interface ComponentCardProps {
 	state: boolean;
 	canChange: boolean;
 	onClick?: () => void;
+	activityHours?: number;
 }
 
 export default function ComponentCard(props: ComponentCardProps) {
@@ -16,7 +17,18 @@ export default function ComponentCard(props: ComponentCardProps) {
 		<CardContainer onClick={props.onClick} state={props.state} canChange={props.canChange} title={props.subject.name}>
 			<p className="name">{props.subject.name}</p>
 			{<Icon className="icon" />}
-			{<span className="hours">{props.subject.hours}h</span>}
+			{
+				<span className="hours">
+					{props.activityHours != undefined && (
+						<span
+							className={props.activityHours != 0 && props.activityHours != props.subject.hours ? "partial" : "total"}
+						>
+							{props.activityHours.toString() + "h / "}
+						</span>
+					)}
+					<span className="total">{props.subject.hours}h</span>
+				</span>
+			}
 		</CardContainer>
 	);
 }

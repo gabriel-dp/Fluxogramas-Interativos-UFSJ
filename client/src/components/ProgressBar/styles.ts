@@ -11,7 +11,6 @@ export const Track = styled.div`
 
 export const Fill = styled.div<{ $percentage: string }>`
 	height: 100%;
-	//border-radius: 100rem;
 	width: ${(props) => props.$percentage}%;
 	background: ${(props) => props.theme.primary};
 	transition: width 300ms ease;

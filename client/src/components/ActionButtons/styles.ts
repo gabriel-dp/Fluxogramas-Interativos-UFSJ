@@ -8,8 +8,8 @@ export const ButtonsStack = styled.div<{ quantity: number }>`
 	overflow-y: hidden;
 
 	position: fixed;
-	bottom: 1.5rem;
-	right: 1.5rem;
+	bottom: 2.25rem;
+	right: 1.75rem;
 	z-index: 2;
 
 	transition: max-height ease-in-out ${(props) => props.quantity * 0.25}s;

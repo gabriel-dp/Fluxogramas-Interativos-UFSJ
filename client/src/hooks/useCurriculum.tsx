@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-import { IComponent, Requisite } from "@/types/component";
+import { ComponentType, IComponent, Requisite } from "@/types/component";
 
 function buildMap(components: IComponent[]) {
 	const map = new Map<number, IComponent>();
@@ -46,12 +46,15 @@ function buildDependents(components: IComponent[]) {
 
 function get<K, V>(map: Map<K, V>, id: K) {
 	const found = map.get(id);
-	if (!found) throw new Error("Not found");
+	if (found == undefined) throw new Error(`Not found ${id as string}`);
 	return found;
 }
 
 export default function useCurriculum(components: IComponent[]) {
 	const [states, setStates] = useState(Object.fromEntries(components.map((c) => [c.id, false])));
+	const [activityHours, setActivityHours] = useState(
+		Object.fromEntries(components.filter((c) => c.type == ComponentType.ACTIVITY).map((c) => [c.id, 0])),
+	);
 
 	const map = useMemo(() => buildMap(components), [components]);
 	const semesters = useMemo(() => buildSemesters(components), [components]);
@@ -84,5 +87,11 @@ export default function useCurriculum(components: IComponent[]) {
 		}
 	}
 
-	return { components: map, states, semesters, canChange, change, get };
+	function changePartial(id: number, value: number) {
+		if (canChange(id)) {
+			setActivityHours((prev) => ({ ...prev, [id]: value }));
+		}
+	}
+
+	return { components: map, states, semesters, canChange, change, changePartial, get, activityHours };
 }

@@ -78,7 +78,6 @@ export const ActivitiesList = styled.div`
 export const ProgressBarContainer = styled.div`
 	padding: 1rem;
 	padding-top: 1.5rem;
-	background: linear-gradient(to top, ${(props) => props.theme.background} 35%, transparent 100%);
 	position: sticky;
 	bottom: 0;
 
@@ -91,5 +90,15 @@ export const ProgressBarContainer = styled.div`
 		width: 3rem;
 		text-align: right;
 		font-size: 0.875rem;
+	}
+
+	&::before {
+		content: "";
+		position: absolute;
+		inset: 0;
+		background-color: ${(props) => props.theme.background};
+		mask-image: linear-gradient(to bottom, transparent, black 75%);
+		z-index: -1;
+		transition: all 0.25s ease;
 	}
 `;

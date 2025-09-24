@@ -1,9 +1,12 @@
 import { useMemo } from "react";
 
 import { ICourseComponents } from "@/types/course";
+import { IComponent } from "@/types/component";
+import useModal from "@/contexts/modal/useModal";
 import useCurriculum from "@/hooks/useCurriculum";
 import ComponentCard from "@/components/ComponentCard";
 import ProgressBar from "@/components/ProgressBar";
+import ActivityProgress from "@/components/Modals/ActivityProgress";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
 
@@ -12,24 +15,27 @@ interface ICurriculum {
 }
 
 export default function Curriculum({ course }: ICurriculum) {
-	const { semesters, canChange, states, change, get } = useCurriculum(course.components);
+	const { semesters, canChange, states, change, get, changePartial, activityHours } = useCurriculum(course.components);
+	const { openModal, closeModal } = useModal();
 
 	const progress = useMemo(() => {
 		let total = 0,
 			finished = 0;
 		[...semesters.entries()].forEach(([i, semester]) => {
 			semester.forEach((c) => {
-				if (i > -1) {
-					total += c.hours;
+				total += c.hours;
+				if (i > 0) {
 					if (states[c.id]) {
 						finished += c.hours;
 					}
+				} else {
+					finished += activityHours[c.id];
 				}
 			});
 		});
 		if (total == 0) return 0;
 		return finished / total;
-	}, [semesters, states]);
+	}, [semesters, states, activityHours]);
 
 	function handleChangeSemesterState(i: number) {
 		const semester = get(semesters, i);
@@ -38,6 +44,31 @@ export default function Curriculum({ course }: ICurriculum) {
 			if (states[id] !== state) {
 				change(id);
 			}
+		});
+	}
+
+	function handleActivityClick(component: IComponent) {
+		function onConfirm(value: number) {
+			const adjustedValue = Math.max(0, Math.min(component.hours, value));
+			changePartial(component.id, adjustedValue);
+			if (
+				(adjustedValue == component.hours && !states[component.id]) ||
+				(adjustedValue != component.hours && states[component.id])
+			) {
+				change(component.id);
+			}
+		}
+
+		const modalId = openModal({
+			content: (
+				<ActivityProgress
+					component={component}
+					defaultValue={activityHours[component.id]}
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
 		});
 	}
 
@@ -72,7 +103,8 @@ export default function Curriculum({ course }: ICurriculum) {
 							subject={component}
 							state={states[component.id]}
 							canChange={canChange(component.id)}
-							onClick={() => change(component.id)}
+							onClick={() => handleActivityClick(component)}
+							activityHours={activityHours[component.id]}
 						/>
 					))}
 			</ActivitiesList>

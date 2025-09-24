@@ -33,6 +33,7 @@ export const CardContainer = styled.div.attrs({
 		props.state ? props.theme.primary : props.canChange ? props.theme.white : props.theme.gray};
 	color: ${(props) => (props.state || !props.canChange ? props.theme.primaryText : props.theme.black)};
 	cursor: ${(props) => (props.canChange ? "pointer" : "not-allowed")};
+	border: 1px solid ${(props) => props.theme.text}33;
 
 	p {
 		font-size: 0.75rem;
@@ -69,10 +70,18 @@ export const CardContainer = styled.div.attrs({
 
 	.hours {
 		font-size: 0.75rem;
-		opacity: 0.4;
 
 		position: absolute;
 		bottom: 0.5rem;
 		left: 0.75rem;
+
+		.partial {
+			color: ${(props) => props.theme.primary};
+			font-weight: bold;
+		}
+
+		.total {
+			opacity: 0.4;
+		}
 	}
 `;
