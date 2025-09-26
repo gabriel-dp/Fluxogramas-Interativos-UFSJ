@@ -8,14 +8,14 @@ import Button from "@/components/ui/Button";
 import SearchBar from "@/components/SearchBar";
 import { normalizeString } from "@/utils/stringUtils";
 import useModal from "@/contexts/modal/useModal";
-
 import ComponentForm from "./ComponentForm";
 import RequisiteForm from "./RequisitesForm";
-import { DashboardContent } from "../styles";
 import Curriculum from "@/components/Curriculum";
-import { CurriculumModal } from "./styles";
 import useCourseService from "@/services/courseService";
 import { ICourseComponents } from "@/types/course";
+
+import { CurriculumModal } from "./styles";
+import { DashboardContent } from "../styles";
 
 const columns: TableColumn<IComponent>[] = [
 	{
@@ -70,6 +70,7 @@ export default function CourseEditor() {
 						<Curriculum course={course} />
 					</CurriculumModal>
 				),
+				noPadding: true,
 			});
 		}
 	}

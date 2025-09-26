@@ -26,7 +26,11 @@ export default function Modals() {
 		<ModalsContainer onMouseDown={handleClickOutside} $visible={modals.length > 0 ? "true" : "false"}>
 			<Backdrop $visible={modals.length > 0 ? "true" : "false"} />
 			{modals.map((m) => (
-				<ModalContainer key={m.id} onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}>
+				<ModalContainer
+					key={m.id}
+					onMouseDown={(e: React.MouseEvent) => e.stopPropagation()}
+					$noPadding={m.noPadding ? "true" : "false"}
+				>
 					{m.content}
 				</ModalContainer>
 			))}

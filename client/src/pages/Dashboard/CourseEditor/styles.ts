@@ -60,4 +60,6 @@ export const AddRequisiteRow = styled.div`
 
 export const CurriculumModal = styled.div`
 	max-width: min(calc(100dvw - 6rem), 100rem);
+	padding: 1rem 2rem;
+	zoom: 0.875;
 `;

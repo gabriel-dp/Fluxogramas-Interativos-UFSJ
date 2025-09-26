@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 
 interface Modal {
 	content: ReactNode;
+	noPadding?: true;
 }
 
 interface ModalInstance extends Modal {

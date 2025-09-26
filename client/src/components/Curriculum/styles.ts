@@ -97,7 +97,7 @@ export const ProgressBarContainer = styled.div`
 		position: absolute;
 		inset: 0;
 		background-color: ${(props) => props.theme.background};
-		mask-image: linear-gradient(to bottom, transparent, black 75%);
+		mask-image: linear-gradient(to bottom, transparent, black 66%);
 		z-index: -1;
 		transition: all 0.25s ease;
 	}

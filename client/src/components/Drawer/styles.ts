@@ -91,6 +91,7 @@ export const DrawerContent = styled.div`
 		margin-top: 0;
 		max-width: 20rem;
 		cursor: pointer;
+		user-select: none;
 	}
 
 	hr {
