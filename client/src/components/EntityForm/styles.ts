@@ -3,7 +3,8 @@ import styled from "styled-components";
 export const DashboardForm = styled.form`
 	padding: 1.25rem;
 	border-radius: 0.5rem;
-	border: 1px solid ${(props) => props.theme.text}55;
+	background-color: ${(props) => props.theme.secondary}66;
+	border: 1px solid ${(props) => props.theme.text}33;
 
 	&,
 	div {

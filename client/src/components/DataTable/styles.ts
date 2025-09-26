@@ -2,7 +2,7 @@ import styled from "styled-components";
 import DataTable from "react-data-table-component";
 
 export const DataTableComponent = styled(DataTable)<any>`
-	background-color: ${(props) => props.theme.text}11;
+	background-color: ${(props) => props.theme.secondary}66;
 	border: 1px solid ${(props) => props.theme.text}33;
 	padding: 1rem;
 	border-radius: 0.5rem;

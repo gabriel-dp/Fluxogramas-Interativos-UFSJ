@@ -30,7 +30,7 @@ export const SearchInput = styled.input.attrs({
 	min-width: 0;
 	flex-grow: 1;
 	padding: 1rem 1rem 1rem 2.5rem;
-	background-color: ${(props) => props.theme.secondary};
+	background-color: ${(props) => props.theme.secondary}66;
 	color: ${(props) => props.theme.text};
 	border: 1px solid ${(props) => props.theme.text}33;
 	border-radius: 0.5rem;

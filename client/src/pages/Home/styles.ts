@@ -12,7 +12,7 @@ export const Screen = styled.div`
 export const HomeContainer = styled.div`
 	width: min(100%, 40rem);
 	min-height: 100dvh;
-	padding: 2.5rem 1rem 2rem 1rem;
+	padding: 2.5rem 1.5rem 2rem 1.5rem;
 
 	display: flex;
 	flex-direction: column;
