@@ -8,7 +8,7 @@ import useNotifications from "@/contexts/notifications/useNotifications";
 import TextField from "@/components/ui/TextField";
 import Button from "@/components/ui/Button";
 
-import { SignInFormContainer, SignInFormTitle } from "./styles";
+import { SignInFormContainer, SignInFormTitle, Wrapper } from "./styles";
 
 interface LoginFields {
 	username: string;
@@ -56,32 +56,34 @@ export default function SignIn() {
 				e.preventDefault();
 			}}
 		>
-			<SignInFormTitle>Gestão</SignInFormTitle>
-			<div className="fields">
-				<Controller
-					name="username"
-					control={control}
-					render={({ field }) => <TextField label="Usuário" {...field} required />}
-				/>
-				<Controller
-					name="password"
-					control={control}
-					render={({ field }) => <TextField label="Senha" type="password" {...field} required />}
-				/>
-			</div>
-			{errors.username && (
-				<div className="actions">
-					<p className="error">
-						<AttentionIcon className="icon" />
-						{errors.username.message}
-					</p>
+			<Wrapper>
+				<SignInFormTitle>Gestão</SignInFormTitle>
+				<div className="fields">
+					<Controller
+						name="username"
+						control={control}
+						render={({ field }) => <TextField label="Usuário" {...field} required />}
+					/>
+					<Controller
+						name="password"
+						control={control}
+						render={({ field }) => <TextField label="Senha" type="password" {...field} required />}
+					/>
 				</div>
-			)}
-			<div className="actions">
-				<Button category="primary" type="submit">
-					Entrar
-				</Button>
-			</div>
+				{errors.username && (
+					<div className="actions">
+						<p className="error">
+							<AttentionIcon className="icon" />
+							{errors.username.message}
+						</p>
+					</div>
+				)}
+				<div className="actions">
+					<Button category="primary" type="submit">
+						Entrar
+					</Button>
+				</div>
+			</Wrapper>
 		</SignInFormContainer>
 	);
 }
