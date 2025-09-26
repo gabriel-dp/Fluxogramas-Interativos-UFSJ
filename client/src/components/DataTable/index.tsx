@@ -49,6 +49,8 @@ export default function DataTable<T>({ hideEditIcon, ...props }: DataTableProps<
 			noDataComponent={<NoDataComponent>Não há registros correspondentes</NoDataComponent>}
 			sortFunction={customSort}
 			$hideEditIcon={hideEditIcon ? "true" : ""}
+			fixedHeader
+			fixedHeaderScrollHeight="33rem"
 			{...props}
 			columns={columns}
 		/>
