@@ -49,7 +49,7 @@ export default function ActivityProgress({ component, ...props }: ActivityProgre
 				/>
 				<span style={{ whiteSpace: "nowrap", marginTop: "1rem" }}>&nbsp;/ {component.hours}h</span>
 			</div>
-			<div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
+			<div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
 				<Button onClick={() => void handleCancel()} category="secondary">
 					Cancelar
 				</Button>

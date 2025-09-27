@@ -33,6 +33,7 @@ export const Backdrop = styled.div<{ $visible: string }>`
 
 export const ModalContainer = styled.div<{ $noPadding: string }>`
 	max-height: calc(100% - 3rem);
+	max-width: calc(100% - 2rem);
 
 	border-radius: 0.5rem;
 	padding: ${(props) => (props.$noPadding == "true" ? "" : "2rem 1.5rem")};
@@ -60,5 +61,9 @@ export const ModalContainer = styled.div<{ $noPadding: string }>`
 	::-webkit-scrollbar-thumb {
 		background: ${(props) => props.theme.text}66;
 		border-radius: 100rem;
+	}
+
+	@media (max-width: 768px) {
+		min-width: calc(100% - 2rem);
 	}
 `;

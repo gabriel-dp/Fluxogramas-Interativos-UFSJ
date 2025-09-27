@@ -37,7 +37,6 @@ export default function OptionalName({ component, ...props }: OptionalNameProps)
 				alignItems: "center",
 				gap: "1rem",
 				padding: "0 0.5rem",
-				width: "20rem",
 			}}
 			onSubmit={(e) => {
 				e.preventDefault();
@@ -46,16 +45,20 @@ export default function OptionalName({ component, ...props }: OptionalNameProps)
 		>
 			<h2>{component.name}</h2>
 			<p>Defina o nome da disciplina</p>
-			<div style={{ display: "flex", alignItems: "center", gap: "0.5rem", width: "min(100%, 20rem)" }}>
-				<TextField label="Nome" value={value} onChange={(e) => setValue(e.target.value)} />
-			</div>
-			<div style={{ display: "flex", justifyContent: "center", gap: "1rem" }}>
-				<Button onClick={() => void handleCancel()} category="secondary">
-					Cancelar
-				</Button>
-				<Button onClick={() => void handleConfirm()} category="primary">
-					Confirmar
-				</Button>
+			<div style={{ width: "min(100%, 17rem)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "0.5rem", width: "100%" }}>
+					<TextField label="Nome" value={value} onChange={(e) => setValue(e.target.value)} />
+				</div>
+				<div
+					style={{ display: "flex", justifyContent: "center", columnGap: "1.5rem", rowGap: "0.5rem", flexWrap: "wrap" }}
+				>
+					<Button onClick={() => void handleCancel()} category="secondary">
+						Cancelar
+					</Button>
+					<Button onClick={() => void handleConfirm()} category="primary">
+						Confirmar
+					</Button>
+				</div>
 			</div>
 		</form>
 	);
