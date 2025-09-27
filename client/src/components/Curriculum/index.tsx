@@ -97,7 +97,7 @@ export default function Curriculum({ course }: ICurriculum) {
 			<SemestersList>
 				{[...semesters.entries()].map(([i, components]) =>
 					i === 0 ? null : (
-						<Semester key={i}>
+						<Semester key={i} $finished={components.every((c) => states[c.id]) ? "true" : "false"}>
 							<p className="semester-title" onClick={() => handleChangeSemesterState(i)}>
 								Semestre {i}
 							</p>

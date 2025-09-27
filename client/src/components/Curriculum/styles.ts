@@ -43,7 +43,7 @@ export const SemestersList = styled.div`
 	scrollbar-color: ${(props) => props.theme.primary} ${(props) => props.theme.white}CC;
 `;
 
-export const Semester = styled.div`
+export const Semester = styled.div<{ $finished: string }>`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -55,6 +55,7 @@ export const Semester = styled.div`
 		font-weight: bold;
 		user-select: none;
 		cursor: pointer;
+		text-decoration: ${(props) => (props.$finished == "true" ? "line-through" : "normal")};
 
 		:hover {
 			color: ${(props) => props.theme.primary};
