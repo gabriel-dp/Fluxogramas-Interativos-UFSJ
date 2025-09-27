@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaClock as TimeIcon, FaBook as BookIcon, FaMapMarkerAlt as LocationIcon } from "react-icons/fa";
 
-import Curriculum from "@/components/Curriculum";
-import Loading from "@/components/Loading";
-import Footer from "@/components/Footer";
-import FormEvaluationCard from "@/components/FormEvaluationCard";
+import Curriculum from "@/components/curriculum/Curriculum";
+import Loading from "@/components/ui/Loading";
+import Footer from "@/components/layout/Footer";
 import useCourseService from "@/services/courseService";
 import { ICourseComponents } from "@/types/course";
 
@@ -29,7 +28,6 @@ export default function CourseData() {
 
 	return (
 		<Screen>
-			<FormEvaluationCard />
 			<Header>
 				<p>{course ? course.name : "-"}</p>
 				<div>

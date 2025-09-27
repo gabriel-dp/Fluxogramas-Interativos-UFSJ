@@ -3,14 +3,14 @@ import { useParams } from "react-router-dom";
 import { TableColumn } from "react-data-table-component";
 
 import { ComponentType, IComponent } from "@/types/component";
-import DataTable from "@/components/DataTable";
+import DataTable from "@/components/ui/DataTable";
 import Button from "@/components/ui/Button";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/ui/SearchBar";
 import { normalizeString } from "@/utils/stringUtils";
 import useModal from "@/contexts/modal/useModal";
 import ComponentForm from "./ComponentForm";
 import RequisiteForm from "./RequisitesForm";
-import Curriculum from "@/components/Curriculum";
+import Curriculum from "@/components/curriculum/Curriculum";
 import useCourseService from "@/services/courseService";
 import { ICourseComponents } from "@/types/course";
 

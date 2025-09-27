@@ -3,13 +3,13 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { createAttributeSchema, IAttribute } from "@/types/course-attributes";
-import EntityForm from "@/components/EntityForm";
+import EntityForm from "@/components/layout/EntityForm";
 import TextField from "@/components/ui/TextField";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import useModal from "@/contexts/modal/useModal";
 import useCourseTypeService from "@/services/courseTypeService";
-import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
 
 interface UserFormFields {
 	name: string;

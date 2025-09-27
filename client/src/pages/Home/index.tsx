@@ -4,9 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Routes } from "@/routes";
 import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
-import SearchBar from "@/components/SearchBar";
-import Loading from "@/components/Loading";
-import Footer from "@/components/Footer";
+import SearchBar from "@/components/ui/SearchBar";
+import Loading from "@/components/ui/Loading";
+import Footer from "@/components/layout/Footer";
 import logo from "@/assets/logo.png";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";

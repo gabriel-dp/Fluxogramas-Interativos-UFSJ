@@ -3,10 +3,10 @@ import { TableColumn } from "react-data-table-component";
 
 import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
-import DataTable from "@/components/DataTable";
+import DataTable from "@/components/ui/DataTable";
 import Button from "@/components/ui/Button";
 import useAuth from "@/contexts/auth/useAuth";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/ui/SearchBar";
 import { normalizeString } from "@/utils/stringUtils";
 
 import CourseForm from "./CourseForm";

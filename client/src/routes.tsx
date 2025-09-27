@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes as RouteGroup, Route, Outlet, Navigate } from "react-router-dom";
 
 import useAuth from "@/contexts/auth/useAuth";
-import ActionButtons from "@/components/ActionButtons";
-import Notifications from "@/components/Notifications";
-import Drawer from "@/components/Drawer";
-import Modals from "@/components/Modals";
+import ActionButtons from "@/components/layout/ActionButtons";
+import Notifications from "@/components/layout/Notifications";
+import Drawer from "@/components/layout/Drawer";
+import Modals from "@/components/layout/Modals";
 import Home from "@/pages/Home";
 import Dashboard from "@/pages/Dashboard";
 import CourseData from "@/pages/CourseData";

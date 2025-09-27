@@ -6,7 +6,7 @@ import { IComponent, Requisite } from "@/types/component";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import useComponentService from "@/services/componentService";
 import OptionSelector from "@/components/ui/OptionSelector";
-import EntityForm from "@/components/EntityForm";
+import EntityForm from "@/components/layout/EntityForm";
 import Checkbox from "@/components/ui/Checkbox";
 import Button from "@/components/ui/Button";
 

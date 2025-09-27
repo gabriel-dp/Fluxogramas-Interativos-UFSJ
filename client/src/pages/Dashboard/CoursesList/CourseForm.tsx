@@ -12,11 +12,11 @@ import { IShift } from "@/types/course-attributes/shift";
 import { ICampus } from "@/types/course-attributes/campus";
 import TextField from "@/components/ui/TextField";
 import OptionSelector from "@/components/ui/OptionSelector";
-import EntityForm from "@/components/EntityForm";
+import EntityForm from "@/components/layout/EntityForm";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useModal from "@/contexts/modal/useModal";
-import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
 
 interface CourseFormFields {
 	code: string;

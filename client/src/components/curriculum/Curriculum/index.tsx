@@ -4,10 +4,10 @@ import { ICourseComponents } from "@/types/course";
 import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
 import useCurriculum from "@/hooks/useCurriculum";
-import ComponentCard from "@/components/ComponentCard";
-import ProgressBar from "@/components/ProgressBar";
-import ActivityProgress from "@/components/Modals/ActivityProgress";
-import OptionalName from "@/components/Modals/OptionalName";
+import ComponentCard from "@/components/curriculum/ComponentCard";
+import ProgressBar from "@/components/curriculum/ProgressBar";
+import ActivityProgress from "@/components/layout/Modals/ActivityProgress";
+import OptionalName from "@/components/layout/Modals/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
 

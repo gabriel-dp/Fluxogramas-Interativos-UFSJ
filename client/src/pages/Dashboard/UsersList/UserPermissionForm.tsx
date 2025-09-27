@@ -5,7 +5,7 @@ import useNotifications from "@/contexts/notifications/useNotifications";
 import useCourseService from "@/services/courseService";
 import { ICourseComplete } from "@/types/course";
 import { IUser } from "@/types/user";
-import EntityForm from "@/components/EntityForm";
+import EntityForm from "@/components/layout/EntityForm";
 import Checkbox from "@/components/ui/Checkbox";
 import { CheckboxList } from "@/components/ui/Checkbox/styles";
 

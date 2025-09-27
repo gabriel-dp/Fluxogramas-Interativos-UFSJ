@@ -3,9 +3,9 @@ import { TableColumn } from "react-data-table-component";
 
 import useUserService from "@/services/userService";
 import { IUser } from "@/types/user";
-import DataTable from "@/components/DataTable";
+import DataTable from "@/components/ui/DataTable";
 import Button from "@/components/ui/Button";
-import SearchBar from "@/components/SearchBar";
+import SearchBar from "@/components/ui/SearchBar";
 import { normalizeString } from "@/utils/stringUtils";
 
 import UserForm from "./UserForm";

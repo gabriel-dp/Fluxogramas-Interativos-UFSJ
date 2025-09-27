@@ -5,12 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import useUserService from "@/services/userService";
 import { createUserSchema, IUser, updateUserSchema } from "@/types/user";
-import EntityForm from "@/components/EntityForm";
+import EntityForm from "@/components/layout/EntityForm";
 import TextField from "@/components/ui/TextField";
 import Checkbox from "@/components/ui/Checkbox";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useModal from "@/contexts/modal/useModal";
-import AreYouSureToDelete from "@/components/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
 
 interface UserFormFields {
 	username: string;
