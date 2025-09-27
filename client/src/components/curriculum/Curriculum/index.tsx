@@ -1,5 +1,6 @@
-import { forwardRef, useImperativeHandle, useMemo } from "react";
+import { forwardRef, RefObject, useImperativeHandle, useMemo, useRef } from "react";
 
+import { ICourseComponents } from "@/types/course";
 import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
 import useCurriculum from "@/hooks/useCurriculum";
@@ -9,7 +10,6 @@ import ActivityProgress from "@/components/layout/Modals/components/ActivityProg
 import OptionalName from "@/components/layout/Modals/components/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
-import { ICourseComponents } from "@/types/course";
 
 interface ICurriculum {
 	course: ICourseComponents;
@@ -17,12 +17,18 @@ interface ICurriculum {
 
 export type CurriculumHandle = {
 	reset: () => void;
+	curriculumRef: RefObject<HTMLDivElement>;
+	screenshot: (save: () => Promise<void>) => Promise<void>;
 };
 
 const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) => {
 	const { semesters, canChange, states, change, changePartial, activityHours, changeName, optionalNames, reset } =
 		useCurriculum(course.components);
 	const { openModal, closeModal } = useModal();
+
+	const curriculumRef = useRef<HTMLDivElement>(null);
+	const semestersRef = useRef<HTMLDivElement>(null);
+	const progressRef = useRef<HTMLDivElement>(null);
 
 	const progress = useMemo(() => {
 		let total = 0,
@@ -98,14 +104,26 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 		});
 	}
 
+	async function screenshot(save: () => Promise<void>) {
+		if (curriculumRef.current && progressRef.current) {
+			curriculumRef.current.style.maxWidth = "none";
+			progressRef.current.style.position = "normal";
+			await save();
+			curriculumRef.current.style.maxWidth = "100%";
+			progressRef.current.style.position = "sticky";
+		}
+	}
+
 	// expose functions to parent
 	useImperativeHandle(ref, () => ({
 		reset,
+		curriculumRef,
+		screenshot,
 	}));
 
 	return (
-		<CurriculumWrapper>
-			<SemestersList>
+		<CurriculumWrapper ref={curriculumRef}>
+			<SemestersList ref={semestersRef}>
 				{[...semesters.entries()].map(([i, components]) =>
 					i === 0 ? null : (
 						<Semester key={i} $finished={components.every((c) => states[c.id]) ? "true" : "false"}>
@@ -145,7 +163,7 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 						/>
 					))}
 			</ActivitiesList>
-			<ProgressBarContainer>
+			<ProgressBarContainer ref={progressRef}>
 				<ProgressBar percentage={progress * 100} />
 				<span className="percentage">{(progress * 100).toFixed(0)}%</span>
 			</ProgressBarContainer>

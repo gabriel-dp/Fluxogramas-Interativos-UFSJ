@@ -16,7 +16,8 @@ export default function CourseData() {
 	const { readByCode } = useCourseService();
 	const [loading, setLoading] = useState(true);
 	const [course, setCourse] = useState<ICourseComponents | null>(null);
-	const curriculumRef = useRef<CurriculumHandle>(null);
+
+	const curriculumHandleRef = useRef<CurriculumHandle>(null);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
@@ -50,12 +51,10 @@ export default function CourseData() {
 				) : !course ? (
 					<p>Course /{code}/ not found</p>
 				) : (
-					<Curriculum ref={curriculumRef} course={course} />
+					<Curriculum ref={curriculumHandleRef} course={course} />
 				)}
 			</CurriculumContainer>
-			<ActionsBarContainer>
-				{course && curriculumRef.current && <ActionsBar curriculumHandle={curriculumRef.current} />}
-			</ActionsBarContainer>
+			<ActionsBarContainer>{course && <ActionsBar curriculumHandleRef={curriculumHandleRef} />}</ActionsBarContainer>
 			<Footer />
 		</Screen>
 	);

@@ -1,3 +1,5 @@
+import { RefObject } from "react";
+import { exportComponentAsPNG } from "react-component-export-image";
 import {
 	FaRegImage as ScreenshotIcon,
 	FaTrashAlt as ClearIcon,
@@ -13,15 +15,23 @@ import { BarContainer } from "./styles";
 import { CurriculumHandle } from "../Curriculum";
 
 interface ActionsBarProps {
-	curriculumHandle: CurriculumHandle;
+	curriculumHandleRef: RefObject<CurriculumHandle>;
 }
 
-export default function ActionsBar({ curriculumHandle }: ActionsBarProps) {
+export default function ActionsBar({ curriculumHandleRef: { current: curriculum } }: ActionsBarProps) {
 	const { openModal, closeModal } = useModal();
+
+	async function handleSaveImageClick() {
+		if (curriculum) {
+			await curriculum.screenshot(async () => {
+				await exportComponentAsPNG(curriculum.curriculumRef, { fileName: "curriculum" });
+			});
+		}
+	}
 
 	function handleClearButtonClick() {
 		function onConfirm() {
-			curriculumHandle.reset();
+			curriculum?.reset();
 		}
 
 		const modalId = openModal({
@@ -37,7 +47,7 @@ export default function ActionsBar({ curriculumHandle }: ActionsBarProps) {
 
 	return (
 		<BarContainer>
-			<Button title="Salvar como imagem">
+			<Button title="Salvar como imagem" onClick={() => void handleSaveImageClick()}>
 				<ScreenshotIcon className="icon" />
 			</Button>
 			<Button title="Importar arquivo">
