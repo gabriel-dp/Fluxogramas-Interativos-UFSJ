@@ -1,18 +1,6 @@
-export type ThemeType = {
-	name: string;
-	primary: string;
-	primaryText: string;
-	primaryHighlight: string;
-	secondary: string;
-	background: string;
-	background2: string;
-	text: string;
-	white: string;
-	gray: string;
-	black: string;
-};
+import { DefaultTheme } from "styled-components";
 
-export const LightTheme: ThemeType = {
+export const LightTheme: DefaultTheme = {
 	name: "light",
 	primary: "#C2393E",
 	primaryHighlight: "#CC4549",
@@ -26,7 +14,7 @@ export const LightTheme: ThemeType = {
 	black: "#373435",
 };
 
-export const DarkTheme: ThemeType = {
+export const DarkTheme: DefaultTheme = {
 	name: "dark",
 	primary: "#C2393E",
 	primaryHighlight: "#CC4549",
