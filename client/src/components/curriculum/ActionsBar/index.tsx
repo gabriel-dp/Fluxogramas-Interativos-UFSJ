@@ -6,22 +6,22 @@ import {
 } from "react-icons/fa";
 
 import Button from "@/components/ui/Button";
-import { useCurriculumReturn } from "@/hooks/useCurriculum";
 import useModal from "@/contexts/modal/useModal";
 import AreYouSureToClear from "@/components/layout/Modals/components/AreyouSureToClear";
 
 import { BarContainer } from "./styles";
+import { CurriculumHandle } from "../Curriculum";
 
 interface ActionsBarProps {
-	curriculum: useCurriculumReturn;
+	curriculumHandle: CurriculumHandle;
 }
 
-export default function ActionsBar({ curriculum }: ActionsBarProps) {
+export default function ActionsBar({ curriculumHandle }: ActionsBarProps) {
 	const { openModal, closeModal } = useModal();
 
 	function handleClearButtonClick() {
 		function onConfirm() {
-			curriculum.reset();
+			curriculumHandle.reset();
 		}
 
 		const modalId = openModal({

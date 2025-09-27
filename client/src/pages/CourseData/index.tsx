@@ -1,23 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FaClock as TimeIcon, FaBook as BookIcon, FaMapMarkerAlt as LocationIcon } from "react-icons/fa";
 
 import { ICourseComponents } from "@/types/course";
-import Curriculum from "@/components/curriculum/Curriculum";
+import useCourseService from "@/services/courseService";
+import Curriculum, { CurriculumHandle } from "@/components/curriculum/Curriculum";
 import Loading from "@/components/ui/Loading";
 import Footer from "@/components/layout/Footer";
-import useCourseService from "@/services/courseService";
 import ActionsBar from "@/components/curriculum/ActionsBar";
 
 import { Screen, Header, CurriculumContainer, ActionsBarContainer } from "./styles";
-import useCurriculum from "@/hooks/useCurriculum";
 
 export default function CourseData() {
 	const { code } = useParams();
 	const { readByCode } = useCourseService();
 	const [loading, setLoading] = useState(true);
 	const [course, setCourse] = useState<ICourseComponents | null>(null);
-	const curriculum = useCurriculum(course?.components ?? []);
+	const curriculumRef = useRef<CurriculumHandle>(null);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
@@ -46,9 +45,17 @@ export default function CourseData() {
 				</div>
 			</Header>
 			<CurriculumContainer>
-				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum curriculum={curriculum} />}
+				{loading ? (
+					<Loading />
+				) : !course ? (
+					<p>Course /{code}/ not found</p>
+				) : (
+					<Curriculum ref={curriculumRef} course={course} />
+				)}
 			</CurriculumContainer>
-			<ActionsBarContainer>{course && <ActionsBar curriculum={curriculum} />}</ActionsBarContainer>
+			<ActionsBarContainer>
+				{course && curriculumRef.current && <ActionsBar curriculumHandle={curriculumRef.current} />}
+			</ActionsBarContainer>
 			<Footer />
 		</Screen>
 	);

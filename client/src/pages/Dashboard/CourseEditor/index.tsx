@@ -62,18 +62,18 @@ export default function CourseEditor() {
 	const { id } = useParams();
 	const { readOne } = useCourseService();
 	const { openModal } = useModal();
-
 	const [search, setSearch] = useState("");
 	const [course, setCourse] = useState<ICourseComponents | undefined>();
 	const [selectedComponent, setSelectedComponent] = useState<IComponent | null | undefined>();
-	const requestComponents = useCallback(async () => {
+
+	const requestCourse = useCallback(async () => {
 		setCourse(await readOne(Number(id)));
 	}, [id, readOne]);
 
 	useEffect(() => {
-		void requestComponents();
+		void requestCourse();
 		setSelectedComponent(undefined);
-	}, [requestComponents]);
+	}, [requestCourse]);
 
 	function openCurriculum() {
 		if (course) {
@@ -111,7 +111,7 @@ export default function CourseEditor() {
 				courseId={Number(id)}
 				selectedComponent={selectedComponent}
 				refresh={() => {
-					void requestComponents();
+					void requestCourse();
 					setSelectedComponent(undefined);
 				}}
 			/>
@@ -120,7 +120,7 @@ export default function CourseEditor() {
 					components={!course ? [] : course.components}
 					selectedComponent={selectedComponent}
 					refresh={() => {
-						void requestComponents();
+						void requestCourse();
 					}}
 				/>
 			)}

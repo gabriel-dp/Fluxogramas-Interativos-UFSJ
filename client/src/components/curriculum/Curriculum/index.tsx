@@ -1,21 +1,27 @@
-import { useMemo } from "react";
+import { forwardRef, useImperativeHandle, useMemo } from "react";
 
 import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
-import { useCurriculumReturn } from "@/hooks/useCurriculum";
+import useCurriculum from "@/hooks/useCurriculum";
 import ComponentCard from "@/components/curriculum/ComponentCard";
 import ProgressBar from "@/components/curriculum/ProgressBar";
 import ActivityProgress from "@/components/layout/Modals/components/ActivityProgress";
 import OptionalName from "@/components/layout/Modals/components/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
+import { ICourseComponents } from "@/types/course";
 
 interface ICurriculum {
-	curriculum: useCurriculumReturn;
+	course: ICourseComponents;
 }
 
-export default function Curriculum({ curriculum }: ICurriculum) {
-	const { semesters, canChange, states, change, changePartial, activityHours, changeName, optionalNames } = curriculum;
+export type CurriculumHandle = {
+	reset: () => void;
+};
+
+const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) => {
+	const { semesters, canChange, states, change, changePartial, activityHours, changeName, optionalNames, reset } =
+		useCurriculum(course.components);
 	const { openModal, closeModal } = useModal();
 
 	const progress = useMemo(() => {
@@ -92,6 +98,11 @@ export default function Curriculum({ curriculum }: ICurriculum) {
 		});
 	}
 
+	// expose functions to parent
+	useImperativeHandle(ref, () => ({
+		reset,
+	}));
+
 	return (
 		<CurriculumWrapper>
 			<SemestersList>
@@ -140,4 +151,8 @@ export default function Curriculum({ curriculum }: ICurriculum) {
 			</ProgressBarContainer>
 		</CurriculumWrapper>
 	);
-}
+});
+
+Curriculum.displayName = "Curriculum";
+
+export default Curriculum;
