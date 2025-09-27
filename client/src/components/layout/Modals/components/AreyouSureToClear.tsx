@@ -33,7 +33,7 @@ export default function AreYouSureToClear(props: AreYouSureToClearProps) {
 		>
 			<h2 style={{ margin: "0 0.5rem" }}>Tem certeza que deseja limpar a grade?</h2>
 			<p style={{ margin: "0.5rem 0" }}>Essa ação não pode ser desfeita.</p>
-			<div style={{ display: "flex", justifyContent: "center", gap: "1.5rem" }}>
+			<div style={{ display: "flex", justifyContent: "center", gap: "1rem", flexWrap: "wrap" }}>
 				<Button onClick={() => void handleCancel()} category="secondary">
 					Cancelar
 				</Button>
