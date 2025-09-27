@@ -54,3 +54,8 @@ export const CurriculumContainer = styled.div`
 
 	display: flex;
 `;
+
+export const ActionsBarContainer = styled.div`
+	padding: 1rem;
+	padding-top: 0;
+`;
