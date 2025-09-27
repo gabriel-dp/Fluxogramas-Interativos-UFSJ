@@ -40,7 +40,20 @@ const columns: TableColumn<IComponent>[] = [
 	},
 	{
 		name: "Tipo",
-		selector: (row) => (row.type == ComponentType.SUBJECT ? "Disciplina" : "Atividade"),
+		selector: (row) => {
+			switch (row.type) {
+				case ComponentType.SUBJECT:
+					return "Disciplina";
+				case ComponentType.ACTIVITY:
+					return "Atividade";
+				case ComponentType.OPTIONAL:
+					return "Optativa";
+				case ComponentType.ELECTIVE:
+					return "Eletiva";
+				default:
+					return "Desconhecido";
+			}
+		},
 		sortable: true,
 	},
 ];

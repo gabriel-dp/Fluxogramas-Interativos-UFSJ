@@ -80,6 +80,8 @@ model Course {
 enum ComponentType {
   SUBJECT
   ACTIVITY
+  OPTIONAL
+  ELECTIVE
 }
 
 model Component {

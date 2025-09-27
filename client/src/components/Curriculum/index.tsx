@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 
 import { ICourseComponents } from "@/types/course";
-import { IComponent } from "@/types/component";
+import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
 import useCurriculum from "@/hooks/useCurriculum";
 import ComponentCard from "@/components/ComponentCard";
 import ProgressBar from "@/components/ProgressBar";
 import ActivityProgress from "@/components/Modals/ActivityProgress";
+import OptionalName from "@/components/Modals/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
 
@@ -15,7 +16,8 @@ interface ICurriculum {
 }
 
 export default function Curriculum({ course }: ICurriculum) {
-	const { semesters, canChange, states, change, get, changePartial, activityHours } = useCurriculum(course.components);
+	const { semesters, canChange, states, change, get, changePartial, activityHours, changeName, optionalNames } =
+		useCurriculum(course.components);
 	const { openModal, closeModal } = useModal();
 
 	const progress = useMemo(() => {
@@ -44,6 +46,24 @@ export default function Curriculum({ course }: ICurriculum) {
 			if (states[id] !== state) {
 				change(id);
 			}
+		});
+	}
+
+	function handleOptionalClick(component: IComponent) {
+		function onConfirm(value: string) {
+			changeName(component.id, value);
+		}
+
+		const modalId = openModal({
+			content: (
+				<OptionalName
+					component={component}
+					defaultValue={optionalNames[component.id]}
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
 		});
 	}
 
@@ -84,10 +104,16 @@ export default function Curriculum({ course }: ICurriculum) {
 							{components.map((component) => (
 								<ComponentCard
 									key={component.id}
-									subject={component}
+									component={component}
 									state={states[component.id]}
 									canChange={canChange(component.id)}
 									onClick={() => change(component.id)}
+									optionalName={optionalNames[component.id]}
+									optionalClick={
+										component.type == ComponentType.OPTIONAL || component.type == ComponentType.ELECTIVE
+											? () => handleOptionalClick(component)
+											: undefined
+									}
 								/>
 							))}
 						</Semester>
@@ -100,7 +126,7 @@ export default function Curriculum({ course }: ICurriculum) {
 					?.map((component) => (
 						<ComponentCard
 							key={component.id}
-							subject={component}
+							component={component}
 							state={states[component.id]}
 							canChange={canChange(component.id)}
 							onClick={() => handleActivityClick(component)}

@@ -14,8 +14,18 @@ function buildSemesters(components: IComponent[]) {
 	const max = Math.max(...components.map((c) => c.semester ?? 0)); // 0 when there are no components
 	for (let i = 0; i <= max; i++) semesters.set(i, []);
 
+	const orderType = {
+		[ComponentType.SUBJECT]: 1,
+		[ComponentType.OPTIONAL]: 2,
+		[ComponentType.ELECTIVE]: 3,
+		[ComponentType.ACTIVITY]: 4,
+	};
+
 	components
-		.sort((a, b) => a.name.localeCompare(b.name))
+		.sort((a, b) => {
+			if (a.type == b.type) return a.name.localeCompare(b.name);
+			return orderType[a.type] - orderType[b.type];
+		})
 		.forEach((c) => {
 			if (c.semester !== null) {
 				semesters.get(c.semester)?.push(c);
@@ -55,6 +65,13 @@ export default function useCurriculum(components: IComponent[]) {
 	const [activityHours, setActivityHours] = useState(
 		Object.fromEntries(components.filter((c) => c.type == ComponentType.ACTIVITY).map((c) => [c.id, 0])),
 	);
+	const [optionalNames, setOptionalNames] = useState(
+		Object.fromEntries(
+			components
+				.filter((c) => c.type == ComponentType.OPTIONAL || c.type == ComponentType.ELECTIVE)
+				.map((c) => [c.id, c.name]),
+		),
+	);
 
 	const map = useMemo(() => buildMap(components), [components]);
 	const semesters = useMemo(() => buildSemesters(components), [components]);
@@ -93,5 +110,20 @@ export default function useCurriculum(components: IComponent[]) {
 		}
 	}
 
-	return { components: map, states, semesters, canChange, change, changePartial, get, activityHours };
+	function changeName(id: number, value: string) {
+		setOptionalNames((prev) => ({ ...prev, [id]: value }));
+	}
+
+	return {
+		components: map,
+		states,
+		semesters,
+		canChange,
+		change,
+		changePartial,
+		get,
+		activityHours,
+		optionalNames,
+		changeName,
+	};
 }

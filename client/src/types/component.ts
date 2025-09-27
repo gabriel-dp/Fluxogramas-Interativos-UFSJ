@@ -3,6 +3,8 @@ import { z, ZodEffects, ZodNumber, ZodOptional } from "zod";
 export enum ComponentType {
 	SUBJECT = "SUBJECT",
 	ACTIVITY = "ACTIVITY",
+	OPTIONAL = "OPTIONAL",
+	ELECTIVE = "ELECTIVE",
 }
 
 export const componentSchema = z.object({
@@ -17,7 +19,9 @@ export const componentSchema = z.object({
 		},
 		z.number({ required_error: "Preencha o campo" }).int().nonnegative("Apenas valores positivos"),
 	) as ZodEffects<ZodNumber, number, number>,
-	type: z.enum(["SUBJECT", "ACTIVITY"], { message: "Preencha o campo" }).transform((val) => val as ComponentType),
+	type: z
+		.enum(["SUBJECT", "ACTIVITY", "OPTIONAL", "ELECTIVE"], { message: "Preencha o campo" })
+		.transform((val) => val as ComponentType),
 	semester: z.preprocess((val) => {
 		if (val === "" || val === null || val === undefined) return undefined;
 		const n = Number(val);

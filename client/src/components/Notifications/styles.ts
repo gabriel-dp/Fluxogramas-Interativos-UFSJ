@@ -7,6 +7,7 @@ export const NotificationsContainer = styled.div`
 	bottom: 1.5rem;
 	left: 1.5rem;
 	z-index: 1002;
+	pointer-events: none;
 
 	display: flex;
 	flex-direction: column;

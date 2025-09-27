@@ -84,4 +84,20 @@ export const CardContainer = styled.div.attrs({
 			opacity: 0.4;
 		}
 	}
+
+	.edit {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 0.875rem;
+
+		position: absolute;
+		top: 0.75rem;
+		right: 0.5rem;
+		opacity: 0.8;
+	}
+
+	&:has(.edit) {
+		padding-right: 1.5rem;
+	}
 `;

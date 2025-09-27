@@ -17,7 +17,7 @@ interface ComponentFormFields {
 	name: string;
 	hours: number;
 	semester: number | null;
-	type: "SUBJECT" | "ACTIVITY";
+	type: "SUBJECT" | "ACTIVITY" | "OPTIONAL" | "ELECTIVE";
 }
 
 interface ComponentFormI {
@@ -48,10 +48,6 @@ export default function ComponentForm(props: ComponentFormI) {
 		mode: "onChange",
 		resolver: zodResolver(createComponentSchema),
 	});
-
-	useEffect(() => {
-		console.log(errors.type);
-	}, [errors.type]);
 
 	useEffect(() => {
 		if (props.selectedComponent) {
@@ -177,6 +173,8 @@ export default function ComponentForm(props: ComponentFormI) {
 							options={[
 								{ label: "Disciplina", value: "SUBJECT" },
 								{ label: "Atividade", value: "ACTIVITY" },
+								{ label: "Optativa", value: "OPTIONAL" },
+								{ label: "Eletiva", value: "ELECTIVE" },
 							]}
 							error={errors.type?.message}
 							{...field}
