@@ -12,8 +12,8 @@ interface DataTableProps<T> extends TableProps<T> {
 
 function customSort<T>(rows: T[], selector: Selector<T>, direction: SortOrder): T[] {
 	return rows.sort((a: T, b: T) => {
-		const aField = normalizeString(String(selector(a)));
-		const bField = normalizeString(String(selector(b)));
+		const aField = typeof selector(a) === "number" ? selector(a) : normalizeString(String(selector(a)));
+		const bField = typeof selector(b) === "number" ? selector(b) : normalizeString(String(selector(b)));
 
 		let comparison = 0;
 
