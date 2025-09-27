@@ -54,24 +54,49 @@ function buildDependents(components: IComponent[]) {
 	return dependents;
 }
 
-function get<K, V>(map: Map<K, V>, id: K) {
+function get<K, V>(map: Map<K, V>, id: K): NonNullable<V> {
 	const found = map.get(id);
 	if (found == undefined) throw new Error(`Not found ${id as string}`);
 	return found;
 }
 
-export default function useCurriculum(components: IComponent[]) {
-	const [states, setStates] = useState(Object.fromEntries(components.map((c) => [c.id, false])));
-	const [activityHours, setActivityHours] = useState(
-		Object.fromEntries(components.filter((c) => c.type == ComponentType.ACTIVITY).map((c) => [c.id, 0])),
-	);
-	const [optionalNames, setOptionalNames] = useState(
-		Object.fromEntries(
+export interface useCurriculumReturn {
+	components: Map<number, IComponent>;
+	semesters: Map<number, IComponent[]>;
+	states: {
+		[k: string]: boolean;
+	};
+	activityHours: {
+		[k: string]: number;
+	};
+	optionalNames: {
+		[k: string]: string;
+	};
+	canChange: (id: number) => boolean;
+	change: (id: number) => void;
+	changePartial: (id: number, value: number) => void;
+	changeName: (id: number, value: string) => void;
+	reset: () => void;
+}
+
+export default function useCurriculum(components: IComponent[]): useCurriculumReturn {
+	function newStates() {
+		return Object.fromEntries(components.map((c) => [c.id, false]));
+	}
+	function newActivityHours() {
+		return Object.fromEntries(components.filter((c) => c.type == ComponentType.ACTIVITY).map((c) => [c.id, 0]));
+	}
+	function newOptionalNames() {
+		return Object.fromEntries(
 			components
 				.filter((c) => c.type == ComponentType.OPTIONAL || c.type == ComponentType.ELECTIVE)
 				.map((c) => [c.id, c.name]),
-		),
-	);
+		);
+	}
+
+	const [states, setStates] = useState(newStates());
+	const [activityHours, setActivityHours] = useState(newActivityHours());
+	const [optionalNames, setOptionalNames] = useState(newOptionalNames());
 
 	const map = useMemo(() => buildMap(components), [components]);
 	const semesters = useMemo(() => buildSemesters(components), [components]);
@@ -114,16 +139,22 @@ export default function useCurriculum(components: IComponent[]) {
 		setOptionalNames((prev) => ({ ...prev, [id]: value }));
 	}
 
+	function reset() {
+		setStates(newStates());
+		setActivityHours(newActivityHours());
+		setOptionalNames(newOptionalNames());
+	}
+
 	return {
 		components: map,
-		states,
 		semesters,
+		states,
+		activityHours,
+		optionalNames,
 		canChange,
 		change,
 		changePartial,
-		get,
-		activityHours,
-		optionalNames,
 		changeName,
+		reset,
 	};
 }

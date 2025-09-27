@@ -30,7 +30,7 @@ export default function AreYouSureToDelete(props: AreYouSureToDeleteProps) {
 				textAlign: "center",
 			}}
 		>
-			<h2>Tem certeza que deseja deletar?</h2>
+			<h2 style={{ margin: "0 0.5rem" }}>Tem certeza que deseja deletar?</h2>
 			<p style={{ margin: "0.5rem 0" }}>Essa ação não pode ser desfeita.</p>
 			<div style={{ display: "flex", justifyContent: "center", gap: "1.5rem" }}>
 				<Button onClick={() => void handleCancel()} category="secondary">

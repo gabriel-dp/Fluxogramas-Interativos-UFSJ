@@ -1,23 +1,21 @@
 import { useMemo } from "react";
 
-import { ICourseComponents } from "@/types/course";
 import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
-import useCurriculum from "@/hooks/useCurriculum";
+import { useCurriculumReturn } from "@/hooks/useCurriculum";
 import ComponentCard from "@/components/curriculum/ComponentCard";
 import ProgressBar from "@/components/curriculum/ProgressBar";
-import ActivityProgress from "@/components/layout/Modals/ActivityProgress";
-import OptionalName from "@/components/layout/Modals/OptionalName";
+import ActivityProgress from "@/components/layout/Modals/components/ActivityProgress";
+import OptionalName from "@/components/layout/Modals/components/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
 
 interface ICurriculum {
-	course: ICourseComponents;
+	curriculum: useCurriculumReturn;
 }
 
-export default function Curriculum({ course }: ICurriculum) {
-	const { semesters, canChange, states, change, get, changePartial, activityHours, changeName, optionalNames } =
-		useCurriculum(course.components);
+export default function Curriculum({ curriculum }: ICurriculum) {
+	const { semesters, canChange, states, change, changePartial, activityHours, changeName, optionalNames } = curriculum;
 	const { openModal, closeModal } = useModal();
 
 	const progress = useMemo(() => {
@@ -40,13 +38,15 @@ export default function Curriculum({ course }: ICurriculum) {
 	}, [semesters, states, activityHours]);
 
 	function handleChangeSemesterState(i: number) {
-		const semester = get(semesters, i);
-		const state = semester.some(({ id }) => !states[id] && canChange(id));
-		semester.forEach(({ id }) => {
-			if (states[id] !== state) {
-				change(id);
-			}
-		});
+		const semester = semesters.get(i);
+		if (semester) {
+			const state = semester.some(({ id }) => !states[id] && canChange(id));
+			semester.forEach(({ id }) => {
+				if (states[id] !== state) {
+					change(id);
+				}
+			});
+		}
 	}
 
 	function handleOptionalClick(component: IComponent) {

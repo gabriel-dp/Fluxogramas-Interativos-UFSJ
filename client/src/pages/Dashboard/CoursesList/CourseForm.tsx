@@ -16,7 +16,7 @@ import EntityForm from "@/components/layout/EntityForm";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useModal from "@/contexts/modal/useModal";
-import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/components/AreYouSureToDelete";
 
 interface CourseFormFields {
 	code: string;

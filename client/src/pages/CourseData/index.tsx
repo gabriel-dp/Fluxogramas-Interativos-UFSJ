@@ -10,12 +10,14 @@ import useCourseService from "@/services/courseService";
 import ActionsBar from "@/components/curriculum/ActionsBar";
 
 import { Screen, Header, CurriculumContainer, ActionsBarContainer } from "./styles";
+import useCurriculum from "@/hooks/useCurriculum";
 
 export default function CourseData() {
 	const { code } = useParams();
 	const { readByCode } = useCourseService();
 	const [loading, setLoading] = useState(true);
 	const [course, setCourse] = useState<ICourseComponents | null>(null);
+	const curriculum = useCurriculum(course?.components ?? []);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
@@ -44,11 +46,9 @@ export default function CourseData() {
 				</div>
 			</Header>
 			<CurriculumContainer>
-				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum course={course} />}
+				{loading ? <Loading /> : !course ? <p>Course /{code}/ not found</p> : <Curriculum curriculum={curriculum} />}
 			</CurriculumContainer>
-			<ActionsBarContainer>
-				<ActionsBar />
-			</ActionsBarContainer>
+			<ActionsBarContainer>{course && <ActionsBar curriculum={curriculum} />}</ActionsBarContainer>
 			<Footer />
 		</Screen>
 	);

@@ -10,7 +10,7 @@ import OptionSelector from "@/components/ui/OptionSelector";
 import EntityForm from "@/components/layout/EntityForm";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useModal from "@/contexts/modal/useModal";
-import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/components/AreYouSureToDelete";
 
 interface ComponentFormFields {
 	code: string;

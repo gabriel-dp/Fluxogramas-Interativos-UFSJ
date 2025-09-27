@@ -10,7 +10,7 @@ import TextField from "@/components/ui/TextField";
 import Checkbox from "@/components/ui/Checkbox";
 import { ConflictException } from "@/utils/exceptionUtils";
 import useModal from "@/contexts/modal/useModal";
-import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/components/AreYouSureToDelete";
 
 interface UserFormFields {
 	username: string;

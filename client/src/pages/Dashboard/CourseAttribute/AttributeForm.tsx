@@ -9,7 +9,7 @@ import { ConflictException } from "@/utils/exceptionUtils";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import useModal from "@/contexts/modal/useModal";
 import useCourseTypeService from "@/services/courseTypeService";
-import AreYouSureToDelete from "@/components/layout/Modals/AreYouSureToDelete";
+import AreYouSureToDelete from "@/components/layout/Modals/components/AreYouSureToDelete";
 
 interface UserFormFields {
 	name: string;
