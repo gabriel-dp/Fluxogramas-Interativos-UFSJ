@@ -3,7 +3,7 @@ import { forwardRef, RefObject, useImperativeHandle, useMemo, useRef } from "rea
 import { ICourseComponents } from "@/types/course";
 import { ComponentType, IComponent } from "@/types/component";
 import useModal from "@/contexts/modal/useModal";
-import useCurriculum from "@/hooks/useCurriculum";
+import useCurriculum, { CurriculumDump } from "@/hooks/useCurriculum";
 import ComponentCard from "@/components/curriculum/ComponentCard";
 import ProgressBar from "@/components/curriculum/ProgressBar";
 import ActivityProgress from "@/components/layout/Modals/components/ActivityProgress";
@@ -16,16 +16,26 @@ interface ICurriculum {
 }
 
 export type CurriculumHandle = {
-	reset: () => void;
+	reset: (dump?: CurriculumDump) => void;
+	generateDump: () => CurriculumDump;
 	curriculumRef: RefObject<HTMLDivElement>;
 	screenshot: (save: () => Promise<void>) => Promise<void>;
 };
 
 const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) => {
-	const { semesters, canChange, states, change, changePartial, activityHours, changeName, optionalNames, reset } =
-		useCurriculum(course.components);
+	const {
+		semesters,
+		canChange,
+		states,
+		change,
+		changePartial,
+		activityHours,
+		changeName,
+		optionalNames,
+		reset,
+		generateDump,
+	} = useCurriculum(course.components);
 	const { openModal, closeModal } = useModal();
-
 	const curriculumRef = useRef<HTMLDivElement>(null);
 	const semestersRef = useRef<HTMLDivElement>(null);
 	const progressRef = useRef<HTMLDivElement>(null);
@@ -118,9 +128,10 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 		}
 	}
 
-	// expose functions to parent
+	// expose data to parent
 	useImperativeHandle(ref, () => ({
 		reset,
+		generateDump,
 		curriculumRef,
 		screenshot,
 	}));

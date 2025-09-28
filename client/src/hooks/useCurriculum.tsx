@@ -60,9 +60,7 @@ function get<K, V>(map: Map<K, V>, id: K): NonNullable<V> {
 	return found;
 }
 
-export interface useCurriculumReturn {
-	components: Map<number, IComponent>;
-	semesters: Map<number, IComponent[]>;
+export interface CurriculumDump {
 	states: {
 		[k: string]: boolean;
 	};
@@ -72,11 +70,17 @@ export interface useCurriculumReturn {
 	optionalNames: {
 		[k: string]: string;
 	};
+}
+
+export interface useCurriculumReturn extends CurriculumDump {
+	components: Map<number, IComponent>;
+	semesters: Map<number, IComponent[]>;
 	canChange: (id: number) => boolean;
 	change: (id: number) => void;
 	changePartial: (id: number, value: number) => void;
 	changeName: (id: number, value: string) => void;
-	reset: () => void;
+	reset: (dump?: CurriculumDump) => void;
+	generateDump: () => CurriculumDump;
 }
 
 export default function useCurriculum(components: IComponent[]): useCurriculumReturn {
@@ -139,10 +143,18 @@ export default function useCurriculum(components: IComponent[]): useCurriculumRe
 		setOptionalNames((prev) => ({ ...prev, [id]: value }));
 	}
 
-	function reset() {
-		setStates(newStates());
-		setActivityHours(newActivityHours());
-		setOptionalNames(newOptionalNames());
+	function reset(dump?: CurriculumDump) {
+		setStates(dump?.states ?? newStates());
+		setActivityHours(dump?.activityHours ?? newActivityHours());
+		setOptionalNames(dump?.optionalNames ?? newOptionalNames());
+	}
+
+	function generateDump(): CurriculumDump {
+		return {
+			states,
+			activityHours,
+			optionalNames,
+		};
 	}
 
 	return {
@@ -156,5 +168,6 @@ export default function useCurriculum(components: IComponent[]): useCurriculumRe
 		changePartial,
 		changeName,
 		reset,
+		generateDump,
 	};
 }

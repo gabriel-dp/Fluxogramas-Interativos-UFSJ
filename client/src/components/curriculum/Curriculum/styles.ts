@@ -4,7 +4,6 @@ export const CurriculumWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	max-width: 100%;
-	background-color: ${(props) => props.theme.background};
 `;
 
 export const SemestersList = styled.div`
