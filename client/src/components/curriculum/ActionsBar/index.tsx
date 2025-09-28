@@ -1,4 +1,4 @@
-import { RefObject, useRef } from "react";
+import { forwardRef, RefObject, useEffect, useImperativeHandle, useRef } from "react";
 import { exportComponentAsPNG } from "react-component-export-image";
 import {
 	FaRegImage as ScreenshotIcon,
@@ -8,6 +8,7 @@ import {
 } from "react-icons/fa";
 
 import { CurriculumDump } from "@/hooks/useCurriculum";
+import useStoredState from "@/hooks/useStoredState";
 import useTheme from "@/contexts/theme/useTheme";
 import useModal from "@/contexts/modal/useModal";
 import Button from "@/components/ui/Button";
@@ -17,12 +18,22 @@ import { BarContainer } from "./styles";
 import { CurriculumHandle } from "../Curriculum";
 
 interface ActionsBarProps {
+	code: string;
 	curriculumHandleRef: RefObject<CurriculumHandle>;
 }
 
-export default function ActionsBar({ curriculumHandleRef }: ActionsBarProps) {
+export interface ActionsBarHandle {
+	setSave: (newValue: CurriculumDump | ((previousValue: CurriculumDump) => CurriculumDump)) => void;
+}
+
+const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHandleRef, code }, ref) => {
 	const { openModal, closeModal } = useModal();
 	const theme = useTheme();
+
+	const [save, setSave] = useStoredState<CurriculumDump>(
+		code,
+		curriculumHandleRef.current?.generateDump() ?? { states: {}, activityHours: {}, optionalNames: {} },
+	);
 
 	async function handleSaveImageButton() {
 		const curriculum: CurriculumHandle | null = curriculumHandleRef.current;
@@ -96,6 +107,17 @@ export default function ActionsBar({ curriculumHandleRef }: ActionsBarProps) {
 		});
 	}
 
+	// Set initial value only once
+	const initialStates = useRef(save);
+	useEffect(() => {
+		curriculumHandleRef.current?.reset(initialStates.current);
+	}, [curriculumHandleRef]);
+
+	// Expose data to parent
+	useImperativeHandle(ref, () => ({
+		setSave,
+	}));
+
 	return (
 		<BarContainer>
 			<Button title="Salvar como imagem" onClick={() => void handleSaveImageButton()}>
@@ -119,4 +141,8 @@ export default function ActionsBar({ curriculumHandleRef }: ActionsBarProps) {
 			</Button>
 		</BarContainer>
 	);
-}
+});
+
+Curriculum.displayName = "Curriculum";
+
+export default Curriculum;

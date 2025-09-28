@@ -5,9 +5,9 @@ import { FaClock as TimeIcon, FaBook as BookIcon, FaMapMarkerAlt as LocationIcon
 import { ICourseComponents } from "@/types/course";
 import useCourseService from "@/services/courseService";
 import Curriculum, { CurriculumHandle } from "@/components/curriculum/Curriculum";
+import ActionsBar, { ActionsBarHandle } from "@/components/curriculum/ActionsBar";
 import Loading from "@/components/ui/Loading";
 import Footer from "@/components/layout/Footer";
-import ActionsBar from "@/components/curriculum/ActionsBar";
 
 import { Screen, Header, CurriculumContainer, ActionsBarContainer } from "./styles";
 
@@ -18,6 +18,7 @@ export default function CourseData() {
 	const [course, setCourse] = useState<ICourseComponents | null>(null);
 
 	const curriculumHandleRef = useRef<CurriculumHandle>(null);
+	const actionsHandleRef = useRef<ActionsBarHandle>(null);
 
 	useEffect(() => {
 		async function asyncSetCourse() {
@@ -28,6 +29,12 @@ export default function CourseData() {
 		}
 		void asyncSetCourse();
 	}, [readByCode, code]);
+
+	function onChange() {
+		if (curriculumHandleRef.current && actionsHandleRef.current) {
+			actionsHandleRef.current.setSave(curriculumHandleRef.current.generateDump());
+		}
+	}
 
 	return (
 		<Screen>
@@ -51,10 +58,12 @@ export default function CourseData() {
 				) : !course ? (
 					<p>Course /{code}/ not found</p>
 				) : (
-					<Curriculum ref={curriculumHandleRef} course={course} />
+					<Curriculum ref={curriculumHandleRef} course={course} onChange={onChange} />
 				)}
 			</CurriculumContainer>
-			<ActionsBarContainer>{course && <ActionsBar curriculumHandleRef={curriculumHandleRef} />}</ActionsBarContainer>
+			<ActionsBarContainer>
+				{course && <ActionsBar ref={actionsHandleRef} code={course.code} curriculumHandleRef={curriculumHandleRef} />}
+			</ActionsBarContainer>
 			<Footer />
 		</Screen>
 	);

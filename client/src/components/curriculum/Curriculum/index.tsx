@@ -1,4 +1,4 @@
-import { forwardRef, RefObject, useImperativeHandle, useMemo, useRef } from "react";
+import { forwardRef, RefObject, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 
 import { ICourseComponents } from "@/types/course";
 import { ComponentType, IComponent } from "@/types/component";
@@ -11,8 +11,9 @@ import OptionalName from "@/components/layout/Modals/components/OptionalName";
 
 import { ActivitiesList, CurriculumWrapper, ProgressBarContainer, Semester, SemestersList } from "./styles";
 
-interface ICurriculum {
+interface CurriculumProps {
 	course: ICourseComponents;
+	onChange?: () => void;
 }
 
 export type CurriculumHandle = {
@@ -22,7 +23,7 @@ export type CurriculumHandle = {
 	screenshot: (save: () => Promise<void>) => Promise<void>;
 };
 
-const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) => {
+const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) => {
 	const {
 		semesters,
 		canChange,
@@ -34,7 +35,7 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 		optionalNames,
 		reset,
 		generateDump,
-	} = useCurriculum(course.components);
+	} = useCurriculum(props.course.components);
 	const { openModal, closeModal } = useModal();
 	const curriculumRef = useRef<HTMLDivElement>(null);
 	const semestersRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,7 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 						finished += c.hours;
 					}
 				} else {
-					finished += activityHours[c.id];
+					finished += activityHours[c.id] != undefined ? activityHours[c.id] : 0;
 				}
 			});
 		});
@@ -129,12 +130,20 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 	}
 
 	// expose data to parent
-	useImperativeHandle(ref, () => ({
-		reset,
-		generateDump,
-		curriculumRef,
-		screenshot,
-	}));
+	useImperativeHandle(
+		ref,
+		() => ({
+			reset,
+			generateDump,
+			curriculumRef,
+			screenshot,
+		}),
+		[reset, generateDump],
+	);
+
+	useEffect(() => {
+		if (props.onChange) props.onChange();
+	}, [props, states, activityHours, optionalNames]);
 
 	return (
 		<CurriculumWrapper ref={curriculumRef}>
