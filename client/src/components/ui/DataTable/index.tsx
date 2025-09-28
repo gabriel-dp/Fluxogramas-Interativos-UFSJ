@@ -52,6 +52,7 @@ export default function DataTable<T>({ hideEditIcon, ...props }: DataTableProps<
 			fixedHeader
 			fixedHeaderScrollHeight="33rem"
 			{...props}
+			theme={undefined}
 			columns={columns}
 		/>
 	);
