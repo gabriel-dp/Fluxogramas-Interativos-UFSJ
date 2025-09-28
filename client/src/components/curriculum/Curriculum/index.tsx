@@ -105,10 +105,14 @@ const Curriculum = forwardRef<CurriculumHandle, ICurriculum>(({ course }, ref) =
 	}
 
 	async function screenshot(save: () => Promise<void>) {
-		if (curriculumRef.current && progressRef.current) {
+		if (curriculumRef.current && progressRef.current && semestersRef.current) {
 			curriculumRef.current.style.maxWidth = "none";
-			progressRef.current.style.position = "normal";
+			curriculumRef.current.style.padding = "1rem";
+			progressRef.current.style.position = "relative";
+			await new Promise(requestAnimationFrame);
 			await save();
+			await new Promise(requestAnimationFrame);
+			curriculumRef.current.style.padding = "0";
 			curriculumRef.current.style.maxWidth = "100%";
 			progressRef.current.style.position = "sticky";
 		}

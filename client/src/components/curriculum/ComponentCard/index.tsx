@@ -19,12 +19,12 @@ export default function ComponentCard(props: ComponentCardProps) {
 
 	return (
 		<CardContainer onClick={props.onClick} state={props.state} canChange={props.canChange} title={props.component.name}>
-			<p className="name">
+			<p className="name" lang="pt">
 				{props.component.name}
 				{props.optionalName && props.optionalName != props.component.name && ` (${props.optionalName})`}
 			</p>
 			{props.optionalClick && (
-				<div className="edit" onClick={props.optionalClick}>
+				<div className="edit remove-export" onClick={props.optionalClick}>
 					<EditIcon />
 				</div>
 			)}

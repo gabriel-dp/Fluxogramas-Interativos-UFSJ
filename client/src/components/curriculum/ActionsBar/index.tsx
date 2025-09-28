@@ -7,8 +7,9 @@ import {
 	FaFileExport as ExportIcon,
 } from "react-icons/fa";
 
-import Button from "@/components/ui/Button";
+import useTheme from "@/contexts/theme/useTheme";
 import useModal from "@/contexts/modal/useModal";
+import Button from "@/components/ui/Button";
 import AreYouSureToClear from "@/components/layout/Modals/components/AreyouSureToClear";
 
 import { BarContainer } from "./styles";
@@ -20,11 +21,21 @@ interface ActionsBarProps {
 
 export default function ActionsBar({ curriculumHandleRef: { current: curriculum } }: ActionsBarProps) {
 	const { openModal, closeModal } = useModal();
+	const theme = useTheme();
 
 	async function handleSaveImageClick() {
 		if (curriculum) {
 			await curriculum.screenshot(async () => {
-				await exportComponentAsPNG(curriculum.curriculumRef, { fileName: "curriculum" });
+				await exportComponentAsPNG(curriculum.curriculumRef, {
+					fileName: "curriculum",
+					html2CanvasOptions: {
+						ignoreElements: (element: Element) => {
+							if (typeof element.className !== "string") return false;
+							return element.className.includes("remove-export");
+						},
+						backgroundColor: theme.background,
+					},
+				});
 			});
 		}
 	}
