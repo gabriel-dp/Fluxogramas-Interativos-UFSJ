@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Screen = styled.div`
 	width: 100%;
-	min-height: 100dvh;
 
 	display: flex;
 	flex-direction: column;
@@ -11,7 +10,7 @@ export const Screen = styled.div`
 
 export const HomeContainer = styled.div`
 	width: min(100%, 40rem);
-	min-height: 100dvh;
+	min-height: 100svh;
 	padding: 2.5rem 1.5rem 2rem 1.5rem;
 
 	display: flex;
