@@ -74,10 +74,11 @@ export interface CurriculumDump {
 
 export interface useCurriculumReturn extends CurriculumDump {
 	components: Map<number, IComponent>;
+	dependency: Map<number, Requisite[]>;
 	semesters: Map<number, IComponent[]>;
 	canChange: (id: number) => boolean;
-	change: (id: number) => void;
-	changePartial: (id: number, value: number) => void;
+	change: (id: number) => boolean;
+	changePartial: (id: number, value: number) => boolean;
 	changeName: (id: number, value: string) => void;
 	reset: (dump?: CurriculumDump) => void;
 	generateDump: () => CurriculumDump;
@@ -130,13 +131,17 @@ export default function useCurriculum(components: IComponent[]): useCurriculumRe
 	function change(id: number) {
 		if (canChange(id)) {
 			setStates((prev) => ({ ...prev, [id]: !prev[id] }));
+			return true;
 		}
+		return false;
 	}
 
 	function changePartial(id: number, value: number) {
 		if (canChange(id)) {
 			setActivityHours((prev) => ({ ...prev, [id]: value }));
+			return true;
 		}
+		return false;
 	}
 
 	function changeName(id: number, value: string) {
@@ -159,6 +164,7 @@ export default function useCurriculum(components: IComponent[]): useCurriculumRe
 
 	return {
 		components: map,
+		dependency,
 		semesters,
 		states,
 		activityHours,

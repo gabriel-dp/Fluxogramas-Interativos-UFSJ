@@ -1,3 +1,4 @@
+import { Ref } from "react";
 import { FaPencilAlt as EditIcon } from "react-icons/fa";
 
 import { IComponent } from "@/types/component";
@@ -9,16 +10,30 @@ interface ComponentCardProps {
 	state: boolean;
 	canChange: boolean;
 	onClick?: () => void;
+	focusClick?: () => void;
 	activityHours?: number;
 	optionalClick?: () => void;
 	optionalName?: string;
+	$ref?: Ref<HTMLDivElement>;
 }
 
 export default function ComponentCard(props: ComponentCardProps) {
 	const Icon = props.state ? CheckIcon : props.canChange ? OpenIcon : LockIcon;
 
 	return (
-		<CardContainer onClick={props.onClick} state={props.state} canChange={props.canChange} title={props.component.name}>
+		<CardContainer
+			onClick={props.onClick}
+			onContextMenu={(e) => {
+				if (props.focusClick) {
+					e.preventDefault();
+					props.focusClick();
+				}
+			}}
+			state={props.state}
+			canChange={props.canChange}
+			title={props.component.name}
+			ref={props.$ref}
+		>
 			<p className="name" lang="pt">
 				{props.component.name}
 				{props.optionalName && props.optionalName != props.component.name && ` (${props.optionalName})`}

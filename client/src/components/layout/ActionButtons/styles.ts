@@ -10,7 +10,7 @@ export const ButtonsStack = styled.div<{ quantity: number }>`
 	position: fixed;
 	bottom: 2.25rem;
 	right: 1.75rem;
-	z-index: 2;
+	z-index: 3;
 
 	transition: max-height ease-in-out ${(props) => props.quantity * 0.25}s;
 
