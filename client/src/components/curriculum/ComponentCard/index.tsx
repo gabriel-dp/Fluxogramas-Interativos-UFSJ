@@ -24,7 +24,13 @@ export default function ComponentCard(props: ComponentCardProps) {
 				{props.optionalName && props.optionalName != props.component.name && ` (${props.optionalName})`}
 			</p>
 			{props.optionalClick && (
-				<div className="edit remove-export" onClick={props.optionalClick}>
+				<div
+					className="edit remove-export"
+					onClick={(e) => {
+						if (props.optionalClick) props.optionalClick();
+						e.stopPropagation();
+					}}
+				>
 					<EditIcon />
 				</div>
 			)}
