@@ -158,7 +158,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 		});
 		setFocus(true);
 	}
-	function unfocusComponent() {
+	async function unfocusComponent() {
 		if (!focus) return;
 		props.course.components.forEach((c) => {
 			const componentRef = componentRefs.current[c.id];
@@ -167,6 +167,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 				componentRef.style.opacity = "1";
 			}
 		});
+		await new Promise((resolve) => setTimeout(resolve, 150)); // Delay to fix mobile interaction
 		setFocus(false);
 	}
 
@@ -221,8 +222,10 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 				$on={focus ? "true" : "false"}
 				onPointerDown={(e) => {
 					e.stopPropagation();
-					unfocusComponent();
+					e.preventDefault();
+					void unfocusComponent();
 				}}
+				onContextMenu={(e) => e.preventDefault()}
 			/>
 			<SemestersList ref={semestersRef}>
 				{[...semesters.entries()].splice(1).map(([i, components]) =>
