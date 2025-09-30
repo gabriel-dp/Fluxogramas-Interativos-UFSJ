@@ -10,7 +10,7 @@ export const LightTheme: DefaultTheme = {
 	background2: "#DDDDDD",
 	text: "#333333",
 	white: "#EAEAEA",
-	gray: "#727376",
+	gray: "#858585",
 	black: "#373435",
 };
 
