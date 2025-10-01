@@ -20,8 +20,13 @@ export default function ActionButtons() {
 	const { isAuthenticated, logout } = useAuth();
 	const { darkMode, toggleTheme } = useConfigs();
 
-	function handleAuth() {
-		if (location.pathname !== Routes.dashboard) {
+	function isAuthPage() {
+		const path = location.pathname;
+		return path.startsWith(Routes.dashboard) || path == Routes.signIn;
+	}
+
+	function handleAuthButton() {
+		if (!isAuthPage()) {
 			if (isAuthenticated) {
 				navigate(Routes.dashboard);
 			} else {
@@ -44,8 +49,8 @@ export default function ActionButtons() {
 		<SecondaryButton key="theme" onClick={toggleTheme}>
 			{!darkMode ? <DarkIcon className="icon" /> : <LightIcon className="icon" />}
 		</SecondaryButton>,
-		<SecondaryButton key="auth" onClick={handleAuth}>
-			{location.pathname !== Routes.dashboard ? <AuthIcon className="icon"/> : <HomeIcon className="icon"/>}
+		<SecondaryButton key="auth" onClick={handleAuthButton}>
+			{!isAuthPage() ? <AuthIcon className="icon"/> : <HomeIcon className="icon"/>}
 		</SecondaryButton>,
 		...(isAuthenticated ? [
 			<SecondaryButton key="logout" onClick={() => void handleLogout()}>
