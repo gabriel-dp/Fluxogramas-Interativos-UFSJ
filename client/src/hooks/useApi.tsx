@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosError } from "axios";
 
 import useAuth from "@/contexts/auth/useAuth";
@@ -8,6 +8,7 @@ interface CustomAxiosRequestConfig extends AxiosRequestConfig {
 }
 
 export default function useApi(): AxiosInstance {
+	const refreshingRef = useRef(false);
 	const { token: accessToken, setToken: setAccessToken, logout } = useAuth();
 
 	const api = useMemo(() => {
@@ -29,19 +30,24 @@ export default function useApi(): AxiosInstance {
 			return config;
 		});
 
+		return () => {
+			api.interceptors.request.eject(reqInterceptor);
+		};
+	}, [accessToken, api]);
+
+	useEffect(() => {
 		// Response interceptor for handling token refresh when access token is invalid
 		const resInterceptor = api.interceptors.response.use(
 			(response) => response,
 			async (error: AxiosError) => {
-				const originalRequest = error.config as CustomAxiosRequestConfig;
+				const originalRequest = { ...error.config } as CustomAxiosRequestConfig;
 
-				if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
-					originalRequest._retry = true;
-
+				if ((error.response?.status === 401 || error.response?.status === 403) && !refreshingRef.current) {
 					try {
+						refreshingRef.current = true;
+
 						const refreshRes = await api.post<{ token: string }>("/auth/refresh");
 						const newAccessToken = refreshRes.data.token;
-
 						setAccessToken(newAccessToken);
 
 						if (!originalRequest.headers) originalRequest.headers = {};
@@ -51,6 +57,8 @@ export default function useApi(): AxiosInstance {
 					} catch (refreshError) {
 						await logout(); // if refresh fails
 						return Promise.reject(refreshError);
+					} finally {
+						refreshingRef.current = false;
 					}
 				}
 
@@ -59,10 +67,9 @@ export default function useApi(): AxiosInstance {
 		);
 
 		return () => {
-			api.interceptors.request.eject(reqInterceptor);
 			api.interceptors.response.eject(resInterceptor);
 		};
-	}, [accessToken, api, setAccessToken, logout]);
+	}, [api, setAccessToken, logout]);
 
 	return api;
 }
