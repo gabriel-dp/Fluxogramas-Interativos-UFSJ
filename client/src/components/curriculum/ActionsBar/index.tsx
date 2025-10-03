@@ -13,6 +13,7 @@ import useTheme from "@/contexts/theme/useTheme";
 import useModal from "@/contexts/modal/useModal";
 import Button from "@/components/ui/Button";
 import AreYouSureToClear from "@/components/layout/Modals/components/AreyouSureToClear";
+import AreYouSureToImport from "@/components/layout/Modals/components/AreYouSureToImport";
 
 import { BarContainer } from "./styles";
 import { CurriculumHandle } from "../Curriculum";
@@ -55,22 +56,41 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	function handleImportButton(e: React.ChangeEvent<HTMLInputElement>) {
-		const curriculum: CurriculumHandle | null = curriculumHandleRef.current;
-		if (curriculum) {
-			const file = e.target.files?.[0];
-			if (!file) return;
+		const file = e.target.files?.[0];
+		if (!file) return;
 
+		const copy = new File([file], file.name, {
+			type: file.type,
+			lastModified: file.lastModified,
+		});
+
+		function onConfirm() {
 			const reader = new FileReader();
 			reader.onload = (event) => {
 				try {
-					const obj = JSON.parse(event.target?.result as string) as CurriculumDump;
-					curriculum.reset(obj);
+					if (curriculumHandleRef.current && fileInputRef.current) {
+						const obj = JSON.parse(event.target?.result as string) as CurriculumDump;
+						curriculumHandleRef.current.reset(obj);
+						fileInputRef.current.value = "";
+					}
 				} catch (err) {
 					console.error("Invalid JSON file", err);
 				}
 			};
-			reader.readAsText(file);
+			reader.readAsText(copy);
 		}
+
+		const modalId = openModal({
+			content: (
+				<AreYouSureToImport
+					onConfirm={onConfirm}
+					onCancel={() => closeModal(modalId)}
+					finally={() => closeModal(modalId)}
+				/>
+			),
+		});
+
+		e.target.value = "";
 	}
 
 	function handleExportButton() {
