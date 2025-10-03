@@ -20,6 +20,12 @@ interface ComponentCardProps {
 export default function ComponentCard(props: ComponentCardProps) {
 	const Icon = props.state ? CheckIcon : props.canChange ? OpenIcon : LockIcon;
 
+	const componentName = () => {
+		let name = props.component.name;
+		if (props.optionalName && props.optionalName != props.component.name) name += ` - ${props.optionalName}`;
+		return name;
+	};
+
 	return (
 		<CardContainer
 			onClick={props.onClick}
@@ -31,12 +37,11 @@ export default function ComponentCard(props: ComponentCardProps) {
 			}}
 			state={props.state}
 			canChange={props.canChange}
-			title={props.component.name}
+			title={componentName()}
 			ref={props.$ref}
 		>
 			<p className="name" lang="pt">
-				{props.component.name}
-				{props.optionalName && props.optionalName != props.component.name && ` (${props.optionalName})`}
+				{componentName()}
 			</p>
 			{props.optionalClick && (
 				<div
