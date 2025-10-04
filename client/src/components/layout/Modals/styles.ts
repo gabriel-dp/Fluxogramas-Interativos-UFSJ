@@ -66,4 +66,9 @@ export const ModalContainer = styled.div<{ $noPadding: string }>`
 	@media (max-width: 768px) {
 		min-width: calc(100% - 2rem);
 	}
+
+	hr {
+		border: none;
+		border-top: 1px solid ${(props) => props.theme.text}55;
+	}
 `;

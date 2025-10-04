@@ -5,6 +5,7 @@ import {
 	FaTrashAlt as ClearIcon,
 	FaFileImport as ImportIcon,
 	FaFileExport as ExportIcon,
+	FaQuestion as HelpIcon,
 } from "react-icons/fa";
 
 import { CurriculumDump } from "@/hooks/useCurriculum";
@@ -17,6 +18,7 @@ import AreYouSureToImport from "@/components/layout/Modals/components/AreYouSure
 
 import { BarContainer } from "./styles";
 import { CurriculumHandle } from "../Curriculum";
+import HelpInstructions from "@/components/layout/Modals/components/HelpInstructions";
 
 interface ActionsBarProps {
 	code: string;
@@ -127,6 +129,12 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 		});
 	}
 
+	function handleHelpButton() {
+		const modalId = openModal({
+			content: <HelpInstructions finally={() => closeModal(modalId)} />,
+		});
+	}
+
 	// Set initial value only once
 	const initialStates = useRef(save);
 	useEffect(() => {
@@ -158,6 +166,9 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 			</Button>
 			<Button title="Limpar grade" onClick={handleClearButton}>
 				<ClearIcon className="icon" />
+			</Button>
+			<Button title="Ajuda" onClick={handleHelpButton}>
+				<HelpIcon className="icon" />
 			</Button>
 		</BarContainer>
 	);
