@@ -13,7 +13,7 @@ import { Routes } from "@/routes";
 import { ICourseComplete } from "@/types/course";
 import useAuth from "@/contexts/auth/useAuth";
 import useCourseService from "@/services/courseService";
-import logo from "@/assets/logo.png";
+import logo from "@/assets/logo.webp";
 
 import { DrawerContainer, DrawerContent, ToggleButton } from "./styles";
 
