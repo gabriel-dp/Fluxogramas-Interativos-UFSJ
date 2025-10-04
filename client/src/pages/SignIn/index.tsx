@@ -7,6 +7,7 @@ import useAuth from "@/contexts/auth/useAuth";
 import useNotifications from "@/contexts/notifications/useNotifications";
 import TextField from "@/components/ui/TextField";
 import Button from "@/components/ui/Button";
+import logo from "@/assets/logo.webp";
 
 import { SignInFormContainer, SignInFormTitle, Wrapper } from "./styles";
 
@@ -57,7 +58,9 @@ export default function SignIn() {
 			}}
 		>
 			<Wrapper>
-				<SignInFormTitle>Gestão</SignInFormTitle>
+				<SignInFormTitle>
+					<img src={logo} alt="logo" />
+				</SignInFormTitle>
 				<div className="fields">
 					<Controller
 						name="username"

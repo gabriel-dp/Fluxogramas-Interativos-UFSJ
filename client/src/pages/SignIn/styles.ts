@@ -68,6 +68,12 @@ export const Wrapper = styled.div`
 export const SignInFormTitle = styled.h1`
 	font-size: 1.75rem;
 	margin-bottom: 0.25rem;
+	text-align: center;
+
+	img {
+		width: 80%;
+		padding: 1rem;
+	}
 `;
 
 export const LogoImage = styled.img`
