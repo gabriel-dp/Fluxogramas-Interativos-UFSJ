@@ -48,6 +48,10 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 				link.href = await toPng(curriculum.curriculumRef.current, {
 					cacheBust: true,
 					backgroundColor: theme.background,
+					filter(domNode) {
+						if (typeof domNode.className !== "string") return true;
+						return !domNode.className.includes("remove-export");
+					},
 				});
 				link.click();
 			});
