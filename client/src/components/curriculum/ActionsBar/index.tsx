@@ -1,5 +1,5 @@
 import { forwardRef, RefObject, useEffect, useImperativeHandle, useRef } from "react";
-import { exportComponentAsPNG } from "react-component-export-image";
+import { toPng } from "html-to-image";
 import {
 	FaRegImage as ScreenshotIcon,
 	FaTrashAlt as ClearIcon,
@@ -42,16 +42,14 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 		const curriculum: CurriculumHandle | null = curriculumHandleRef.current;
 		if (curriculum) {
 			await curriculum.screenshot(async () => {
-				await exportComponentAsPNG(curriculum.curriculumRef, {
-					fileName: "curriculum-print",
-					html2CanvasOptions: {
-						ignoreElements: (element: Element) => {
-							if (typeof element.className !== "string") return false;
-							return element.className.includes("remove-export");
-						},
-						backgroundColor: theme.background,
-					},
+				if (curriculum.curriculumRef.current == null) return;
+				const link = document.createElement("a");
+				link.download = "curriculum.png";
+				link.href = await toPng(curriculum.curriculumRef.current, {
+					cacheBust: true,
+					backgroundColor: theme.background,
 				});
+				link.click();
 			});
 		}
 	}
