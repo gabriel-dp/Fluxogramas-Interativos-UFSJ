@@ -58,7 +58,7 @@ export default function HelpInstructions(props: HelpInstructionsProps) {
 			<h2 style={{ margin: "0 0.5rem" }}>Instruções</h2>
 			<hr />
 			<p style={{ marginBottom: "0.5rem 0" }}>
-				Clique nos componentes você já fez
+				Clique nos componentes que você já fez
 				<br />e visualize quais você poderá fazer.
 			</p>
 			<div style={{ display: "flex", flexDirection: "column", margin: "auto", zoom: "0.5", gap: "1rem" }}>
