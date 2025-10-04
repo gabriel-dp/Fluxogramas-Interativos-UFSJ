@@ -110,7 +110,7 @@ export default function useCurriculum(components: IComponent[]): useCurriculumRe
 	function canChange(id: number) {
 		// Verify if it is not being required by active components
 		for (const descendant of get(dependency, id)) {
-			if (!descendant.corequisite && states[descendant.id]) {
+			if (!descendant.corequisite && states[descendant.id] && states[id] /* avoid curriculum version conflicts */) {
 				return false;
 			}
 		}
