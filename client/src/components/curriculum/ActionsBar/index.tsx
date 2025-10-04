@@ -15,10 +15,10 @@ import useModal from "@/contexts/modal/useModal";
 import Button from "@/components/ui/Button";
 import AreYouSureToClear from "@/components/layout/Modals/components/AreyouSureToClear";
 import AreYouSureToImport from "@/components/layout/Modals/components/AreYouSureToImport";
+import HelpInstructions from "@/components/layout/Modals/components/HelpInstructions";
+import { CurriculumHandle } from "@/components/curriculum/Curriculum";
 
 import { BarContainer } from "./styles";
-import { CurriculumHandle } from "../Curriculum";
-import HelpInstructions from "@/components/layout/Modals/components/HelpInstructions";
 
 interface ActionsBarProps {
 	code: string;
@@ -29,7 +29,7 @@ export interface ActionsBarHandle {
 	setSave: (newValue: CurriculumDump | ((previousValue: CurriculumDump) => CurriculumDump)) => void;
 }
 
-const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHandleRef, code }, ref) => {
+const ActionsBar = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHandleRef, code }, ref) => {
 	const { openModal, closeModal } = useModal();
 	const theme = useTheme();
 
@@ -176,6 +176,6 @@ const Curriculum = forwardRef<ActionsBarHandle, ActionsBarProps>(({ curriculumHa
 	);
 });
 
-Curriculum.displayName = "Curriculum";
+ActionsBar.displayName = "ActionsBar";
 
-export default Curriculum;
+export default ActionsBar;
