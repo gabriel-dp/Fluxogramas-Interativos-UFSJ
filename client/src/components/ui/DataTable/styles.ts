@@ -64,6 +64,7 @@ export const DataTableComponent = styled(DataTable)<any>`
 
 export const NoDataComponent = styled.div`
 	color: ${(props) => props.theme.text}77;
+	padding: 1.25rem;
 `;
 
 export const TableWrapper = styled.div`
