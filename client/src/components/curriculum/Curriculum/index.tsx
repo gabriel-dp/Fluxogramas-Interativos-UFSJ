@@ -173,7 +173,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 
 	function generateComponent(component: IComponent) {
 		function onClick() {
-			if (component.type == ComponentType.ACTIVITY) {
+			if (component.type == ComponentType.ACTIVITY && canChange(component.id)) {
 				handleActivityClick(component);
 			} else {
 				if (!change(component.id)) focusComponent(component.id);
