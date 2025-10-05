@@ -1,8 +1,7 @@
 import { useContext } from "react";
 
-import { ConfigsContext } from ".";
+import { ConfigsContext } from "@/contexts/configs/ConfigsContext";
 
 export default function useConfigs() {
-	const context = useContext(ConfigsContext);
-	return context;
+	return useContext(ConfigsContext);
 }

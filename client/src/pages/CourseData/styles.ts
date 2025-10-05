@@ -13,7 +13,6 @@ export const Header = styled.div`
 	width: 100%;
 	padding: 2rem 1rem;
 	background-color: ${(props) => props.theme.background2};
-	color: ${(props) => props.theme.primaryText};
 	text-align: center;
 
 	display: flex;
@@ -54,4 +53,9 @@ export const CurriculumContainer = styled.div`
 	padding: 1rem 0;
 
 	display: flex;
+`;
+
+export const ActionsBarContainer = styled.div`
+	padding: 1rem;
+	padding-top: 0;
 `;

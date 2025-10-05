@@ -1,15 +1,13 @@
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 
-import AppProvider from "@/contexts";
+import AppProvider from "@/contexts/AppProvider";
 import Router from "@/routes";
-import ActionButtons from "@/components/ActionButtons";
 
 export default function App() {
 	return (
 		<AppProvider>
 			<Router />
-			<ActionButtons />
-			<Analytics/>
+			<Analytics />
 		</AppProvider>
 	);
 }

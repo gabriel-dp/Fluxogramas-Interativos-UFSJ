@@ -3,23 +3,29 @@
 	"version": "1.0.0",
 	"license": "GPL-3.0",
 	"scripts": {
-		"dev:client": "cd client && npm start",
-		"dev:server": "cd server && npm start",
-		"dev": "npm-run-all --parallel dev:client dev:server",
+		"prepare": "husky install && npm run prepare:client && npm run prepare:server",
 		"prepare:client": "cd client && npm install",
 		"prepare:server": "cd server && npm install",
-		"prepare": "husky install && npm run prepare:client && npm run prepare:server"
+		"dev": "npm-run-all --parallel dev:client dev:server",
+		"dev:client": "cd client && npm start",
+		"dev:server": "cd server && npm start",
+		"docker:up": "docker-compose -f docker/docker-compose.yml --env-file server/.env.development up ",
+		"docker:down": "docker-compose -f docker/docker-compose.yml down",
+		"test": "npm run test:start ; npm run test:finish",
+		"test:start": "docker-compose -p test -f docker/docker-compose.test.yml --env-file server/.env.test up --abort-on-container-exit --exit-code-from server-test",
+		"test:finish": "docker-compose -p test -f docker/docker-compose.test.yml down"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^5.57.0",
 		"@typescript-eslint/parser": "^5.57.0",
 		"eslint": "^8.37.0",
-		"eslint-config-prettier": "^8.8.0",
+		"eslint-config-prettier": "^8.10.0",
+		"eslint-plugin-prettier": "^5.4.1",
 		"eslint-plugin-react": "^7.32.2",
 		"eslint-plugin-react-hooks": "^4.6.0",
 		"husky": "^8.0.3",
 		"lint-staged": "^13.2.0",
 		"npm-run-all": "^4.1.5",
-		"prettier": "^2.8.7"
+		"prettier": "^3.5.3"
 	}
 }

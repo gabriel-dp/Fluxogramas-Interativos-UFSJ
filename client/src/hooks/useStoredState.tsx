@@ -5,7 +5,7 @@ type StoredStateHookReturn<T> = [T, (newValue: T | ((previousValue: T) => T)) =>
 export default function useStoredState<T extends object>(key: string, initialValue: T): StoredStateHookReturn<T> {
 	const [value, setValue] = useState<T>(() => {
 		const storedValue = localStorage.getItem(key);
-		const initial = storedValue ? JSON.parse(storedValue) : initialValue;
+		const initial = storedValue ? (JSON.parse(storedValue) as T) : initialValue;
 		return initial;
 	});
 

@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  server:
+    image: server-image
+    container_name: server-container
+    build:
+      context: ../server
+      dockerfile: ../docker/.server.Dockerfile
+    env_file:
+      - ../server/.env.development
+    ports:
+      - "${SERVER_LOCAL_PORT:-3000}:3000"
+    depends_on:
+      - db
+    volumes:
+      - ../server:/app
+      - ../docker:/app/docker
+    command: "sh ./docker/scripts/run-development.sh"
+
+  db:
+    image: postgres:17
+    container_name: db-container
+    restart: always
+    logging:
+      driver: none
+    env_file:
+      - ../server/.env.development
+    ports:
+      - "2345:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  client:
+    image: client-image
+    container_name: client-container
+    build:
+      context: ../client
+      dockerfile: ../docker/.client.Dockerfile
+    env_file:
+      - ../client/.env
+    ports:
+      - "${VITE_PORT:-5173}:5173"
+    depends_on:
+      - server
+    volumes:
+      - ../client:/app
+    command: "npm start"
+
+volumes:
+  pgdata:

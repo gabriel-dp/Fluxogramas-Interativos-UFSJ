@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("PRISMA_DATABASE_URL")
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  password String
+  isAdmin  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  UserCoursePermission UserCoursePermission[]
+  RefreshToken         RefreshToken?
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  tokenHash String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+}
+
+model UserCoursePermission {
+  userId   Int
+  user     User   @relation(fields: [userId], references: [id])
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  @@id([userId, courseId])
+}
+
+model Campus {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  Course Course[]
+}
+
+model Shift {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+}
+
+model Type {
+  id     Int      @id @default(autoincrement())
+  name   String   @unique
+  Course Course[]
+}
+
+model Course {
+  id   Int    @id @default(autoincrement())
+  code String @unique
+  name String
+
+  campusId Int
+  campus   Campus @relation(fields: [campusId], references: [id])
+  shiftId  Int
+  shift    Shift  @relation(fields: [shiftId], references: [id])
+  typeId   Int
+  type     Type   @relation(fields: [typeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  Component            Component[]
+  UserCoursePermission UserCoursePermission[]
+}
+
+enum ComponentType {
+  SUBJECT
+  ACTIVITY
+  OPTIONAL
+  ELECTIVE
+}
+
+model Component {
+  id       Int           @id @default(autoincrement())
+  code     String
+  name     String
+  hours    Int
+  type     ComponentType
+  semester Int?
+
+  courseId Int
+  course   Course @relation(fields: [courseId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  requisites ComponentRequisite[] @relation("Component")
+  requiredBy ComponentRequisite[] @relation("Requisite")
+
+  @@unique([courseId, code])
+}
+
+enum RequisiteType {
+  PREREQUISITE
+  COREQUISITE
+}
+
+model ComponentRequisite {
+  componentId Int
+  component   Component     @relation("Component", fields: [componentId], references: [id])
+  requisiteId Int
+  requisite   Component     @relation("Requisite", fields: [requisiteId], references: [id])
+  type        RequisiteType @default(PREREQUISITE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+
+  @@id([componentId, requisiteId])
+}

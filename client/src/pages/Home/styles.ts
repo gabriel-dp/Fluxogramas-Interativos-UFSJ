@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Screen = styled.div`
 	width: 100%;
-	min-height: 100dvh;
 
 	display: flex;
 	flex-direction: column;
@@ -11,8 +10,8 @@ export const Screen = styled.div`
 
 export const HomeContainer = styled.div`
 	width: min(100%, 40rem);
-	min-height: 100dvh;
-	padding: 2.5rem 1rem 2rem 1rem;
+	min-height: 100svh;
+	padding: 2.5rem 1.5rem 2rem 1.5rem;
 
 	display: flex;
 	flex-direction: column;
@@ -38,6 +37,7 @@ export const CourseElement = styled.div`
 	padding: 1rem 1.5rem;
 	border-radius: 0.5rem;
 	background: ${(props) => props.theme.secondary};
+	border: 1px solid ${(props) => props.theme.text}33;
 	overflow: hidden;
 	user-select: none;
 	cursor: pointer;

@@ -1,47 +1,44 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { requestAllCourses } from "@/services/course/requests";
-import { Course } from "@/services/course/types";
-import SearchBar from "@/components/SearchBar";
-import Loading from "@/components/Loading";
-import Footer from "@/components/Footer";
-import logo from "@/assets/logo.png";
+import { Routes } from "@/routes";
+import useCourseService from "@/services/courseService";
+import { ICourseComplete } from "@/types/course";
+import SearchBar from "@/components/ui/SearchBar";
+import Loading from "@/components/ui/Loading";
+import Footer from "@/components/layout/Footer";
+import logo from "@/assets/logo.webp";
 
 import { CourseElement, CoursesContainer, HomeContainer, Screen, LogoImage } from "./styles";
+import { normalizeString } from "@/utils/stringUtils";
 
 export default function Home() {
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 
+	const { readAll } = useCourseService();
 	const [search, setSearch] = useState(queryParams.get("search") ?? "");
 	const [loading, setLoading] = useState(true);
-	const [allCourses, setAllCourses] = useState<Course[]>([]);
-	const [selectedCourses, setSelectedCourses] = useState<Course[]>([]);
+	const [allCourses, setAllCourses] = useState<ICourseComplete[]>([]);
+	const [selectedCourses, setSelectedCourses] = useState<ICourseComplete[]>([]);
 
 	useEffect(() => {
 		async function asyncSetAllCourses() {
-			setAllCourses(await requestAllCourses());
+			setAllCourses(await readAll());
 			setLoading(false);
 		}
-		asyncSetAllCourses();
-	}, []);
+		void asyncSetAllCourses();
+	}, [readAll]);
 
 	useEffect(() => {
 		if (allCourses.length > 0) {
-			const normalizeString = (str: string) =>
-				str
-					.toLowerCase()
-					.normalize("NFD")
-					.replace(/\p{Diacritic}/gu, "");
-
 			setSelectedCourses(allCourses.filter((course) => normalizeString(course.name).includes(normalizeString(search))));
 		}
 	}, [allCourses, search]);
 
 	const navigate = useNavigate();
 	function handleCourseClick(code: string) {
-		navigate(code);
+		navigate(Routes.course(code));
 	}
 
 	return (
@@ -59,9 +56,9 @@ export default function Home() {
 									<p>{course.name}</p>
 								</div>
 								<div className="course-data">
-									<span>{course.shift}</span>
-									<span>{course.type}</span>
-									<span>{course.campus}</span>
+									<span>{course.shift.name}</span>
+									<span>{course.type.name}</span>
+									<span>{course.campus.name}</span>
 								</div>
 							</CourseElement>
 						))

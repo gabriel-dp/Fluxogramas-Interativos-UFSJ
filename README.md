@@ -2,7 +2,7 @@
 
 <h1>
     <p align=center>
-        <img height=150 src='./docs/logo.png'/>
+        <img height=150 src='./docs/logo.webp'/>
     </p>
 </h1>
 
