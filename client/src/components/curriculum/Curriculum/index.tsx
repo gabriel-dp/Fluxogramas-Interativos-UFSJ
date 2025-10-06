@@ -53,6 +53,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 	const componentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	const [focus, setFocus] = useState(false);
 	const overflowRef = useRef<HTMLDivElement>(null);
+	const startTimeRef = useRef<number | null>(null);
 
 	const progress = useMemo(() => {
 		let total = 0,
@@ -174,13 +175,15 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 
 	function moveOverflow() {
 		if (overflowRef.current) {
+			startTimeRef.current = Date.now();
 			overflowRef.current.style.pointerEvents = "none";
 		}
 	}
 
-	function upOverflow() {
-		if (overflowRef.current) {
+	async function upOverflow() {
+		if (overflowRef.current && startTimeRef.current) {
 			overflowRef.current.style.pointerEvents = "auto";
+			if (Date.now() - startTimeRef.current < 150) return unfocusComponent();
 		}
 	}
 
@@ -230,7 +233,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 	}, [props, states, activityHours, optionalNames]);
 
 	return (
-		<CurriculumWrapper ref={curriculumRef}>
+		<CurriculumWrapper ref={curriculumRef} onTouchEnd={() => void upOverflow()} onMouseUp={() => void upOverflow()}>
 			<FocusOverflow
 				ref={overflowRef}
 				$on={focus ? "true" : "false"}
@@ -239,9 +242,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 					e.preventDefault();
 					void unfocusComponent();
 				}}
-				onPointerMove={() => moveOverflow()}
-				onPointerUp={() => upOverflow()}
-				onPointerCancel={() => upOverflow()}
+				onPointerDown={() => moveOverflow()}
 				onContextMenu={(e) => e.preventDefault()}
 			/>
 			<SemestersList ref={semestersRef}>
