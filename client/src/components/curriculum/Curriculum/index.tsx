@@ -52,7 +52,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 
 	const componentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	const [focus, setFocus] = useState(false);
-	const [interact, setInteract] = useState(false);
+	const overflowRef = useRef<HTMLDivElement>(null);
 
 	const progress = useMemo(() => {
 		let total = 0,
@@ -172,6 +172,18 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 		setFocus(false);
 	}
 
+	function moveOverflow() {
+		if (overflowRef.current) {
+			overflowRef.current.style.pointerEvents = "none";
+		}
+	}
+
+	function upOverflow() {
+		if (overflowRef.current) {
+			overflowRef.current.style.pointerEvents = "auto";
+		}
+	}
+
 	function generateComponent(component: IComponent) {
 		function onClick() {
 			if (component.type == ComponentType.ACTIVITY && canChange(component.id)) {
@@ -220,16 +232,16 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 	return (
 		<CurriculumWrapper ref={curriculumRef}>
 			<FocusOverflow
+				ref={overflowRef}
 				$on={focus ? "true" : "false"}
-				$interact={interact ? "true" : "false"}
 				onClick={(e) => {
 					e.stopPropagation();
 					e.preventDefault();
 					void unfocusComponent();
 				}}
-				onPointerMove={() => setInteract(true)}
-				onPointerUp={() => setInteract(false)}
-				onPointerCancel={() => setInteract(false)}
+				onPointerMove={() => moveOverflow()}
+				onPointerUp={() => upOverflow()}
+				onPointerCancel={() => upOverflow()}
 				onContextMenu={(e) => e.preventDefault()}
 			/>
 			<SemestersList ref={semestersRef}>

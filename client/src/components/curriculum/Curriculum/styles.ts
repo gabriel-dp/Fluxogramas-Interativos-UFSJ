@@ -104,10 +104,9 @@ export const ProgressBarContainer = styled.div`
 	}
 `;
 
-export const FocusOverflow = styled.div<{ $on: string; $interact: string }>`
+export const FocusOverflow = styled.div<{ $on: string }>`
 	position: fixed;
 	inset: 0;
 	display: ${(props) => (props.$on == "true" ? "block" : "none")};
-	pointer-events: ${(props) => (props.$interact == "true" ? "none" : "auto")};
 	z-index: 2;
 `;
