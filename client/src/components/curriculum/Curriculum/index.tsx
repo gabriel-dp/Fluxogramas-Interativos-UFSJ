@@ -52,6 +52,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 
 	const componentRefs = useRef<Record<string, HTMLDivElement | null>>({});
 	const [focus, setFocus] = useState(false);
+	const [interact, setInteract] = useState(false);
 
 	const progress = useMemo(() => {
 		let total = 0,
@@ -220,11 +221,15 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 		<CurriculumWrapper ref={curriculumRef}>
 			<FocusOverflow
 				$on={focus ? "true" : "false"}
-				onPointerDown={(e) => {
+				$interact={interact ? "true" : "false"}
+				onClick={(e) => {
 					e.stopPropagation();
 					e.preventDefault();
 					void unfocusComponent();
 				}}
+				onPointerMove={() => setInteract(true)}
+				onPointerUp={() => setInteract(false)}
+				onPointerCancel={() => setInteract(false)}
 				onContextMenu={(e) => e.preventDefault()}
 			/>
 			<SemestersList ref={semestersRef}>
