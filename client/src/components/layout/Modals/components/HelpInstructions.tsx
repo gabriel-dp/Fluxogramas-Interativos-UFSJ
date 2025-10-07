@@ -61,16 +61,16 @@ export default function HelpInstructions(props: HelpInstructionsProps) {
 				Clique nos componentes que você já fez
 				<br />e visualize quais você poderá fazer.
 			</p>
-			<div style={{ display: "flex", flexDirection: "column", margin: "auto", zoom: "0.5", gap: "1rem" }}>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+			<div style={{ display: "flex", flexDirection: "column", margin: "auto", gap: "1rem" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
 					<ComponentCard component={fakeComponents[0]} state={true} canChange={true} />
 					<span style={{ fontSize: "1.75rem" }}>Concluído</span>
 				</div>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
 					<ComponentCard component={fakeComponents[1]} state={false} canChange={true} />
 					<span style={{ fontSize: "1.75rem" }}>Liberado</span>
 				</div>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
 					<ComponentCard component={fakeComponents[2]} state={false} canChange={false} />
 					<span style={{ fontSize: "1.75rem" }}>Bloqueado</span>
 				</div>
