@@ -50,6 +50,7 @@ export default function HelpInstructions(props: HelpInstructionsProps) {
 			style={{
 				display: "flex",
 				flexDirection: "column",
+				margin: "0 auto",
 				gap: "1rem",
 				textAlign: "center",
 				maxWidth: "25rem",
@@ -58,23 +59,33 @@ export default function HelpInstructions(props: HelpInstructionsProps) {
 			<h2 style={{ margin: "0 0.5rem" }}>Instruções</h2>
 			<hr />
 			<p style={{ marginBottom: "0.5rem 0" }}>
-				Clique nos componentes que você já fez
-				<br />e visualize quais você poderá fazer.
+				Clique nos componentes que você já fez e visualize quais você poderá fazer.
 			</p>
-			<div style={{ display: "flex", flexDirection: "column", margin: "auto", gap: "1rem" }}>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
+			<div
+				style={{
+					display: "grid",
+					gridTemplateColumns: "1fr 1fr",
+					gridTemplateRows: "repeat(3, 4rem)",
+					alignItems: "center",
+					justifyContent: "center",
+				}}
+			>
+				<div style={{ transform: "scale(0.5)", height: "6rem", width: "6rem", justifySelf: "end" }}>
 					<ComponentCard component={fakeComponents[0]} state={true} canChange={true} />
-					<span style={{ fontSize: "1.75rem" }}>Concluído</span>
 				</div>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
+				<span style={{ fontSize: "0.9rem", justifySelf: "start" }}>Concluído</span>
+
+				<div style={{ transform: "scale(0.5)", height: "6rem", width: "6rem", justifySelf: "end" }}>
 					<ComponentCard component={fakeComponents[1]} state={false} canChange={true} />
-					<span style={{ fontSize: "1.75rem" }}>Liberado</span>
 				</div>
-				<div style={{ display: "flex", alignItems: "center", gap: "1rem", transform: "scale(0.5)", height: "3rem" }}>
+				<span style={{ fontSize: "0.9rem", justifySelf: "start" }}>Liberado</span>
+
+				<div style={{ transform: "scale(0.5)", height: "6rem", width: "6rem", justifySelf: "end" }}>
 					<ComponentCard component={fakeComponents[2]} state={false} canChange={false} />
-					<span style={{ fontSize: "1.75rem" }}>Bloqueado</span>
 				</div>
+				<span style={{ fontSize: "0.9rem", justifySelf: "start" }}>Bloqueado</span>
 			</div>
+
 			<hr />
 			<div>
 				<BrowserView>
