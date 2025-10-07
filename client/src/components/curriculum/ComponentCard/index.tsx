@@ -1,5 +1,7 @@
 import { Ref } from "react";
 import { FaPencilAlt as EditIcon } from "react-icons/fa";
+import { useLongPress } from "use-long-press";
+import { isMobile } from "react-device-detect";
 
 import { IComponent } from "@/types/component";
 
@@ -20,6 +22,10 @@ interface ComponentCardProps {
 export default function ComponentCard(props: ComponentCardProps) {
 	const Icon = props.state ? CheckIcon : props.canChange ? OpenIcon : LockIcon;
 
+	const bindLongClicks = useLongPress(() => {
+		if (props.focusClick && isMobile) props.focusClick();
+	});
+
 	const componentName = () => {
 		let name = props.component.name;
 		if (props.optionalName && props.optionalName != props.component.name) name += ` - ${props.optionalName}`;
@@ -28,6 +34,7 @@ export default function ComponentCard(props: ComponentCardProps) {
 
 	return (
 		<CardContainer
+			ref={props.$ref}
 			onClick={props.onClick}
 			onContextMenu={(e) => {
 				if (props.focusClick) {
@@ -38,7 +45,7 @@ export default function ComponentCard(props: ComponentCardProps) {
 			state={props.state}
 			canChange={props.canChange}
 			title={componentName()}
-			ref={props.$ref}
+			{...bindLongClicks()}
 		>
 			<p className="name" lang="pt">
 				{componentName()}

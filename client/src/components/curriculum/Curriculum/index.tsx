@@ -183,7 +183,7 @@ const Curriculum = forwardRef<CurriculumHandle, CurriculumProps>((props, ref) =>
 	async function upOverflow() {
 		if (overflowRef.current && startTimeRef.current) {
 			overflowRef.current.style.pointerEvents = "auto";
-			if (Date.now() - startTimeRef.current < 150) return unfocusComponent();
+			if (Date.now() - startTimeRef.current < 200) return unfocusComponent();
 		}
 	}
 
