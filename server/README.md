@@ -45,35 +45,3 @@ cp .env.example .env.development
 | `REFRESH_TOKEN_SECRET` | Secret key for signing and verifying Refresh JWT tokens. **Recommended: 32-character hash**. | `string` |
 | `ACCESS_TOKEN_EXPIRATION` | Expiration time for Access JWT tokens. *(e.g., `15m`)*. | `string` |
 | `REFRESH_TOKEN_EXPIRATION` | Expiration time for Access JWT tokens. *(e.g., `7d`)*. | `string` |
-
-&nbsp;
-
-## Run locally
-
-Start the containers:
-
-```bash
-npm run dev:start
-```
-
-> The server is restarted on every source code change.
-
-### Stop and Remove containers
-
-Remove containers when necessary:
-
-```bash
-npm run dev:finish
-```
-
-&nbsp;
-
-## Run automated tests
-
-Create a temporary environment and run test suites:
-
-```bash
-npm run test:auto
-```
-
-> All tests are inside `__tests__` folder, ending with `.test.ts`
