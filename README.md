@@ -83,21 +83,15 @@ git clone https://github.com/gabriel-dp/Fluxogramas-Interativos-UFSJ.git
 cd Fluxogramas-Interativos-UFSJ
 ```
 
-&nbsp;
-
 ### Install dependencies
 
 ```bash
 npm install
 ```
 
-&nbsp;
-
 ### Define environment variables
 
-> View and fill server and client `.env` examples.
-
-&nbsp;
+View and fill server and client `.env` examples.
 
 ### Run client, server and database
 
@@ -106,8 +100,6 @@ npm install
 ```bash
 npm run docker:up
 ```
-
-&nbsp;
 
 ### Run server automated tests
 
