@@ -91,15 +91,24 @@ npm install
 
 ### Define environment variables
 
-View and fill server and client `.env` examples.
+View and fill [server](./server) and [client](./client) `.env` examples. Follow the instructions of the README files.
 
 ### Run client, server and database
 
-> You must have [Docker](https://www.docker.com/) installed.
+You must have [Docker](https://www.docker.com/) installed.
 
 ```bash
 npm run docker:up
 ```
+
+### Use the most recent SQL dump
+
+The database structure is added automatically when running the server for the first time.\
+Just add the entities.
+
+> View [dumps](./server/dumps) folder
+
+&nbsp;
 
 ### Run server automated tests
 

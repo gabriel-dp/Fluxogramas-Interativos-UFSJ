@@ -41,6 +41,7 @@ cp .env.example .env.development
 | `SERVER_PORT` | Port number the server should listen on. *(e.g., `3000`)* | `number` |
 | `SERVER_LOCAL_PORT` | Port number the server should run on local. Used in tests. *(e.g., `3001`)* | `string` |
 | `SERVER_LOG_LEVEL` | Defines the logging level for the server. | `"DBG"` \| `"INF"` \| `"WRN"` \| `"ERR"` \| `"DISABLED"` |
+| `SERVER_CORS_ORIGIN` | Client URLs joined using `,` to manage CORS permission. (e.g., `https://fluxogramas-interativos-ufsj.vercel.app`) | `string` |
 | `ACCESS_TOKEN_SECRET` | Secret key for signing and verifying Access JWT tokens. **Recommended: 32-character hash**. | `string` |
 | `REFRESH_TOKEN_SECRET` | Secret key for signing and verifying Refresh JWT tokens. **Recommended: 32-character hash**. | `string` |
 | `ACCESS_TOKEN_EXPIRATION` | Expiration time for Access JWT tokens. *(e.g., `15m`)*. | `string` |
